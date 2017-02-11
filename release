@@ -1,0 +1,29 @@
+#####
+# SOF START
+#   @name Release
+#   @file release
+#   @author HashtagShell
+#   @depends version, gradlew
+# SOF END
+#####
+#!/bin/bash
+# Script to simplify releasing of... releases?
+# @author HashtagShell https://github.com/HashtagShell/
+
+./version
+#read -p "Release message: " message
+./gradlew release
+#version = "$(./version --get static.properties mcversion)-$(./version --get build.properties version)-build$(./version --get build.properties build)"
+#git add -A
+#git commit -m "Release $version"
+#git tag -a -m "$message" "$version"
+#git push --tags
+
+#####
+# EOF START
+#   @name Release
+#   @file release
+#   @author HashtagShell
+#   @depends version, gradlew
+# EOF END
+#####

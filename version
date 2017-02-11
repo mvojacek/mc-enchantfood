@@ -1,0 +1,202 @@
+#####
+# SOF START
+#   @name Mod versions
+#   @file version
+#   @author HashtagShell
+#   @depends xdotool
+# SOF END
+#####
+#!/bin/bash
+# Script to change mod versions from conveniently from commandline
+# @author HashtagShell https://github.com/HashtagShell/
+
+# FUNCTION DECLARATION START
+function choose {
+    local v e default
+    v=$1
+    shift 2
+    default=$1
+    shift 2
+    i=1
+    for e in "$@"
+    do
+        echo "$i) $e"
+        let i=i+1
+    done
+    echo -ne "\t> "
+    if [[ $default ]]; then xdotool type $default; fi
+    read REPLY
+    case $REPLY in
+        '') eval $v="";;
+        [1-9]*) eval $v="\$$REPLY";;
+        *) eval $v="$REPLY";;
+    esac
+}
+
+function readProperty {
+    local file property resultvar result
+    property=$1
+    file=$3
+    resultvar=$5
+    result=$(cat "$file" | grep -v "#" | grep "^$property" | tail -n 1 | cut -d "=" -f2-)
+    if [[ $resultvar ]]; then eval $resultvar="$result"; else echo "$result"; fi
+}
+# FUNCTION DECLARATION END
+
+# HELP START
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]
+then
+    echo -e """
+        This script by HashtagShell allows you to conveniently modify
+        mod versions stored in a java properties file from commandline.
+
+        Usage:  version --help
+                version <file>
+                version --cmdmode <file> <releasetype=0> <version> <build>
+                version --get <file> <property>
+                    file  Specifies the file that properties will be
+                          read from.
+                          If left empty, the \"build.properties\" file
+                          in the working directory will be used.
+               -h --help  Prints this help information.
+               --cmdmode  Disabled user input prompts and get the info
+                          from commandline in this order
+                   --get  print a property from file to stdout.
+
+        When the script is run, the user can choose the different
+        important versions of the mod (releasetype, version, build).
+        Only java-style properties are supported.
+
+        For questions where the user can select an option, both the
+        entry's number or the the string itself will be accepted.
+        For questions where no options are given, the input string
+        will be used, and no checks will be performed.
+        If an answer is left empty, the value will be left unchanged.
+        This \"unchanged\" value will be displayed in (parentheses)
+        after every question.
+
+        These are the property names, followed by a recommended value
+        regex and example.
+        Properties:
+             releasetype    alpha|beta|release    \"release\"
+             version        ([.]*\d+[.]*)+        \"3.10.12\"
+             build          \d+                   \"125\"
+        Although these are recommendations only, that's how modders
+        tend to do stuff.
+
+        If the build number is shorter than three digits, then the
+        appropriate number of zeros will be prefixed to it. If it's
+        three or more digits long, no changes will be made.
+        """
+    exit
+fi
+# HELP END
+
+# CMDMODE START
+if [ "$1" == "--cmdmode" ]
+then
+shift 1
+file=$1
+#releasetype=$2
+version=$3
+build=$4
+
+#oldreleasetype=`readProperty releasetype from $file`
+oldversion=`readProperty version from $file`
+oldbuild=`readProperty build from $file`
+
+#sed -i "s%releasetype=$oldreleasetype%releasetype=$releasetype%" $file
+sed -i "s%version=$oldversion%version=$version%" $file
+sed -i "s%build=$oldbuild%build=$build%" $file
+
+echo "Saved values \"$version-build$build\" to \"$file\""
+#echo "Saved values \"$releasetype-$version-build$build\" to \"$file\""
+exit
+fi
+# CMDMODE END
+
+# GET START
+if [ "$1" == "--get" ]
+then
+shift 1
+printf "%s" "$(readProperty $2 from $1)"
+exit
+fi
+# GET END
+
+# PROPERTY DECLARATION START
+filename=$(if [[ $1 && -f $1 ]]; then echo "$1"; else echo "build.properties"; fi)
+
+#oldreleasetype=`readProperty releasetype from $filename`
+oldversion=`readProperty version from $filename`
+oldbuild=`readProperty build from $filename`
+
+#releasetype=$oldreleasetype
+version=$oldversion
+build=$oldbuild
+# PROPERTY DECLARATION END
+
+# QUESTIONS START
+# QUESTION 1 RELEASETYPE BLOCK
+#clear
+#echo "What shall the releasetype be? ($releasetype)"
+#echo "Leave empty to keep unchanged"
+#echo
+#choose selectvar with "" in "alpha" "beta" "release"
+#    if [[ "$selectvar" ]]; then releasetype="$selectvar"; fi
+
+# QUESTION 2 VERSION BLOCK
+clear
+echo "What shall the version be? ($version)"
+echo
+echo -ne "\t> "
+read -p "" readvar
+    if [[ $readvar ]]; then version=$readvar; fi
+
+# QUESTION 3 BUILD BLOCK
+clear
+echo "What shall the build number be? ($build)"
+echo
+echo -ne "\t> "
+read -p "" readvar
+    if [[ $readvar ]]; then if [ $(expr 3 - ${#readvar}) -gt 0 ]; then build=$(printf '0%.0s' $(seq 1 $(expr 4 - ${#readvar})))${readvar}; else build=${readvar}; fi; fi
+# QUESTIONS END
+
+# INFORMATION START
+# INFO SELECTION BLOCK
+clear
+echo "Your Selection:"
+echo -e "\t> $version-build$build"
+#echo -e "\t> $releasetype-$version-build$build"
+echo
+echo "Do you want to save to file? ($filename)"
+echo
+choose selectvar with 1 in "Yes" "No";
+if [ "$selectvar" == "Yes" ] || [ "$selectvar" == "yes" ] || [ "$selectvar" == "Y" ] || [ "$selectvar" == "y" ] || ! [[ $selectvar ]]
+    then
+#    sed -i "s%releasetype=$oldreleasetype%releasetype=$releasetype%" $filename
+    sed -i "s%version=$oldversion%version=$version%" $filename
+    sed -i "s%build=$oldbuild%build=$build%" $filename
+    clear
+    echo
+    echo "Saved values \"$version-build$build\" to \"$filename\""
+#    echo "Saved values \"$releasetype-$version-build$build\" to \"$filename\""
+    echo
+    exit
+fi
+clear
+echo
+echo "Discarded values \"$version-build$build\""
+#echo "Discarded values \"$releasetype-$version-build$build\""
+echo
+exit
+# INFORMATION END
+
+#####
+# EOF START
+#   @name Mod versions
+#   @file version
+#   @author HashtagShell
+#   @depends xdotool
+# EOF END
+#####

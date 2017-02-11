@@ -1,0 +1,16 @@
+[
+{
+  "modid": "enchantfood",
+  "name": "${name}",
+  "description": "${desc}",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["HashtagShell"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "parent": ""
+}
+]

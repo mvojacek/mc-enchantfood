@@ -1,0 +1,16 @@
+/build
+/out
+/.gradle
+/.idea
+
+/run
+/test
+
+*.iml
+*.ipr
+*.iws
+
+*~
+_HIDE_*
+
+/private.properties
