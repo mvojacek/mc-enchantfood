@@ -1,0 +1,22 @@
+#####
+# SOF START
+#   @name ReleaseTest
+#   @file rt
+#   @author HashtagShell
+#   @depends gradlew
+# SOF END
+#####
+#!/bin/bash
+# Script to simplify releasing of test jars
+# @author HashtagShell https://github.com/HashtagShell/
+
+./gradlew releaseTest
+
+#####
+# EOF START
+#   @name ReleaseTest
+#   @file rt
+#   @author HashtagShell
+#   @depends gradlew
+# EOF END
+#####

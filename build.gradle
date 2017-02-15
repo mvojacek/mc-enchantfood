@@ -223,9 +223,9 @@ task deleteOldBuilds(type: Delete) {
     delete "build"
 }
 
-task release(dependsOn: [deleteOldBuilds, releaseJar, releaseDeobf, releaseSource, releaseJavadoc, incrementBuildNumber]) {
-}
+task release(dependsOn: [deleteOldBuilds, releaseJar, releaseDeobf, releaseSource, releaseJavadoc, incrementBuildNumber]) {}
 task releaseBuild(dependsOn: [deleteOldBuilds, releaseJar, incrementBuildNumber]) {}
+rask releaseTest(dependsOn: [deleteOldBuilds, releaseJar]) {}
 
 // ----------------ARTIFACTS---------------------
 
