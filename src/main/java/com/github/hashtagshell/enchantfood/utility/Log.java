@@ -1,62 +1,29 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
+import com.github.hashtagshell.enchantfood.EnchantFood;
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
 
 public class Log
 {
     private static String name = Mod.ID;
 
-    public static void logf(String modName, Level logLevel, String format, Object... args)
+    public static void allf(String format, Object... args)
     {
-        FMLLog.log(modName, logLevel, format, args);
+        modf(Level.ALL, format, args);
     }
-
-    public static void log(String modName, Level logLevel, Object object)
-    {
-        logf(modName, logLevel, object.toString());
-    }
-
-    public static void logexf(String modName, Level logLevel, Throwable throwable, String format, Object... args)
-    {
-        FMLLog.log(modName, logLevel, throwable, format, args);
-    }
-
-    public static void logex(String modName, Level logLevel, Throwable throwable, Object object)
-    {
-        logexf(modName, logLevel, throwable, object.toString());
-    }
-
 
     public static void modf(Level logLevel, String format, Object... args)
     {
         logf(name, logLevel, format, args);
     }
 
-    public static void mod(Level logLevel, Object object)
+    public static void logf(String modName, Level logLevel, String format, Object... args)
     {
-        log(name, logLevel, object);
-    }
-
-    public static void modexf(Level logLevel, Throwable throwable, String format, Object... args)
-    {
-        logexf(name, logLevel, throwable, format, args);
-    }
-
-    public static void modex(Level logLevel, Throwable throwable, Object object)
-    {
-        logex(name, logLevel, throwable, object);
-    }
-
-
-    public static void allf(String format, Object... args)
-    {
-        modf(Level.ALL, format, args);
+        FMLLog.log(modName, logLevel, format, args);
     }
 
     public static void all(Object object)
@@ -64,9 +31,29 @@ public class Log
         mod(Level.ALL, object);
     }
 
+    public static void mod(Level logLevel, Object object)
+    {
+        log(name, logLevel, object);
+    }
+
+    public static void log(String modName, Level logLevel, Object object)
+    {
+        logf(modName, logLevel, object.toString());
+    }
+
     public static void allexf(Throwable throwable, String format, Object... args)
     {
         modexf(Level.ALL, throwable, format, args);
+    }
+
+    public static void modexf(Level logLevel, Throwable throwable, String format, Object... args)
+    {
+        logexf(name, logLevel, throwable, format, args);
+    }
+
+    public static void logexf(String modName, Level logLevel, Throwable throwable, String format, Object... args)
+    {
+        FMLLog.log(modName, logLevel, throwable, format, args);
     }
 
     public static void allex(Throwable throwable, Object object)
@@ -74,6 +61,15 @@ public class Log
         modex(Level.ALL, throwable, object);
     }
 
+    public static void modex(Level logLevel, Throwable throwable, Object object)
+    {
+        logex(name, logLevel, throwable, object);
+    }
+
+    public static void logex(String modName, Level logLevel, Throwable throwable, Object object)
+    {
+        logexf(modName, logLevel, throwable, object.toString());
+    }
 
     public static void debugf(String format, Object... args)
     {
@@ -222,23 +218,15 @@ public class Log
     }
 
 
-    //These two methods are meant for client-side use only
-    //Should however one of these get called on the server, which is quite likely to happen,
-    // instead of crashing on a ClassNotFoundEx we fall back to the now deprecated serverside
-    // I18n located in package net.minecraft.util.text.translation
-    @SuppressWarnings("deprecation")
-    public static String translate(Object object)
+    // We differentiate between server and client methods through the proxy since the server
+    // method is deprecated and calling the inappropriate method crashes the instance
+    public static String translate(String key)
     {
-        return Minecraft.getMinecraft().world.isRemote
-                ? I18n.format(object.toString())
-                : net.minecraft.util.text.translation.I18n.translateToLocal(object.toString());
+        return EnchantFood.proxy.translate(key);
     }
 
-    @SuppressWarnings("deprecation")
-    public static String translatef(String format, Object... args)
+    public static String translatef(String key, Object... args)
     {
-        return Minecraft.getMinecraft().world.isRemote
-                ? I18n.format(format, args)
-                : net.minecraft.util.text.translation.I18n.translateToLocalFormatted(format, args);
+        return EnchantFood.proxy.translatef(key, args);
     }
 }

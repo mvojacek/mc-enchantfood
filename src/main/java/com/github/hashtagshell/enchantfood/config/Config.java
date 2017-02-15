@@ -10,15 +10,19 @@ public class Config
 {
     public static Configuration config;
 
-
-
     public static void preInit(FMLPreInitializationEvent e)
     {
         if (config == null)
         {
             config = new Configuration(e.getSuggestedConfigurationFile());
         }
+        applyChanges();
+    }
+
+    public static void applyChanges()
+    {
         Conf.loadConfiguration();
+        saveToFile();
     }
 
     public static void saveToFile()
@@ -27,12 +31,12 @@ public class Config
             config.save();
     }
 
+    @SuppressWarnings("unused") // called from event bus
     public static void onConfigChanged(OnConfigChangedEvent e)
     {
         if (e.getModID().equalsIgnoreCase(Mod.ID))
         {
-            Conf.loadConfiguration();
-            saveToFile();
+            applyChanges();
         }
     }
 }

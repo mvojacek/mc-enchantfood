@@ -1,11 +1,12 @@
 package com.github.hashtagshell.enchantfood.item.food;
 
+import net.minecraft.item.ItemFood;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
 import com.github.hashtagshell.enchantfood.init.ModCreativeTab;
 
-public class FoodGeneric extends ItemFoodPublic
+public class FoodGeneric extends ItemFood
 {
     public FoodGeneric(String name, int amount, float saturation, boolean isWolfFood)
     {

@@ -1,7 +1,7 @@
 [
 {
   "modid": "enchantfood",
-  "name": "${name}",
+  "name": "EnchantFood",
   "description": "${desc}",
   "version": "${version}",
   "mcversion": "${mcversion}",

@@ -27,4 +27,8 @@ public interface IProxy
     default void load(FMLLoadEvent e) {}
 
     default void loadComplete(FMLLoadCompleteEvent e) {}
+
+    default String translatef(String key, Object... args) { return translate(key); }
+
+    default String translate(String key) {return key; }
 }

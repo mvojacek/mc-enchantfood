@@ -4,12 +4,29 @@
 # Messages
 
 
-# Config
+# Config - Enchants
+config.modifierNutritious=Nutritious Modifier
+config.modifierNutritious.comment=Nutritious enchantment modifier. More on the wiki.
+
+config.modifierSaturating=Saturating Modifier
+config.modifierSaturating.comment=Saturating enchantment modifier. More on the wiki.
+
+config.modifierDigestible=Digestible Modifier
+config.modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
+
+# Config - General
+config.foodUseTicksMin=Minimum food eating ticks
+config.foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game.
 
 
 # Items
 item.test.name=Test
+item.enchFood.name=Enchantible Food Test
 
+# Enchants
+enchantment.nutritious=Nutritious
+enchantment.saturating=Saturating
+enchantment.digestible=Digestible
 
 # Misc
 itemGroup.enchantfood_main=EnchantFood

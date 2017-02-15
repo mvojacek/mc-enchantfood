@@ -250,6 +250,8 @@ compileJava.sourceCompatibility = compileJava.targetCompatibility = "${static.ja
 jar {
     manifest {
         attributes 'FMLAT': "${static.modid}_at.cfg"
+        attributes 'FMLCorePlugin': 'com.github.hashtagshell.enchantfood.asm.EnchantFoodPlugin'
+        attributes 'FMLCorePluginContainsMod': 'true'
     }
 }
 
