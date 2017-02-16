@@ -19,6 +19,8 @@ public class EnchantFoodTransformer implements IClassTransformer
         // @formatter:off
         final String HOOK_CLASS = Type.getInternalName(EnchantFoodHooks.class);
 
+        // We have SortingIndex < 1000 so the class/method/field names will be fully obfuscated. (I don't like SRGs)
+
         final String HOOK_HEAL_AMOUNT                = "processItemFoodHealAmount";
         final String HOOK_HEAL_AMOUNT_DESC           = obf ? "(ILafi;)I" : "(ILnet/minecraft/item/ItemStack;)I";
 
@@ -48,41 +50,42 @@ public class EnchantFoodTransformer implements IClassTransformer
 
             if (name.equals(SATURATION_MODIFIER) && desc.equals(SATURATION_MODIFIER_DESC))
             {
-                staticHookLastReturn(method, FRETURN, ALOAD, 1, HOOK_CLASS,
+                staticHookAllReturns(method, FRETURN, ALOAD, 1, HOOK_CLASS,
                                      HOOK_SATURATION, HOOK_SATURATION_DESC, false);
             }
             else if (name.equals(HEAL_AMOUNT) && desc.equals(HEAL_AMOUNT_DESC))
             {
-                staticHookLastReturn(method, IRETURN, ALOAD, 1, HOOK_CLASS,
+                staticHookAllReturns(method, IRETURN, ALOAD, 1, HOOK_CLASS,
                                      HOOK_HEAL_AMOUNT, HOOK_HEAL_AMOUNT_DESC, false);
             }
             else if (name.equals(MAX_ITEM_USE_DURATION) && desc.equals(MAX_ITEM_USE_DURATION_DESC))
             {
-                staticHookLastReturn(method, IRETURN, ALOAD, 1, HOOK_CLASS,
+                staticHookAllReturns(method, IRETURN, ALOAD, 1, HOOK_CLASS,
                                      HOOK_MAX_ITEM_USE_DURATION, HOOK_MAX_ITEM_USE_DURATION_DESC, false);
             }
             else if (name.equals(ON_ITEM_RIGHTCLICK) && desc.equals(ON_ITEM_RIGHTCLICK_DESC))
             {
-
+                //TODO canAlwaysEat hook
             }
         }
 
-        // @formatter:off
+        // @formatter:on
     }
 
-    public static void staticHookLastReturn(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
-                                        String hookClass, String hookMethod, String hookDesc, boolean hookIsInterface)
+    public static void staticHookAllReturns(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
+                                            String hookClass, String hookMethod, String hookDesc,
+                                            boolean hookIsInterface)
     {
-        AbstractInsnNode insnReturn = null;
+        Log.infof("  - Adding call to static hook %s#%s%s before all opcodes %s in method %s%s",
+                  hookClass, hookMethod, hookDesc, returnInsn, method.name, method.desc);
+
+        InsnList hook = new InsnList();
+        hook.add(new VarInsnNode(loadParInsn, loadParIndex)); // Loads the hook's second par onto the stack
+        hook.add(new MethodInsnNode(INVOKESTATIC, hookClass, hookMethod, hookDesc, hookIsInterface)); // Executes the hook
+
         for (AbstractInsnNode insn : method.instructions.toArray())
             if (insn.getOpcode() == returnInsn)
-                insnReturn = insn;
-        if (insnReturn == null) return;
-
-        VarInsnNode loadItemStack = new VarInsnNode(loadParInsn, loadParIndex);
-        MethodInsnNode hook = new MethodInsnNode(INVOKESTATIC, hookClass, hookMethod, hookDesc, hookIsInterface);
-        method.instructions.insertBefore(insnReturn, loadItemStack);
-        method.instructions.insertBefore(insnReturn, hook);
+                method.instructions.insertBefore(insn, hook);
     }
 
     @Override
@@ -100,7 +103,7 @@ public class EnchantFoodTransformer implements IClassTransformer
     public static byte[] transformClass(String name, String nameDeobf, byte[] cls,
                                         BiConsumer<ClassNode, Boolean> transformer)
     {
-        Log.infof("Transforming %s (%s)", nameDeobf, name);
+        Log.infof("Transforming %s (%s)", name, nameDeobf);
         try
         {
             ClassNode classNode = new ClassNode();
@@ -114,7 +117,7 @@ public class EnchantFoodTransformer implements IClassTransformer
             return classWriter.toByteArray();
         } catch (Exception e)
         {
-            e.printStackTrace();
+            Log.errorexf(e, "Could not transform %s (%s)", name, nameDeobf);
         }
         return cls;
     }

@@ -225,7 +225,7 @@ task deleteOldBuilds(type: Delete) {
 
 task release(dependsOn: [deleteOldBuilds, releaseJar, releaseDeobf, releaseSource, releaseJavadoc, incrementBuildNumber]) {}
 task releaseBuild(dependsOn: [deleteOldBuilds, releaseJar, incrementBuildNumber]) {}
-rask releaseTest(dependsOn: [deleteOldBuilds, releaseJar]) {}
+task releaseTest(dependsOn: [deleteOldBuilds, releaseJar]) {}
 
 // ----------------ARTIFACTS---------------------
 
@@ -251,7 +251,7 @@ jar {
     manifest {
         attributes 'FMLAT': "${static.modid}_at.cfg"
         attributes 'FMLCorePlugin': 'com.github.hashtagshell.enchantfood.asm.EnchantFoodPlugin'
-        attributes 'FFMLCorePluginContainsFMLMod': 'true'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

@@ -1,7 +1,6 @@
 package com.github.hashtagshell.enchantfood.ench;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -52,13 +51,16 @@ public class EnchantmentFood extends Enchantment
     public boolean canApplyTogether(Enchantment ench)
     {
         //TODO Actually logic for enchantment compatibility
-        return true;
+
+        // The default impl by Object compares references, which is fine, but if devs add a different way
+        // to compare enchantments it will surely be used to override Object.equals()
+        return !equals(ench);
     }
 
     @Override
     public boolean canApply(ItemStack stack)
     {
-        return stack.getItem() instanceof ItemFood && EnchantmentHelper.getEnchantmentLevel(this, stack) == 0;
+        return stack.getItem() instanceof ItemFood;
     }
 
     @Override

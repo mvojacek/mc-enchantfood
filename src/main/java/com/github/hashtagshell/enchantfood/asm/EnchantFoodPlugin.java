@@ -7,8 +7,9 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions
 
 import java.util.Map;
 
+
 @MCVersion("1.11")
-@SortingIndex(1100)
+@SortingIndex(999)
 @TransformerExclusions({"com.github.hashtagshell.enchantfood.asm"})
 public class EnchantFoodPlugin implements IFMLLoadingPlugin
 {

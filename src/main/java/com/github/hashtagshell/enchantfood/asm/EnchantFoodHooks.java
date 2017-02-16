@@ -10,6 +10,8 @@ import com.github.hashtagshell.enchantfood.utility.Log;
 
 public class EnchantFoodHooks
 {
+    //TODO Remove overly verbose logging
+
     @SuppressWarnings("unused") //used in dynamically generated code
     public static int processItemFoodHealAmount(int healAmount, ItemStack stack)
     {
