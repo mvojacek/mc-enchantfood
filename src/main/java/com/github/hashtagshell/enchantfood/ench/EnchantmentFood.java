@@ -25,19 +25,19 @@ public class EnchantmentFood extends Enchantment
     public static int foodBonus(int foodHeal, int lvl)
     {
         if (lvl == 0) return 0;
-        return MathHelper.ceil(foodHeal * lvl * Conf.modifierNutritious) + foodBonus(foodHeal, lvl - 1);
+        return MathHelper.ceil(foodHeal * lvl * Conf.Enchants.modifierNutritious) + foodBonus(foodHeal, lvl - 1);
     }
 
     public static float saturationBonus(float foodSaturation, int lvl)
     {
         if (lvl == 0) return 0;
-        return MathHelper.ceil(foodSaturation * lvl * Conf.modifierNutritious) + saturationBonus(foodSaturation, lvl - 1);
+        return MathHelper.ceil(foodSaturation * lvl * Conf.Enchants.modifierNutritious) + saturationBonus(foodSaturation, lvl - 1);
     }
 
     public static int itemUseDurationDiscount(int duration, int lvl)
     {
         if (lvl == 0) return 0;
-        return MathHelper.ceil(duration * lvl * Conf.modifierDigestible) + itemUseDurationDiscount(duration, lvl - 1);
+        return MathHelper.ceil(duration * lvl * Conf.Enchants.modifierDigestible) + itemUseDurationDiscount(duration, lvl - 1);
 
     }
 

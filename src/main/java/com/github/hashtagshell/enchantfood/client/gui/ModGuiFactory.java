@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class ModGuiFactory implements IModGuiFactory
 {
+    @Override
+    public void initialize(Minecraft minecraftInstance) {}
 
     @Override
     public Class<? extends GuiScreen> mainConfigGuiClass()
@@ -17,18 +19,9 @@ public class ModGuiFactory implements IModGuiFactory
     }
 
     @Override
-    public void initialize(Minecraft minecraftInstance) {}
-
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
-    {
-        return null;
-    }
+    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {return null;}
 
     @SuppressWarnings("deprecation")
     @Override //Will be removed in 1.11
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
-    {
-        return null;
-    }
+    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {return null;}
 }

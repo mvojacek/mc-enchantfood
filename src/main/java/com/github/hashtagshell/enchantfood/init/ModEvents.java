@@ -14,7 +14,6 @@ public class ModEvents
 {
     public static void preInit()
     {
-        //FIXME this doesn't work for some reason
         register(Config.class);
     }
 }

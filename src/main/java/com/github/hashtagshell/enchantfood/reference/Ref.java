@@ -4,10 +4,18 @@ public class Ref
 {
     public static class Mod
     {
-        public static final String ID      = "enchantfood";
-        public static final String NAME    = "EnchantFood";
-        public static final String VERSION = "${version}";
-        public static final String DEPS    = "";
+        public static final String ID         = "enchantfood";
+        public static final String NAME       = "EnchantFood";
+        public static final String VERSION    = "${version}";
+        public static final String MC_VERSION = "1.11";
+        public static final String DEPS       = "";
+    }
+
+    public static final class Asm
+    {
+        public static final int     SORTING_INDEX             = 1000000; // Very high because I want my thing to run last
+        //This is only used as a last resort is no transformers set a value in ObfState.classesObfuscated
+        public static final boolean RUNS_AFTER_DEOBF_REMAPPER = SORTING_INDEX > 1000;
     }
 
     public static class Proxy
@@ -19,7 +27,6 @@ public class Ref
     public static class Config
     {
         public static final String GUI_FACTORY_CLASS       = "com.github.hashtagshell.enchantfood.client.gui.ModGuiFactory";
-        public static final String CONFIG_CATEGORY_GENERAL = "General";
     }
 
     public static class Network

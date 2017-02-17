@@ -3,73 +3,62 @@ package com.github.hashtagshell.enchantfood.asm;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
+import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.utility.Log;
 
 import java.util.function.BiConsumer;
 
+import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfHooks;
+import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfItemFood;
 import static org.objectweb.asm.Opcodes.*;
 
 public class EnchantFoodTransformer implements IClassTransformer
 {
-    public static void transformItemFood(ClassNode node, boolean obf)
+    public static void transformItemFood(ClassNode node, ObfState state)
     {
-        // @formatter:off
-        final String HOOK_CLASS = Type.getInternalName(EnchantFoodHooks.class);
+        if (!Conf.Asm.enable_C_ItemFood) return;
 
-        // We have SortingIndex < 1000 so the class/method/field names will be fully obfuscated. (I don't like SRGs)
-
-        final String HOOK_HEAL_AMOUNT                = "processItemFoodHealAmount";
-        final String HOOK_HEAL_AMOUNT_DESC           = obf ? "(ILafi;)I" : "(ILnet/minecraft/item/ItemStack;)I";
-
-        final String HOOK_SATURATION                 = "processItemFoodSaturationAmount";
-        final String HOOK_SATURATION_DESC            = obf ? "(FLafi;)F" : "(FLnet/minecraft/item/ItemStack;)F";
-
-        final String HOOK_MAX_ITEM_USE_DURATION      = "processItemFoodMaxUseDuration";
-        final String HOOK_MAX_ITEM_USE_DURATION_DESC = obf ? "(ILafi;)I" : "(ILnet/minecraft/item/ItemStack;)I";
-
-
-        final String SATURATION_MODIFIER        = obf ? "i"        : "getSaturationModifier";
-        final String SATURATION_MODIFIER_DESC   = obf ? "(Lafi;)F" : "(Lnet/minecraft/item/ItemStack;)F";
-
-        final String HEAL_AMOUNT                = obf ? "h"        : "getHealAmount";
-        final String HEAL_AMOUNT_DESC           = obf ? "(Lafi;)I" : "(Lnet/minecraft/item/ItemStack;)I";
-
-        final String MAX_ITEM_USE_DURATION      = obf ? "e"        : "getMaxItemUseDuration";
-        final String MAX_ITEM_USE_DURATION_DESC = obf ? "(Lafi;)I" : "(Lnet/minecraft/item/ItemStack;)I";
-
-        final String ON_ITEM_RIGHTCLICK         = obf ? "a"                    : "onItemRightClick";
-        final String ON_ITEM_RIGHTCLICK_DESC    = obf ? "(Lajq;Laax;Lrh;)Lrk;" : "(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;";
+        final ObfClass HOOK_CLASS = ObfHooks.CLS;
 
         for (MethodNode method : node.methods)
         {
-            final String name = method.name;
-            final String desc = method.desc;
-
-            if (name.equals(SATURATION_MODIFIER) && desc.equals(SATURATION_MODIFIER_DESC))
+            if (Conf.Enchants.enableNutritious
+                && Conf.Asm.enable_C_ItemFood_M_GetHealAmount
+                && ObfItemFood.GET_HEAL_AMOUNT.check(state, method))
             {
-                staticHookAllReturns(method, FRETURN, ALOAD, 1, HOOK_CLASS,
-                                     HOOK_SATURATION, HOOK_SATURATION_DESC, false);
+                staticHookAllReturns(method, IRETURN, ALOAD, 1,
+                                     state, HOOK_CLASS, ObfHooks.PROCESS_HEAL_AMOUNT);
             }
-            else if (name.equals(HEAL_AMOUNT) && desc.equals(HEAL_AMOUNT_DESC))
+            else if (Conf.Enchants.enableSaturating
+                     && Conf.Asm.enable_C_ItemFood_M_GetSaturationModifier
+                     && ObfItemFood.GET_SATURATION_MODIFIER.check(state, method))
             {
-                staticHookAllReturns(method, IRETURN, ALOAD, 1, HOOK_CLASS,
-                                     HOOK_HEAL_AMOUNT, HOOK_HEAL_AMOUNT_DESC, false);
+                staticHookAllReturns(method, FRETURN, ALOAD, 1,
+                                     state, HOOK_CLASS, ObfHooks.PROCESS_SATURATION_AMOUNT);
             }
-            else if (name.equals(MAX_ITEM_USE_DURATION) && desc.equals(MAX_ITEM_USE_DURATION_DESC))
+            else if (Conf.Enchants.enableDigestible
+                     && Conf.Asm.enable_C_ItemFood_M_GetMaxItemUseDuration
+                     && ObfItemFood.GET_MAX_ITEM_USE_DURATION.check(state, method))
             {
-                staticHookAllReturns(method, IRETURN, ALOAD, 1, HOOK_CLASS,
-                                     HOOK_MAX_ITEM_USE_DURATION, HOOK_MAX_ITEM_USE_DURATION_DESC, false);
+                staticHookAllReturns(method, IRETURN, ALOAD, 1,
+                                     state, HOOK_CLASS, ObfHooks.PROCESS_MAX_ITEM_USE_DURATION);
             }
-            else if (name.equals(ON_ITEM_RIGHTCLICK) && desc.equals(ON_ITEM_RIGHTCLICK_DESC))
+            else if (Conf.Asm.enable_C_ItemFood_M_OnItemRightClick
+                     && ObfItemFood.ON_ITEM_RIGHTCLICK.check(state, method))
             {
                 //TODO canAlwaysEat hook
             }
         }
+    }
 
-        // @formatter:on
+    public static void staticHookAllReturns(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
+                                            ObfState state, ObfClass hookClass, ObfMethod hookMethod)
+    {
+        staticHookAllReturns(method, returnInsn, loadParInsn, loadParIndex,
+                             hookClass.name(state), hookMethod.name(state),
+                             hookMethod.desc(state), hookClass.isInterface());
     }
 
     public static void staticHookAllReturns(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
@@ -101,21 +90,24 @@ public class EnchantFoodTransformer implements IClassTransformer
     }
 
     public static byte[] transformClass(String name, String nameDeobf, byte[] cls,
-                                        BiConsumer<ClassNode, Boolean> transformer)
+                                        BiConsumer<ClassNode, ObfState> transformer)
     {
-        Log.infof("Transforming %s (%s)", name, nameDeobf);
+        ObfState.setClassesObfuscated(isObf(name, nameDeobf));
+        ObfState state = ObfState.get();
+        Log.infof("Transforming %s (%s):", name, nameDeobf);
         try
         {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(cls);
             classReader.accept(classNode, 0);
 
-            transformer.accept(classNode, isObf(name, nameDeobf));
+            transformer.accept(classNode, state);
 
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
             classNode.accept(classWriter);
             return classWriter.toByteArray();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.errorexf(e, "Could not transform %s (%s)", name, nameDeobf);
         }

@@ -1,15 +1,17 @@
-# EnchantFood 1.10.2
-Enchant your food!  
+# EnchantFood 1.11
+Enhance most foods in the game with useful
+enchantments that increase food value,
+saturation, eating speed...  
 
 
 # CREDIT
 None so far  
 
 # DETAILS
-ModID: 'enchantfood'  
-Minecraft version: '1.11'  
-Forge version: '13.19.1.2189'  
-MCP mappings: 'snapshot_20170211'   
+**ModID:** 'enchantfood'  
+**Minecraft version:** '1.11'  
+**Forge version:** '13.19.1.2189'  
+**MCP mappings:** 'snapshot_20170211'   
 
 # DEV ENV SETUP
 - Nothing really special, just your good old  
@@ -59,9 +61,11 @@ MCP mappings: 'snapshot_20170211'
 
 
 # LEGAL
-Copyright notice:
+
+#### Copyright notice:  
+
 All rights reserved.  
 
-Modpacks:
+#### Modpacks:
 
 You are free to re-distribute this mod in a modpack, but only if you have permission to re-distribute all other mods in the modpack.

@@ -5,12 +5,13 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
+import com.github.hashtagshell.enchantfood.reference.Ref;
+
 import java.util.Map;
 
-
-@MCVersion("1.11")
-@SortingIndex(999)
-@TransformerExclusions({"com.github.hashtagshell.enchantfood.asm"})
+@MCVersion(Ref.Mod.MC_VERSION)
+@SortingIndex(Ref.Asm.SORTING_INDEX)
+@TransformerExclusions({"com.github.hashtagshell.enchantfood.asm", "com.github.hashtagshell.enchantfood.reference"})
 public class EnchantFoodPlugin implements IFMLLoadingPlugin
 {
     @Override
@@ -20,26 +21,14 @@ public class EnchantFoodPlugin implements IFMLLoadingPlugin
     }
 
     @Override
-    public String getModContainerClass()
-    {
-        return null;
-    }
+    public String getModContainerClass() {return null;}
 
     @Override
-    public String getSetupClass()
-    {
-        return null;
-    }
+    public String getSetupClass() {return null;}
 
     @Override
-    public void injectData(Map<String, Object> data)
-    {
-
-    }
+    public void injectData(Map<String, Object> data) {}
 
     @Override
-    public String getAccessTransformerClass()
-    {
-        return null;
-    }
+    public String getAccessTransformerClass() {return null;}
 }

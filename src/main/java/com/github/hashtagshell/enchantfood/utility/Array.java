@@ -20,10 +20,18 @@ public class Array
     }
 
     @SuppressWarnings("unchecked")
-    public static <I, O> List<O> process(List<I> list, Function<I, O> function)
+    public static <I, O> List<O> processToList(Collection<I> c, Function<I, O> function)
     {
-        List<O> out = new ArrayList<>(list.size());
-        list.forEach(in -> out.add(function.apply(in)));
+        List<O> out = new ArrayList<>(c.size());
+        c.forEach(in -> out.add(function.apply(in)));
+        return out;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <I, O> Set<O> processToSet(Collection<I> c, Function<I, O> function)
+    {
+        Set<O> out = new HashSet<>(c.size());
+        c.forEach(in -> out.add(function.apply(in)));
         return out;
     }
 
