@@ -1,3 +1,4 @@
+![build status](https://gitlab.com/hashtagshell/enchantfood/badges/master/build.svg)
 # EnchantFood 1.11
 Enhance most foods in the game with useful
 enchantments that increase food value,
