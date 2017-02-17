@@ -31,4 +31,11 @@ public class EnchantFoodHooks
         if (result < Conf.General.foodUseTicksMin) result = Conf.General.foodUseTicksMin;
         return result;
     }
+
+    @SuppressWarnings("unused") //used in dynamically generated code
+    public static boolean processItemFoodCanAlwaysEat(boolean canAlwaysEat, ItemStack stack)
+    {
+        //TODO Add the enchantment that this hook uses
+        return canAlwaysEat;
+    }
 }

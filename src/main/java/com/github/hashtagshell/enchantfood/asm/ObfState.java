@@ -2,7 +2,6 @@ package com.github.hashtagshell.enchantfood.asm;
 
 import net.minecraft.entity.Entity;
 
-import com.github.hashtagshell.enchantfood.reference.Ref;
 import com.github.hashtagshell.enchantfood.utility.Log;
 
 public enum ObfState
@@ -11,70 +10,51 @@ public enum ObfState
 
     private static ObfState current = null;
 
-    private static boolean classesObfuscated = !Ref.Asm.RUNS_AFTER_DEOBF_REMAPPER;
+    private static boolean obfuscatedEnvironment = true;
 
-    static void setClassesObfuscated(boolean obf)
+    static void setObfuscatedEnvironment(boolean obf)
     {
-        if (current == null)
-            classesObfuscated = obf;
+        if (current == null) obfuscatedEnvironment = obf;
     }
 
     public static ObfState get()
     {
         if (current == null)
         {
-            if (classesObfuscated) // This should be set by transformer when we first hit a class we want to transform
-            {
-                // The classes are obfuscated so we are definitely
-                // in an obf environment before the remapper ran
-                current = OBF;
-            }
-            else
-            {
-                // The classes are deobfuscated, so either we are
-                // in a fully deobf environment or we are in a deobf
-                // environment but the remapper has run already.
+            // This is a better way of doing this than that in last commit,
+            // because it is more self-sufficient: We pretty much have a
+            // guarantee that the IFMLLoadingPlugin's injectData method
+            // was run even before the transformer class is loaded, which
+            // should be the only class calling this. The previous way
+            // would not work or fallback to a rudimentary method if the
+            // setDeobf method was not called by the transformer. It would
+            // have very probably called it every time, but this is safer.
 
+            // This is true if there is a World class in the classpath before
+            // coremod loading start, ie. long before runtime deobf happens.
+            // If we are before runtime deobf but the class is deobf anyway,
+            // we are in a fully deobf dev env.
+            if (obfuscatedEnvironment)
+            {
+                // We try to get the field for Entity's LOGGER by its SRG name.
+                // If this succeeds, runtime deobf has already happened, thus
+                // we are in a deobf environment with SRG methods/fields
                 try
                 {
-                    // Now we get a deobf field from the class via
-                    // reflection, if we fail, a NoSuchFieldException
-                    // is thrown and we know it has an SRG name.
-                    // Otherwise, if we succeed, we are fully deobf.
-                    // We can ignore the return value because we don't
-                    // need it for anything, the 'getting' is what we
-                    // care about
-                    Entity.class.getDeclaredField("LOGGER");
-
-                    current = DEOBF_FULL;
+                    Entity.class.getDeclaredField("field_184243_a"); //Entity.LOGGER / Entity.field_184243_a / sm.a
+                    current = DEOBF_SRG;
                 }
                 catch (NoSuchFieldException e)
                 {
-                    current = DEOBF_SRG;
+                    // We could not get the SRG field, so we have to be in a
+                    // fully obfuscated environment.
+                    current = OBF;
                 }
-                catch (Exception e)
-                {
-                    // Something failed, we will decide between
-                    // FULL/SRG deobf by manually comparing our
-                    // SortingIndex to that of the remapper.
-                    if (!Ref.Asm.RUNS_AFTER_DEOBF_REMAPPER)
-                    {
-                        // We are running before the remapper,
-                        // which means are have to be in a full
-                        // deobf
-                        current = DEOBF_FULL;
-                    }
-                    else
-                    {
-                        // We are running after the remapper, so
-                        // we don't know if the fact that we are
-                        // deobf was caused by the remapper or
-                        // if we were deobf from the start. We
-                        // default to SRGs because that's the one
-                        // that will work if we are in a real client.
-                        current = DEOBF_SRG;
-                    }
-                }
+            }
+            else
+            {
+                // We are in a fully deobf dev env
+                current = DEOBF_FULL;
             }
             Log.infof("This environment is %s", current);
         }

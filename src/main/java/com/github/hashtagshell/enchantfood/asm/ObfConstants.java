@@ -1,9 +1,20 @@
 package com.github.hashtagshell.enchantfood.asm;
 
+import com.github.hashtagshell.enchantfood.asm.obf.ObfClass;
+import com.github.hashtagshell.enchantfood.asm.obf.ObfField;
+import com.github.hashtagshell.enchantfood.asm.obf.ObfMethod;
+
 public final class ObfConstants
 {
     public static final class ObfItemFood
     {
+        public static final ObfField F_ALWAYS_EDIBLE
+                = new ObfField("e",
+                               "field_77852_bZ",
+                               "alwaysEdible",
+                               "Z",
+                               "Z");
+
         public static final ObfMethod GET_SATURATION_MODIFIER
                 = new ObfMethod("i",
                                 "func_150906_h",
@@ -51,5 +62,10 @@ public final class ObfConstants
                 = new ObfMethod("processItemFoodMaxUseDuration",
                                 "(ILafi;)I",
                                 "(ILnet/minecraft/item/ItemStack;)I");
+
+        public static final ObfMethod PROCESS_CAN_ALWAYS_EAT
+                = new ObfMethod("processItemFoodCanAlwaysEat",
+                                "(ZLafi;)Z",
+                                "(ZLnet/minecraft/item/ItemStack;)Z");
     }
 }

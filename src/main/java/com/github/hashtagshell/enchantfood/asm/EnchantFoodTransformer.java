@@ -5,11 +5,18 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
+import com.github.hashtagshell.enchantfood.asm.obf.ObfClass;
+import com.github.hashtagshell.enchantfood.asm.obf.ObfMember;
 import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.utility.Log;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
+import static com.github.hashtagshell.enchantfood.asm.EnchantFoodTransformer.HookInsertRelativePos.AFTER;
+import static com.github.hashtagshell.enchantfood.asm.EnchantFoodTransformer.HookInsertRelativePos.BEFORE;
 import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfHooks;
 import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfItemFood;
 import static org.objectweb.asm.Opcodes.*;
@@ -24,57 +31,88 @@ public class EnchantFoodTransformer implements IClassTransformer
 
         for (MethodNode method : node.methods)
         {
-            if (Conf.Enchants.enableNutritious
-                && Conf.Asm.enable_C_ItemFood_M_GetHealAmount
+            //FIXME Config not yet loaded so default (true) values are always used
+            if (Conf.Enchants.enableNutritious && Conf.Asm.enable_C_ItemFood_M_GetHealAmount
                 && ObfItemFood.GET_HEAL_AMOUNT.check(state, method))
             {
-                staticHookAllReturns(method, IRETURN, ALOAD, 1,
-                                     state, HOOK_CLASS, ObfHooks.PROCESS_HEAL_AMOUNT);
+                staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
+                                   state, HOOK_CLASS, ObfHooks.PROCESS_HEAL_AMOUNT);
             }
-            else if (Conf.Enchants.enableSaturating
-                     && Conf.Asm.enable_C_ItemFood_M_GetSaturationModifier
+            else if (Conf.Enchants.enableSaturating && Conf.Asm.enable_C_ItemFood_M_GetSaturationModifier
                      && ObfItemFood.GET_SATURATION_MODIFIER.check(state, method))
             {
-                staticHookAllReturns(method, FRETURN, ALOAD, 1,
-                                     state, HOOK_CLASS, ObfHooks.PROCESS_SATURATION_AMOUNT);
+                staticHookAllInsns(method, FRETURN, BEFORE, ALOAD, 1,
+                                   state, HOOK_CLASS, ObfHooks.PROCESS_SATURATION_AMOUNT);
             }
-            else if (Conf.Enchants.enableDigestible
-                     && Conf.Asm.enable_C_ItemFood_M_GetMaxItemUseDuration
+            else if (Conf.Enchants.enableDigestible && Conf.Asm.enable_C_ItemFood_M_GetMaxItemUseDuration
                      && ObfItemFood.GET_MAX_ITEM_USE_DURATION.check(state, method))
             {
-                staticHookAllReturns(method, IRETURN, ALOAD, 1,
-                                     state, HOOK_CLASS, ObfHooks.PROCESS_MAX_ITEM_USE_DURATION);
+                staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
+                                   state, HOOK_CLASS, ObfHooks.PROCESS_MAX_ITEM_USE_DURATION);
             }
-            else if (Conf.Asm.enable_C_ItemFood_M_OnItemRightClick
+            else if (Conf.Asm.enable_C_ItemFood_M_OnItemRightClick //TODO Add condition once the alwaysEdible enchant is in
                      && ObfItemFood.ON_ITEM_RIGHTCLICK.check(state, method))
             {
-                //TODO canAlwaysEat hook
+                staticHookAllInsns(method,
+                                   insn ->
+                                           insn.getOpcode() == GETFIELD
+                                           && ObfItemFood.F_ALWAYS_EDIBLE.check(state, (FieldInsnNode) insn),
+                                   AFTER, ALOAD, 4, state, HOOK_CLASS, ObfHooks.PROCESS_CAN_ALWAYS_EAT);
             }
         }
     }
 
-    public static void staticHookAllReturns(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
-                                            ObfState state, ObfClass hookClass, ObfMethod hookMethod)
+    public static void staticHookAllInsns(MethodNode method, int labelInsn, HookInsertRelativePos pos, int loadParInsn,
+                                          int loadParIndex,
+                                          ObfState state, ObfClass hookClass, ObfMember hookMethod)
     {
-        staticHookAllReturns(method, returnInsn, loadParInsn, loadParIndex,
-                             hookClass.name(state), hookMethod.name(state),
-                             hookMethod.desc(state), hookClass.isInterface());
+        staticHookAllInsns(method, insn -> insn.getOpcode() == labelInsn, pos, loadParInsn, loadParIndex, state, hookClass, hookMethod);
     }
 
-    public static void staticHookAllReturns(MethodNode method, int returnInsn, int loadParInsn, int loadParIndex,
-                                            String hookClass, String hookMethod, String hookDesc,
-                                            boolean hookIsInterface)
+    public static void staticHookAllInsns(MethodNode method, Predicate<AbstractInsnNode> labelInsn,
+                                          HookInsertRelativePos pos,
+                                          int loadParInsn, int loadParIndex,
+                                          ObfState state, ObfClass hookClass, ObfMember hookMethod)
     {
-        Log.infof("  - Adding call to static hook %s#%s%s before all opcodes %s in method %s%s",
-                  hookClass, hookMethod, hookDesc, returnInsn, method.name, method.desc);
+        staticHookAllInsns(method, labelInsn, pos, loadParInsn, loadParIndex,
+                           hookClass.name(state), hookMethod.name(state),
+                           hookMethod.desc(state), hookClass.isInterface());
+    }
 
+    public static void staticHookAllInsns(MethodNode method, int labelInsn, HookInsertRelativePos pos,
+                                          int loadParInsn, int loadParIndex,
+                                          String hookClass, String hookMethod, String hookDesc,
+                                          boolean hookIsInterface)
+    {
+        staticHookAllInsns(method, insn -> insn.getOpcode() == labelInsn, pos, loadParInsn, loadParIndex, hookClass, hookMethod, hookDesc, hookIsInterface);
+    }
+
+    public static void staticHookAllInsns(MethodNode method, Predicate<AbstractInsnNode> labelInsn,
+                                          HookInsertRelativePos pos,
+                                          int loadParInsn,
+                                          int loadParIndex,
+                                          String hookClass, String hookMethod, String hookDesc,
+                                          boolean hookIsInterface)
+    {
         InsnList hook = new InsnList();
         hook.add(new VarInsnNode(loadParInsn, loadParIndex)); // Loads the hook's second par onto the stack
         hook.add(new MethodInsnNode(INVOKESTATIC, hookClass, hookMethod, hookDesc, hookIsInterface)); // Executes the hook
 
         for (AbstractInsnNode insn : method.instructions.toArray())
-            if (insn.getOpcode() == returnInsn)
-                method.instructions.insertBefore(insn, hook);
+            if (labelInsn.test(insn))
+            {
+                Log.infof("  - Adding call to static hook %s#%s%s %s opcode %s in method %s%s",
+                          hookClass, hookMethod, hookDesc, pos.name().toLowerCase(), insn.getOpcode(), method.name, method.desc);
+                if (pos.isBefore())
+                    method.instructions.insertBefore(insn, hook);
+                else
+                    method.instructions.insert(insn, hook);
+            }
+    }
+
+    public static boolean isObf(String name, String nameDeobf)
+    {
+        return !name.equals(nameDeobf);
     }
 
     @Override
@@ -83,7 +121,28 @@ public class EnchantFoodTransformer implements IClassTransformer
         switch (nameDeobf)
         {
             case "net.minecraft.item.ItemFood":
-                return transformClass(name, nameDeobf, cls, EnchantFoodTransformer::transformItemFood);
+
+                try (FileOutputStream fos = new FileOutputStream("/home/michal/tmp/original.class"))
+                {
+                    fos.write(cls);
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+
+                byte[] bytes = transformClass(name, nameDeobf, cls, EnchantFoodTransformer::transformItemFood);
+
+                try (FileOutputStream fos = new FileOutputStream("/home/michal/tmp/transformed.class"))
+                {
+                    fos.write(bytes);
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+
+                return bytes;
         }
 
         return cls;
@@ -92,7 +151,6 @@ public class EnchantFoodTransformer implements IClassTransformer
     public static byte[] transformClass(String name, String nameDeobf, byte[] cls,
                                         BiConsumer<ClassNode, ObfState> transformer)
     {
-        ObfState.setClassesObfuscated(isObf(name, nameDeobf));
         ObfState state = ObfState.get();
         Log.infof("Transforming %s (%s):", name, nameDeobf);
         try
@@ -114,8 +172,12 @@ public class EnchantFoodTransformer implements IClassTransformer
         return cls;
     }
 
-    public static boolean isObf(String name, String nameDeobf)
+    enum HookInsertRelativePos
     {
-        return !name.equals(nameDeobf);
+        BEFORE, AFTER;
+
+        public boolean isBefore() {return this == BEFORE;}
+
+        public boolean isAfter()  {return this == AFTER;}
     }
 }
