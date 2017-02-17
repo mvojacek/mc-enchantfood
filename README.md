@@ -5,7 +5,9 @@ saturation, eating speed...
 
 
 # CREDIT
-None so far  
+
+#### Vazkii
+- [Generic Packet implementation from Psi](src/main/java/com/github/hashtagshell/enchantfood/network/message/MessageGeneric.java)
 
 # DETAILS
 **ModID:** 'enchantfood'  
