@@ -9,6 +9,39 @@ import static com.github.hashtagshell.enchantfood.config.Config.config;
 
 public class Conf
 {
+    public static class Enchants
+    {
+        private static final String category = "enchants";
+
+        public static boolean enableNutritious   = true;
+        public static boolean enableSaturating   = true;
+        public static boolean enableDigestible   = true;
+        public static boolean enableAlwaysEdible = true;
+
+        public static float modifierNutritious = 0.333F;
+        public static float modifierSaturating = 0.333F;
+        public static float modifierDigestible = 0.1F;
+    }
+
+    public static class General
+    {
+        private static final String category = "general";
+
+        public static int foodUseTicksMin = 2;
+    }
+
+    public static class Asm
+    {
+        private static final String category = "asm";
+
+        public static boolean enable_C_ItemFood                         = true;
+        public static boolean enable_C_ItemFood_M_GetHealAmount         = true;
+        public static boolean enable_C_ItemFood_M_GetSaturationModifier = true;
+        public static boolean enable_C_ItemFood_M_GetMaxItemUseDuration = true;
+        public static boolean enable_C_ItemFood_M_OnItemRightClick      = true;
+    }
+
+
     private static String name, category;
     private static float defaultFloat, minFloat, maxFloat;
     private static int defaultInt, minInt, maxInt;
@@ -47,6 +80,11 @@ public class Conf
         name = "enableDigestible";
         defaultBool = enableDigestible;
         enableDigestible = getBoolean();
+
+        name = "enableAlwaysEdible";
+        defaultBool = enableAlwaysEdible;
+        enableAlwaysEdible = getBoolean();
+
 
         minFloat = 0F;
         maxFloat = Float.MAX_VALUE;
@@ -115,36 +153,5 @@ public class Conf
     private static String makeLang(String name)
     {
         return "config." + name;
-    }
-
-    public static class Enchants
-    {
-        private static final String category = "enchants";
-
-        public static boolean enableNutritious = true;
-        public static boolean enableSaturating = true;
-        public static boolean enableDigestible = true;
-
-        public static float modifierNutritious = 0.333F;
-        public static float modifierSaturating = 0.333F;
-        public static float modifierDigestible = 0.1F;
-    }
-
-    public static class General
-    {
-        private static final String category = "general";
-
-        public static int foodUseTicksMin = 2;
-    }
-
-    public static class Asm
-    {
-        private static final String category = "asm";
-
-        public static boolean enable_C_ItemFood                         = true;
-        public static boolean enable_C_ItemFood_M_GetHealAmount         = true;
-        public static boolean enable_C_ItemFood_M_GetSaturationModifier = true;
-        public static boolean enable_C_ItemFood_M_GetMaxItemUseDuration = true;
-        public static boolean enable_C_ItemFood_M_OnItemRightClick      = true;
     }
 }

@@ -5,9 +5,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.github.hashtagshell.enchantfood.config.Conf;
+import com.github.hashtagshell.enchantfood.init.RegisterMethods;
 
 public class EnchantmentFood extends Enchantment
 {
@@ -69,9 +69,13 @@ public class EnchantmentFood extends Enchantment
         return canApply(stack);
     }
 
+    public EnchantmentFood register(boolean enable)
+    {
+        return RegisterMethods.RegistryObjects.register(this, enable);
+    }
+
     public EnchantmentFood register()
     {
-        GameRegistry.register(this);
-        return this;
+        return RegisterMethods.RegistryObjects.register(this);
     }
 }

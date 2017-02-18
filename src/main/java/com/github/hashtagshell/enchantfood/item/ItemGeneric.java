@@ -1,10 +1,9 @@
 package com.github.hashtagshell.enchantfood.item;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
 import com.github.hashtagshell.enchantfood.init.ModCreativeTab;
+import com.github.hashtagshell.enchantfood.init.RegisterMethods;
 
 public class ItemGeneric extends Item
 {
@@ -18,8 +17,11 @@ public class ItemGeneric extends Item
 
     public ItemGeneric register()
     {
-        GameRegistry.register(this);
-        ItemRenderRegister.schedule(this);
-        return this;
+        return RegisterMethods.Items.register(this);
+    }
+
+    public ItemGeneric register(boolean enable)
+    {
+        return RegisterMethods.Items.register(this, enable);
     }
 }

@@ -22,6 +22,10 @@ config.enableSaturating.comment=Set to false to disable the Saturating enchantme
 config.enableDigestible=Enable Digestible enchantment
 config.enableDigestible.comment=Set to false to disable the Digestible enchantment. This will inherently disable the transformer on ItemFood#getMaxItemUseDuration
 
+config.enableAlwaysEdible=Enable AlwaysEdible enchantment
+config.enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. This will inherently disable the transformer on ItemFood#onItemRightClick
+
+
 config.modifierNutritious=Nutritious Modifier
 config.modifierNutritious.comment=Nutritious enchantment modifier. More on the wiki.
 
@@ -55,6 +59,7 @@ item.enchFood.name=Enchantible Food Test
 enchantment.nutritious=Nutritious
 enchantment.saturating=Saturating
 enchantment.digestible=Digestible
+enchantment.alwaysEdible=Always Edible
 
 # Misc
 itemGroup.enchantfood_main=EnchantFood
