@@ -7,8 +7,8 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import com.github.hashtagshell.enchantfood.asm.config.AsmConf;
 import com.github.hashtagshell.enchantfood.asm.obf.ObfClass;
-import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.utility.Log;
 
 import java.io.FileOutputStream;
@@ -27,6 +27,8 @@ public class EnchantFoodTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, String nameDeobf, byte[] cls)
     {
+        if (!AsmConf.transform_ALL) return cls;
+
         switch (nameDeobf)
         {
             case "net.minecraft.item.ItemFood":
@@ -85,32 +87,31 @@ public class EnchantFoodTransformer implements IClassTransformer
     {
         public static void transformItemFood(ClassNode node, ObfState state)
         {
-            if (!Conf.Asm.enable_C_ItemFood) return;
+            if (!AsmConf.transform_C_ItemFood) return;
 
             final ObfClass HOOK_CLASS = ObfHooks.CLS;
 
             for (MethodNode method : node.methods)
             {
-                //FIXME Config not yet loaded so default (true) values are always used
-                if (Conf.Enchants.enableNutritious && Conf.Asm.enable_C_ItemFood_M_GetHealAmount
+                if (AsmConf.transform_C_ItemFood_M_GetHealAmount
                     && ObfItemFood.GET_HEAL_AMOUNT.check(state, method))
                 {
                     staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_HEAL_AMOUNT);
                 }
-                else if (Conf.Enchants.enableSaturating && Conf.Asm.enable_C_ItemFood_M_GetSaturationModifier
+                else if (AsmConf.transform_C_ItemFood_M_GetSaturationModifier
                          && ObfItemFood.GET_SATURATION_MODIFIER.check(state, method))
                 {
                     staticHookAllInsns(method, FRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_SATURATION_AMOUNT);
                 }
-                else if (Conf.Enchants.enableDigestible && Conf.Asm.enable_C_ItemFood_M_GetMaxItemUseDuration
+                else if (AsmConf.transform_C_ItemFood_M_GetMaxItemUseDuration
                          && ObfItemFood.GET_MAX_ITEM_USE_DURATION.check(state, method))
                 {
                     staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_MAX_ITEM_USE_DURATION);
                 }
-                else if (Conf.Enchants.enableAlwaysEdible && Conf.Asm.enable_C_ItemFood_M_OnItemRightClick
+                else if (AsmConf.transform_C_ItemFood_M_OnItemRightClick
                          && ObfItemFood.ON_ITEM_RIGHTCLICK.check(state, method))
                 {
                     staticHookAllInsns(method,

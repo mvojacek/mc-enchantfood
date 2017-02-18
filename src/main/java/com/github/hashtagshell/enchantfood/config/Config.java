@@ -5,7 +5,12 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import com.github.hashtagshell.enchantfood.reference.Ref;
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
+import com.github.hashtagshell.enchantfood.utility.Log;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Config
 {
@@ -15,7 +20,25 @@ public class Config
     {
         if (config == null)
         {
-            config = new Configuration(e.getSuggestedConfigurationFile());
+            File result;
+            try
+            {
+                File dModConfig = Ref.Files.MOD_CONF_DIR();
+                File fConfig = new File(dModConfig, "config.cfg");
+                if (!fConfig.exists())
+                    //noinspection ResultOfMethodCallIgnored
+                    fConfig.createNewFile();
+                else if (!fConfig.isFile())
+                    throw new IOException("Preferred mod config file, %s, exists but is a directory!");
+                result = fConfig;
+            }
+            catch (IOException ex)
+            {
+                Log.errorex(ex, "Could not open config file in custom config folder, "
+                                + "using suggested config file instead");
+                result = e.getSuggestedConfigurationFile();
+            }
+            config = new Configuration(result);
         }
         applyChanges();
     }

@@ -6,7 +6,6 @@
 # Config categories
 config_category.general=General
 config_category.enchants=Enchantments
-config_category.asm=ASM
 
 # Config - General
 config.foodUseTicksMin=Minimum food eating ticks
@@ -14,16 +13,16 @@ config.foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat a
 
 # Config - Enchants
 config.enableNutritious=Enable Nutritious enchantment
-config.enableNutritious.comment=Set to false to disable the Nutritious enchantment. This will inherently disable the transformer on ItemFood#getHealAmount
+config.enableNutritious.comment=Set to false to disable the Nutritious enchantment. You can also disable the transformer on ItemFood#getHealAmount in asm.properties
 
 config.enableSaturating=Enable Saturating enchantment
-config.enableSaturating.comment=Set to false to disable the Saturating enchantment. This will inherently disable the transformer on ItemFood#getSaturationModifier
+config.enableSaturating.comment=Set to false to disable the Saturating enchantment. You can also disable the transformer on ItemFood#getSaturationModifier in asm.properties
 
 config.enableDigestible=Enable Digestible enchantment
-config.enableDigestible.comment=Set to false to disable the Digestible enchantment. This will inherently disable the transformer on ItemFood#getMaxItemUseDuration
+config.enableDigestible.comment=Set to false to disable the Digestible enchantment. You can also disable the transformer on ItemFood#getMaxItemUseDuration in asm.properties
 
 config.enableAlwaysEdible=Enable AlwaysEdible enchantment
-config.enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. This will inherently disable the transformer on ItemFood#onItemRightClick
+config.enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. You can also disable the transformer on ItemFood#onItemRightClick in asm.properties
 
 
 config.modifierNutritious=Nutritious Modifier
@@ -34,22 +33,6 @@ config.modifierSaturating.comment=Saturating enchantment modifier. More on the w
 
 config.modifierDigestible=Digestible Modifier
 config.modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
-
-# Config - Asm
-config.enable_C_ItemFood=Enable ItemFood class transformer
-config.enable_C_ItemFood.comment=Set to false to disable any transforming operations on the ItemFood class
-
-config.enable_C_ItemFood_M_GetHealAmount=Enable ItemFood#getHealAmount method transformer
-config.enable_C_ItemFood_M_GetHealAmount.comment=Set to false to disable any transforming operations on the ItemFood#getHealAmount method
-
-config.enable_C_ItemFood_M_GetSaturationModifier=Enable ItemFood#getSaturationModifier method transformer
-config.enable_C_ItemFood_M_GetSaturationModifier.comment=Set to false to disable any transforming operations on the ItemFood#getSaturationModifier method
-
-config.enable_C_ItemFood_M_GetMaxItemUseDuration=Enable ItemFood#getMaxItemUseDuration method transformer
-config.enable_C_ItemFood_M_GetMaxItemUseDuration.comment=Set to false to disable any transforming operations on the ItemFood#getMaxItemUseDuration method
-
-config.enable_C_ItemFood_M_OnItemRightClick=Enable ItemFood#onItemRightClick method transformer
-config.enable_C_ItemFood_M_OnItemRightClick.comment=Set to false to disable any transforming operations on the ItemFood#onItemRightClick method
 
 # Items
 item.test.name=Test

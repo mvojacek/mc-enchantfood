@@ -1,13 +1,14 @@
 package com.github.hashtagshell.enchantfood.asm;
 
-import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
+import com.github.hashtagshell.enchantfood.asm.config.AsmConfig;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 
+import java.io.File;
 import java.util.Map;
 
 @MCVersion(Ref.Mod.MC_VERSION)
@@ -15,8 +16,6 @@ import java.util.Map;
 @TransformerExclusions({"com.github.hashtagshell.enchantfood.asm", "com.github.hashtagshell.enchantfood.reference"})
 public class EnchantFoodPlugin implements IFMLLoadingPlugin
 {
-    public static LaunchClassLoader launchClassLoader;
-
     @Override
     public String[] getASMTransformerClass()
     {
@@ -33,6 +32,8 @@ public class EnchantFoodPlugin implements IFMLLoadingPlugin
     public void injectData(Map<String, Object> data)
     {
         ObfState.setObfuscatedEnvironment((Boolean) data.get("runtimeDeobfuscationEnabled"));
+        Ref.Files.MC_LOCATION = (File) data.get("mcLocation");
+        AsmConfig.setFileWithModConfigDir();
     }
 
     @Override
