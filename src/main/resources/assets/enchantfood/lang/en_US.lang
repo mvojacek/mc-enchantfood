@@ -42,7 +42,7 @@ item.enchFood.name=Enchantible Food Test
 enchantment.nutritious=Nutritious
 enchantment.saturating=Saturating
 enchantment.digestible=Digestible
-enchantment.alwaysEdible=Always Edible
+enchantment.alwaysedible=Always Edible
 
 # Misc
 itemGroup.enchantfood_main=EnchantFood

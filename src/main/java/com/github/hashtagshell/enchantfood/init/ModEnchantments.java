@@ -16,6 +16,6 @@ public class ModEnchantments
         nutritious = new EnchantmentFood("nutritious", 3).register(enableNutritious);
         saturating = new EnchantmentFood("saturating", 3).register(enableSaturating);
         digestible = new EnchantmentFood("digestible", 3).register(enableDigestible);
-        alwaysEdible = new EnchantmentFood("alwaysEdible", 1).register(enableAlwaysEdible);
+        alwaysEdible = new EnchantmentFood("alwaysedible", 1).register(enableAlwaysEdible);
     }
 }
