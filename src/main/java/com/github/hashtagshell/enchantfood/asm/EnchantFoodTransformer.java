@@ -11,8 +11,6 @@ import com.github.hashtagshell.enchantfood.asm.config.AsmConf;
 import com.github.hashtagshell.enchantfood.asm.obf.ObfClass;
 import com.github.hashtagshell.enchantfood.utility.Log;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.function.BiConsumer;
 
 import static com.github.hashtagshell.enchantfood.asm.AsmUtils.HookInsertRelativePos.AFTER;
@@ -32,28 +30,7 @@ public class EnchantFoodTransformer implements IClassTransformer
         switch (nameDeobf)
         {
             case "net.minecraft.item.ItemFood":
-
-                try (FileOutputStream fos = new FileOutputStream("/home/michal/tmp/original.class"))
-                {
-                    fos.write(cls);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-
-                byte[] bytes = transformClass(name, nameDeobf, cls, Transformers::transformItemFood);
-
-                try (FileOutputStream fos = new FileOutputStream("/home/michal/tmp/transformed.class"))
-                {
-                    fos.write(bytes);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-
-                return bytes;
+                return transformClass(name, nameDeobf, cls, Transformers::transformItemFood);
         }
 
         return cls;

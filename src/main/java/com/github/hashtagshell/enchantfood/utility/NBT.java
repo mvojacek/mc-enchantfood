@@ -213,9 +213,9 @@ public class NBT
     public static NBTTagCompound getDataTag(EntityPlayer player)
     {
         NBTTagCompound forgeData = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        NBTTagCompound beaconData = forgeData.getCompoundTag(Ref.NBT.MOD_COMPOUND);
+        NBTTagCompound beaconData = forgeData.getCompoundTag(Ref.Nbt.COMP_MOD);
 
-        if (!forgeData.hasKey(Ref.NBT.MOD_COMPOUND)) forgeData.setTag(Ref.NBT.MOD_COMPOUND, beaconData);
+        if (!forgeData.hasKey(Ref.Nbt.COMP_MOD)) forgeData.setTag(Ref.Nbt.COMP_MOD, beaconData);
 
         return beaconData;
     }
@@ -285,8 +285,8 @@ public class NBT
     public static NBTTagCompound getModTag(ItemStack stack)
     {
         NBTTagCompound tag = initNBTTagCompound(stack);
-        NBTTagCompound mod = tag.getCompoundTag(Ref.NBT.MOD_COMPOUND);
-        tag.setTag(Ref.NBT.MOD_COMPOUND, mod);
+        NBTTagCompound mod = tag.getCompoundTag(Ref.Nbt.COMP_MOD);
+        tag.setTag(Ref.Nbt.COMP_MOD, mod);
         return mod;
     }
 }

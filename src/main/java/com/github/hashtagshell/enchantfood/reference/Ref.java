@@ -14,7 +14,7 @@ public class Ref
         public static final String DEPS       = "";
     }
 
-    public static final class Files
+    public static class Files
     {
         public static  File MC_LOCATION  = null;
         private static File MOD_CONF_DIR = null;
@@ -50,7 +50,7 @@ public class Ref
         }
     }
 
-    public static final class Asm
+    public static class Asm
     {
         public static final int     SORTING_INDEX             = 1000000; // Very high because I want my thing to run last
         //This is only used as a last resort is no transformers set a value in ObfState.classesObfuscated
@@ -78,9 +78,17 @@ public class Ref
         }
     }
 
-    public static class NBT
+    public static class Nbt
     {
-        public static final String MOD_COMPOUND = "securepm";
+        public static final String COMP_MOD                              = "securepm";
+        public static final String LIST_COMP_FOOD_PROPERTY_POTION_EFFECT = "foodPropertyPotionEffect";
+
+        public enum TagType
+        {
+            END, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, BYTE_ARR, STRING, LIST, COMPOUND, INT_ARR;
+
+            public byte id() {return (byte) ordinal();}
+        }
     }
 
 

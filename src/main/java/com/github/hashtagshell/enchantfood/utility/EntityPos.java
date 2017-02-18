@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import com.github.hashtagshell.enchantfood.utility.tuple.Quadruplet;
 
 public class EntityPos extends Quadruplet<Double, Double, Double, Integer>
-        implements INBTSerializable<EntityPos, NBTTagCompound>
+        implements INBTSerializer<EntityPos, NBTTagCompound>
 {
     public EntityPos()
     {

@@ -14,5 +14,6 @@ public class ModCommands
     public static void init(MinecraftServer server)
     {
         registerServer(server, new CommandFood());
+        //TODO Command to add potion effects to foods
     }
 }
