@@ -94,7 +94,8 @@ public class Ref
 
     public static class Command
     {
-        public static final String FOOD = "food";
+        public static final String FOOD        = "food";
+        public static final String FOOD_POTION = "foodpotion";
     }
 
     public static class Expression

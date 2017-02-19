@@ -3,6 +3,7 @@ package com.github.hashtagshell.enchantfood.init;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
+import com.github.hashtagshell.enchantfood.command.CommandAddFoodPotion;
 import com.github.hashtagshell.enchantfood.command.CommandFood;
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
 
@@ -14,6 +15,6 @@ public class ModCommands
     public static void init(MinecraftServer server)
     {
         registerServer(server, new CommandFood());
-        //TODO Command to add potion effects to foods
+        registerServer(server, new CommandAddFoodPotion());
     }
 }

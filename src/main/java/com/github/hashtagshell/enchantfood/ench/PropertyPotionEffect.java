@@ -7,21 +7,21 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
+import com.github.hashtagshell.enchantfood.potion.PotionCategory;
 import com.github.hashtagshell.enchantfood.reference.Ref;
-import com.github.hashtagshell.enchantfood.utility.Array;
-import com.github.hashtagshell.enchantfood.utility.INBTSerializer;
-import com.github.hashtagshell.enchantfood.utility.NBT;
+import com.github.hashtagshell.enchantfood.utility.*;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.BYTE;
-import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.COMPOUND;
+import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.*;
 
 public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect, NBTTagList>
 {
     private Map<Potion, PotionEffect> effects = new HashMap<>();
+
+    //TODO Add the transformer or event handler (props handler) that actually gives the effects when eaten
 
     public PropertyPotionEffect(PotionEffect... effects)
     {
@@ -36,6 +36,22 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
     public Set<PotionEffect> getEffects()
     {
         return new HashSet<>(effects.values());
+    }
+
+    public boolean isEmpty()
+    {
+        return effects.size() == 0;
+    }
+
+    public PropertyPotionEffect clearEffects()
+    {
+        effects.clear();
+        return this;
+    }
+
+    public boolean hasEffect(Potion potion)
+    {
+        return effects.containsKey(potion);
     }
 
     public PotionEffect getEffect(Potion potion)
@@ -64,7 +80,7 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
 
     public PropertyPotionEffect replaceEffect(Potion potion, PotionEffect with)
     {
-        if (effects.containsKey(potion))
+        if (hasEffect(potion))
         {
             effects.put(with.getPotion(), with);
             effects.remove(potion);
@@ -80,7 +96,7 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
 
     public PropertyPotionEffect processEffect(Potion potion, Function<PotionEffect, PotionEffect> function)
     {
-        if (effects.containsKey(potion))
+        if (hasEffect(potion))
         {
             PotionEffect out = function.apply(effects.remove(potion));
             if (out != null) effects.put(out.getPotion(), out);
@@ -102,13 +118,42 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
 
     public List<String> getToolTip()
     {
-        return Array.processToList(effects.values(), effect ->
+        class LineMetadata implements Comparable<LineMetadata>
         {
-            //TODO Return tooltip line for each effect
-            // {bold if onHUD}{italic if particles}{colorCode}{potion} x{modifier} for {mins}:{seconds}
-            //noinspection Convert2MethodRef
-            return effect.toString();
-        });
+            public String         particles;
+            public PotionCategory category;
+            public String         locName;
+            public int            amplifier;
+            public int            mins;
+            public int            secs;
+
+            public String get()
+            {
+                return particles + category.getFormattingCode() + locName + " x" + amplifier + " for " + mins + ":" + secs;
+            }
+
+            @Override
+            public int compareTo(LineMetadata o)
+            {
+                int i = category.compareTo(o.category);
+                return i != 0 ? i : locName.compareTo(o.locName);
+            }
+        }
+
+        SortedSet<LineMetadata> set = new TreeSet<>();
+        effects.values().forEach(effect ->
+                                 {
+                                     LineMetadata meta = new LineMetadata();
+                                     //FIXME this does not seem to have an effect in tooltips, investigate
+                                     meta.particles = effect.showParticles ? ChatColor.ITALIC.toString() : "";
+                                     meta.category = PotionCategory.ofPotion(effect.getPotion());
+                                     meta.locName = Log.translate(effect.getPotion().getName());
+                                     meta.amplifier = effect.getAmplifier();
+                                     meta.mins = effect.getDuration() / 60;
+                                     meta.secs = effect.getDuration() % 60;
+                                     set.add(meta);
+                                 });
+        return Array.processToList(set, LineMetadata::get);
     }
 
     @Override
@@ -122,7 +167,7 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
     @Override
     public PropertyPotionEffect deserialize(NBTTagList list)
     {
-        effects.clear();
+        clearEffects();
         for (int i = 0; i < list.tagCount(); i++)
         {
             NBTTagCompound tag = list.getCompoundTagAt(i);
@@ -141,14 +186,24 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
         return new PropertyPotionEffect().deserialize(nbt);
     }
 
-    public ItemStack toStack(ItemStack stack)
+    public static boolean tagPresent(ItemStack stack)
     {
+        return NBT.getModTag(stack).hasKey(Ref.Nbt.LIST_COMP_FOOD_PROPERTY_POTION_EFFECT, LIST.id());
+    }
+
+    public ItemStack writeToStack(ItemStack stack)
+    {
+        if (isEmpty() && tagPresent(stack))
+        {
+            NBT.getModTag(stack).removeTag(Ref.Nbt.LIST_COMP_FOOD_PROPERTY_POTION_EFFECT);
+            NBT.removeModTagIfEmpty(stack);
+        }
         NBT.getModTag(stack).setTag(Ref.Nbt.LIST_COMP_FOOD_PROPERTY_POTION_EFFECT, serialize());
         return stack;
     }
 
-    public ItemStack addToStack(ItemStack stack)
+    public ItemStack writeAddToStack(ItemStack stack)
     {
-        return fromStack(stack).apply(this).toStack(stack);
+        return fromStack(stack).apply(this).writeToStack(stack);
     }
 }

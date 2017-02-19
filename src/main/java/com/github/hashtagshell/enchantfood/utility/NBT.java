@@ -10,11 +10,13 @@ import net.minecraft.network.PacketBuffer;
 import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers;
 import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Reader;
 import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Writer;
-import com.github.hashtagshell.enchantfood.reference.Ref;
 import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+
+import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.COMP_MOD;
+import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.COMPOUND;
 
 @SuppressWarnings("ConstantConditions")
 public class NBT
@@ -213,9 +215,9 @@ public class NBT
     public static NBTTagCompound getDataTag(EntityPlayer player)
     {
         NBTTagCompound forgeData = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        NBTTagCompound beaconData = forgeData.getCompoundTag(Ref.Nbt.COMP_MOD);
+        NBTTagCompound beaconData = forgeData.getCompoundTag(COMP_MOD);
 
-        if (!forgeData.hasKey(Ref.Nbt.COMP_MOD)) forgeData.setTag(Ref.Nbt.COMP_MOD, beaconData);
+        if (!forgeData.hasKey(COMP_MOD)) forgeData.setTag(COMP_MOD, beaconData);
 
         return beaconData;
     }
@@ -285,8 +287,15 @@ public class NBT
     public static NBTTagCompound getModTag(ItemStack stack)
     {
         NBTTagCompound tag = initNBTTagCompound(stack);
-        NBTTagCompound mod = tag.getCompoundTag(Ref.Nbt.COMP_MOD);
-        tag.setTag(Ref.Nbt.COMP_MOD, mod);
+        NBTTagCompound mod = tag.getCompoundTag(COMP_MOD);
+        tag.setTag(COMP_MOD, mod);
         return mod;
+    }
+
+    public static void removeModTagIfEmpty(ItemStack stack)
+    {
+        NBTTagCompound tag = initNBTTagCompound(stack);
+        if (tag.hasKey(COMP_MOD, COMPOUND.id()) && tag.getTag(COMP_MOD).hasNoTags())
+            tag.removeTag(COMP_MOD);
     }
 }

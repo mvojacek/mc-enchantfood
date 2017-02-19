@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public final class StackTrace
+public class StackTrace
 {
 
     public static String getStackTrace(Throwable throwable)

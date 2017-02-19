@@ -1,5 +1,13 @@
 # Commands
-
+command.foodPotion.usage=/foodpotion <player> <add|remove|clear> <potion> <duration> <amplifier> <hideParticles=false>
+command.foodPotion.wrong.invalidAction=%s is not a valid action.
+command.foodPotion.wrong.invalidPotion=%s is not a valid potion ID or name.
+command.foodPotion.fail.effectNotPresent=Effect %s is not present on the stack, wasn't removed.
+command.foodPotion.fail.emptyStack=%s is not holding any items.
+command.foodPotion.fail.noEffects=ItemStack has no effects, none were removed.
+command.foodPotion.success.add=Successfully added effect %s to the stack.
+command.foodPotion.success.clear=Cleared all effects.
+command.foodPotion.success.remove=Removed effect %s from stack.
 
 # Messages
 
