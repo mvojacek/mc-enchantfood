@@ -4,6 +4,8 @@ import com.github.hashtagshell.enchantfood.utility.Log;
 
 import static com.github.hashtagshell.enchantfood.config.Conf.Enchants.*;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.foodUseTicksMin;
+import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewFull;
+import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewLines;
 import static com.github.hashtagshell.enchantfood.config.Config.config;
 
 public class Conf
@@ -29,6 +31,14 @@ public class Conf
         public static int foodUseTicksMin = 2;
     }
 
+    public static class Visual
+    {
+        public static final String category = "visual";
+
+        public static int     foodPotionPreviewLines = 8;
+        public static boolean foodPotionPreviewFull  = false;
+    }
+
 
     private static String name, category;
     private static float defaultFloat, minFloat, maxFloat;
@@ -39,6 +49,7 @@ public class Conf
     {
         loadConfigurationGeneral();
         loadConfigurationEnchants();
+        loadConfigurationVisual();
     }
 
     private static void loadConfigurationGeneral()
@@ -87,6 +98,19 @@ public class Conf
         name = "modifierDigestible";
         defaultFloat = modifierDigestible;
         modifierDigestible = getFloat();
+    }
+
+    private static void loadConfigurationVisual()
+    {
+        category = Visual.category;
+
+        name = "foodPotionPreviewLines";
+        defaultInt = foodPotionPreviewLines;
+        foodPotionPreviewLines = getInt();
+
+        name = "foodPotionPreviewFull";
+        defaultBool = foodPotionPreviewFull;
+        foodPotionPreviewFull = getBoolean();
     }
 
     private static int getInt()

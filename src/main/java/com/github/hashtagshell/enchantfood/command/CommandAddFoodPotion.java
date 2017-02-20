@@ -83,7 +83,7 @@ public class CommandAddFoodPotion extends CommandBase
             throw new CommandException("command.foodPotion.fail.effectNotPresent", Log.translate(potion.getName()));
         }
 
-        boolean hideParticles = args.length >= 7 && parseBoolean(args[6]);
+        boolean hideParticles = args.length > 5 && parseBoolean(args[5]);
         int duration = parseInt(args[3], 0);
         int amplifier = parseInt(args[4], 0, 255);
 

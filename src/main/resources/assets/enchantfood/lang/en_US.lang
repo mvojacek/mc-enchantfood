@@ -1,5 +1,5 @@
 # Commands
-command.foodPotion.usage=/foodpotion <player> <add|remove|clear> <potion> <duration> <amplifier> <hideParticles=false>
+command.foodPotion.usage=/foodpotion <player> <add|remove|clear> <potion> <durationTicks> <amplifier> <hideParticles=false>
 command.foodPotion.wrong.invalidAction=%s is not a valid action.
 command.foodPotion.wrong.invalidPotion=%s is not a valid potion ID or name.
 command.foodPotion.fail.effectNotPresent=Effect %s is not present on the stack, wasn't removed.
@@ -13,7 +13,13 @@ command.foodPotion.success.remove=Removed effect %s from stack.
 
 # Config categories
 config_category.general=General
+config_category.general.tooltip=General settings (ie. everything that didn't fit elsewhere)
+
 config_category.enchants=Enchantments
+config_category.enchants.tooltip=Changing how enchantments work, disabling them, modifiers...
+
+config_category.visual=Visual
+config_category.visual.tooltip=Everything about the look and feel of the mod
 
 # Config - General
 config.foodUseTicksMin=Minimum food eating ticks
@@ -42,6 +48,13 @@ config.modifierSaturating.comment=Saturating enchantment modifier. More on the w
 config.modifierDigestible=Digestible Modifier
 config.modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
 
+# Config - Visual
+config.foodPotionPreviewLines=Food potions tooltip preview lines
+config.foodPotionPreviewLines.comment=Maximum amount of lines the preview of potion effects in the tooltip of items will take up, including the potential "Show more" line.
+
+config.foodPotionPreviewFull=Food potions tooltip always expanded
+config.foodPotionPreviewFull.comment=Disables wrapping of potion effects in foods' tooltips, always displays all of them.
+
 # Items
 item.test.name=Test
 item.enchFood.name=Enchantible Food Test
@@ -51,6 +64,10 @@ enchantment.nutritious=Nutritious
 enchantment.saturating=Saturating
 enchantment.digestible=Digestible
 enchantment.alwaysedible=Always Edible
+
+# Tooltip
+tooltip.foodPotion.showMore=Hiding %s more effects.
+
 
 # Misc
 itemGroup.enchantfood_main=EnchantFood

@@ -269,9 +269,9 @@ public class NBT
     {
         for (Field f : instance.getClass().getFields())
         {
-            Class<?> tyoe = f.getType();
-            if (!SerializationHandlers.acceptField(f, tyoe)) continue;
-            Pair<Reader, Writer> handler = SerializationHandlers.getHandler(tyoe);
+            Class<?> type = f.getType();
+            if (!SerializationHandlers.acceptField(f, type)) continue;
+            Pair<Reader, Writer> handler = SerializationHandlers.getHandler(type);
             try
             {
                 f.set(instance, handler.getKey().read(buf));
@@ -290,6 +290,12 @@ public class NBT
         NBTTagCompound mod = tag.getCompoundTag(COMP_MOD);
         tag.setTag(COMP_MOD, mod);
         return mod;
+    }
+
+    public static boolean hasModTag(ItemStack stack)
+    {
+        NBTTagCompound tag = initNBTTagCompound(stack);
+        return tag.hasKey(COMP_MOD, COMPOUND.id());
     }
 
     public static void removeModTagIfEmpty(ItemStack stack)

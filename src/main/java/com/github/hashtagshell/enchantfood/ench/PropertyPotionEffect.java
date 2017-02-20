@@ -7,21 +7,25 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-import com.github.hashtagshell.enchantfood.potion.PotionCategory;
+import com.github.hashtagshell.enchantfood.config.Conf;
+import com.github.hashtagshell.enchantfood.potion.food.PotionCategory;
 import com.github.hashtagshell.enchantfood.reference.Ref;
-import com.github.hashtagshell.enchantfood.utility.*;
+import com.github.hashtagshell.enchantfood.utility.INBTSerializer;
+import com.github.hashtagshell.enchantfood.utility.Log;
+import com.github.hashtagshell.enchantfood.utility.NBT;
+import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.github.hashtagshell.enchantfood.potion.food.PotionCategory.*;
 import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.*;
+import static com.github.hashtagshell.enchantfood.utility.ChatColor.*;
 
 public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect, NBTTagList>
 {
     private Map<Potion, PotionEffect> effects = new HashMap<>();
-
-    //TODO Add the transformer or event handler (props handler) that actually gives the effects when eaten
 
     public PropertyPotionEffect(PotionEffect... effects)
     {
@@ -116,44 +120,105 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
         return this;
     }
 
-    public List<String> getToolTip()
+    private static final Comparator<Pair<String, String>> compareKeys = (p1, p2) -> p1.getKey().compareTo(p2.getKey());
+
+    public List<String> getToolTip(boolean advanced)
     {
-        class LineMetadata implements Comparable<LineMetadata>
-        {
-            public String         particles;
-            public PotionCategory category;
-            public String         locName;
-            public int            amplifier;
-            public int            mins;
-            public int            secs;
-
-            public String get()
-            {
-                return particles + category.getFormattingCode() + locName + " x" + amplifier + " for " + mins + ":" + secs;
-            }
-
-            @Override
-            public int compareTo(LineMetadata o)
-            {
-                int i = category.compareTo(o.category);
-                return i != 0 ? i : locName.compareTo(o.locName);
-            }
-        }
-
-        SortedSet<LineMetadata> set = new TreeSet<>();
+        int linesTotal = Conf.Visual.foodPotionPreviewLines;
+        boolean wrap = !Conf.Visual.foodPotionPreviewFull && effects.values().size() > linesTotal;
+        SortedMap<PotionCategory, SortedSet<Pair<String, String>>> map = new TreeMap<>();
+        for (PotionCategory cat : PotionCategory.values())
+            map.put(cat, new TreeSet<>(compareKeys));
         effects.values().forEach(effect ->
                                  {
-                                     LineMetadata meta = new LineMetadata();
-                                     //FIXME this does not seem to have an effect in tooltips, investigate
-                                     meta.particles = effect.showParticles ? ChatColor.ITALIC.toString() : "";
-                                     meta.category = PotionCategory.ofPotion(effect.getPotion());
-                                     meta.locName = Log.translate(effect.getPotion().getName());
-                                     meta.amplifier = effect.getAmplifier();
-                                     meta.mins = effect.getDuration() / 60;
-                                     meta.secs = effect.getDuration() % 60;
-                                     set.add(meta);
+                                     PotionCategory category = PotionCategory.ofPotion(effect.getPotion());
+                                     String name = Log.translate(effect.getPotion().getName());
+                                     StringBuilder line = new StringBuilder(category.getChatFormatting());
+                                     if (effect.showParticles) line.append(BOLD);
+                                     line.append(name)
+                                         .append(" x").append(effect.getAmplifier()); //TODO Maybe Roman numerals?
+                                     if (!effect.getPotion().isInstant())
+                                         line.append(" for ").append(effect.getDuration() / 1200) // ticks to mins (/ 20 / 60)
+                                             .append(':').append(effect.getDuration() / 20 % 60) // to seconds, mod of minute
+                                             .append(',').append(effect.getDuration() % 20 / 2); // mod of second, divide by 20, multiply by 10 to get decimal
+                                     map.get(category).add(new Pair<>(name, line.toString()));
                                  });
-        return Array.processToList(set, LineMetadata::get);
+
+        List<String> list = new ArrayList<>();
+        if (wrap)
+        {
+            linesTotal--;
+            int linesNeutral = linesTotal / 5;
+            int linesGoodBad = linesTotal - linesNeutral;
+            int linesGood, linesBad;
+            linesGood = linesBad = linesGoodBad >> 1;
+            if (linesGood % 2 != 0) linesGood++;
+
+            int diffGood, diffBad, diffNeutral;
+            if ((diffNeutral = linesNeutral - map.get(NEUTRAL).size()) > 0)
+                linesNeutral -= diffNeutral;
+            if ((diffBad = linesBad - map.get(BAD).size()) > 0)
+                linesBad -= diffBad;
+            if ((diffGood = linesGood - map.get(GOOD).size()) > 0)
+                linesGood -= diffGood;
+
+            final byte goodF = 0b001;
+            final byte badF = 0b010;
+            final byte neutralF = 0b100;
+
+            for (int i = 0; i < diffNeutral + diffGood + diffBad; i++)
+            {
+                int flag = (diffGood > 0 ? goodF : 0) | (diffBad > 0 ? badF : 0) | (diffNeutral > 0 ? neutralF : 0);
+                if (flag == 0) break;
+
+                if ((flag & (goodF | badF)) == (goodF | badF))
+                {
+                    flag = i % 2 == 0 ? goodF : badF;
+                }
+                if ((flag & goodF) > 0)
+                {
+                    linesGood++;
+                    diffGood--;
+                }
+                else if ((flag & badF) > 0)
+                {
+                    linesBad++;
+                    diffBad--;
+                }
+                else if ((flag & neutralF) > 0)
+                {
+                    linesNeutral++;
+                    diffNeutral--;
+                }
+            }
+
+            Iterator<Pair<String, String>> goodIt = map.get(GOOD).iterator();
+            for (int i = 0; i < linesGood; i++)
+                if (goodIt.hasNext())
+                    list.add(goodIt.next().getValue());
+                else
+                    break;
+            Iterator<Pair<String, String>> badIt = map.get(BAD).iterator();
+            for (int i = 0; i < linesBad; i++)
+                if (badIt.hasNext())
+                    list.add(badIt.next().getValue());
+                else
+                    break;
+            Iterator<Pair<String, String>> neutralIt = map.get(NEUTRAL).iterator();
+            for (int i = 0; i < linesNeutral; i++)
+                if (neutralIt.hasNext())
+                    list.add(neutralIt.next().getValue());
+                else
+                    break;
+
+            list.add(GRAY.toString() + ITALIC
+                     + Log.translatef("tooltip.foodPotion.showMore", effects.values().size() - list.size()));
+        }
+        else
+            map.values().forEach(set -> set.forEach(pair -> list.add(pair.getValue())));
+
+
+        return list;
     }
 
     @Override
@@ -190,6 +255,8 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
     {
         return NBT.getModTag(stack).hasKey(Ref.Nbt.LIST_COMP_FOOD_PROPERTY_POTION_EFFECT, LIST.id());
     }
+
+    //FIXME shift clicking into enchantment table gui clears mod tag
 
     public ItemStack writeToStack(ItemStack stack)
     {
