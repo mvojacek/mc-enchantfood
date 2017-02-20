@@ -61,8 +61,6 @@ minecraft {
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     replace "\${version}", project.version
-    replace "\${name}", static.name
-    replace "\${modid}", static.modid
     replaceIn 'Ref.java'
 }
 
@@ -105,10 +103,10 @@ processResources
             from(sourceSets.main.resources.srcDirs) {
                 include 'mcmod.info'
 
-                // replace version and mcversion
-                expand 'modid': static.modid, 'name': static.name, 'desc': static.desc, 'version': project.version,
-                'mcversion': project.minecraft.version, 'url': static.url, 'updateurl': static.updateurl, 'author':
-                static.author, 'credits': static.credits, 'logo': static.logo
+                // actually replace
+                expand 'desc': static.desc, 'version': project.version, 'mcversion': project.minecraft.version,
+                  'url': static.url, 'updateurl': static.updateurl, 'author': static.author, 'credits': static.credits,
+                  'logo': static.logo
             }
 
             // copy everything else, thats not the mcmod.info
@@ -223,9 +221,14 @@ task deleteOldBuilds(type: Delete) {
     delete "build"
 }
 
+task releaseJarTest(type: Sync, dependsOn: reobfJar) {
+    from("build/libs/${jar.archiveName}")
+    into file("releases/.test")
+}
+
 task release(dependsOn: [deleteOldBuilds, releaseJar, releaseDeobf, releaseSource, releaseJavadoc, incrementBuildNumber]) {}
 task releaseBuild(dependsOn: [deleteOldBuilds, releaseJar, incrementBuildNumber]) {}
-task releaseTest(dependsOn: [deleteOldBuilds, releaseJar]) {}
+task releaseTest(dependsOn: [releaseJarTest]) {}
 
 // ----------------ARTIFACTS---------------------
 
