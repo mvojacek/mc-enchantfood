@@ -12,6 +12,8 @@ public class EnchantFoodHooks
     @SuppressWarnings("unused") //used in dynamically generated code
     public static int processItemFoodHealAmount(int healAmount, ItemStack stack)
     {
+        if (0 < EnchantmentHelper.getEnchantmentLevel(ModEnchantments.notNutritious, stack))
+            return 0;
         int lvl = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.nutritious, stack);
         return healAmount + EnchantmentFood.foodBonus(healAmount, lvl);
     }
@@ -19,6 +21,8 @@ public class EnchantFoodHooks
     @SuppressWarnings("unused") //used in dynamically generated code
     public static float processItemFoodSaturationAmount(float saturationAmount, ItemStack stack)
     {
+        if (0 < EnchantmentHelper.getEnchantmentLevel(ModEnchantments.notSaturating, stack))
+            return 0F;
         int lvl = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.saturating, stack);
         return saturationAmount + EnchantmentFood.saturationBonus(saturationAmount, lvl);
     }
@@ -35,6 +39,8 @@ public class EnchantFoodHooks
     @SuppressWarnings("unused") //used in dynamically generated code
     public static boolean processItemFoodCanAlwaysEat(boolean canAlwaysEat, ItemStack stack)
     {
-        return canAlwaysEat || 0 != EnchantmentHelper.getEnchantmentLevel(ModEnchantments.alwaysEdible, stack);
+        return canAlwaysEat
+               || 0 != EnchantmentHelper.getEnchantmentLevel(ModEnchantments.alwaysEdible, stack)
+               || 0 != EnchantmentHelper.getEnchantmentLevel(ModEnchantments.notNutritious, stack);
     }
 }

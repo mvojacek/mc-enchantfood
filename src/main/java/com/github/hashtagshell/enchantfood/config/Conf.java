@@ -13,6 +13,7 @@ import static com.github.hashtagshell.enchantfood.config.Conf.Enchants.*;
 import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.*;
 import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.WRITE_STACK;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.foodUseTicksMin;
+import static com.github.hashtagshell.enchantfood.config.Conf.General.useFallbackHandlers;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewFull;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewLines;
 import static com.github.hashtagshell.enchantfood.config.Config.config;
@@ -29,6 +30,7 @@ public class Conf
         public static boolean enableAlwaysEdible  = true;
         public static boolean enableNotNutritious = true;
         public static boolean enableNotSaturating = true;
+        public static boolean enableNotEdible     = true;
 
         public static float modifierNutritious = 0.333F;
         public static float modifierSaturating = 0.333F;
@@ -39,7 +41,8 @@ public class Conf
     {
         private static final String category = "general";
 
-        public static int foodUseTicksMin = 2;
+        public static int     foodUseTicksMin     = 2;
+        public static boolean useFallbackHandlers = true;
     }
 
     public static class FoodPotions
@@ -100,6 +103,10 @@ public class Conf
         minInt = 0;
         maxInt = Integer.MAX_VALUE;
         foodUseTicksMin = getInt();
+
+        name = "useFallbackHandlers";
+        defaultBool = useFallbackHandlers;
+        useFallbackHandlers = getBoolean();
     }
 
 
@@ -130,6 +137,10 @@ public class Conf
         name = "enableNotSaturating";
         defaultBool = enableNotSaturating;
         enableNotSaturating = getBoolean();
+
+        name = "enableNotEdible";
+        defaultBool = enableNotEdible;
+        enableNotEdible = getBoolean();
 
 
         minFloat = 0F;

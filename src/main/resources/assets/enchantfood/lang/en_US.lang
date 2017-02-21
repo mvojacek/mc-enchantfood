@@ -30,26 +30,32 @@ config_category.visual.tooltip=Everything about the look and feel of the mod
 
 # Config - General
 config.general_foodUseTicksMin=Minimum food eating ticks
-config.general_foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game. Has no effect if the ItemFood#getMaxItemUseDuration transformer is disabled
+config.general_foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game.
+
+config.general_useFallbackHandlers=Use fallback handlers for ASM
+config.general_useFallbackHandlers.comment=If any ASM hooks are disabled, should we register event handlers which will at least partially cover the functionality?
 
 # Config - Enchants
 config.enchants_enableNutritious=Enable Nutritious enchantment
-config.enchants_enableNutritious.comment=Set to false to disable the Nutritious enchantment. You can also disable the transformer on ItemFood#getHealAmount in asm.properties
+config.enchants_enableNutritious.comment=Set to false to disable the Nutritious enchantment.
 
 config.enchants_enableSaturating=Enable Saturating enchantment
-config.enchants_enableSaturating.comment=Set to false to disable the Saturating enchantment. You can also disable the transformer on ItemFood#getSaturationModifier in asm.properties
+config.enchants_enableSaturating.comment=Set to false to disable the Saturating enchantment.
 
 config.enchants_enableDigestible=Enable Digestible enchantment
-config.enchants_enableDigestible.comment=Set to false to disable the Digestible enchantment. You can also disable the transformer on ItemFood#getMaxItemUseDuration in asm.properties
+config.enchants_enableDigestible.comment=Set to false to disable the Digestible enchantment.
 
 config.enchants_enableAlwaysEdible=Enable AlwaysEdible enchantment
-config.enchants_enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. You can also disable the transformer on ItemFood#onItemRightClick in asm.properties
+config.enchants_enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment.
 
 config.enchants_enableNotNutritious=Enable NotNutritious enchantment
 config.enchants_enableNotNutritious.comment=Set to false to disable the NotNutritious enchantment.
 
 config.enchants_enableNotSaturating=Enable NotSaturating enchantment
 config.enchants_enableNotSaturating.comment=Set to false to disable the NotSaturating enchantment.
+
+config.enchants_enableNotEdible=Enable NotEdible enchantment
+config.enchants_enableNotEdible.comment=Set to false to disable the NotEdible enchantment.
 
 
 config.enchants_modifierNutritious=Nutritious Modifier
@@ -76,7 +82,7 @@ config.foodpotions_maxDuration=Maximum FoodPotion duration
 config.foodpotions_maxDuration.comment=Global maximum duration in ticks for food potion effects. Default is vanilla '/effect' behaviour. Which effect this has is defined by config.foodpotions_enforceRestrictions
 
 config.foodpotions_enforceRestrictions=Enforce restrictions strategy
-config.foodpotions_enforceRestrictions.comment=How we enforce the limits defined in this category:\n  DISABLE - Do not restrict.\n  PREVENT_APPLY - Prevent applying this effect by eating a food with it.\n  WRITE_STACK - If a player tries to eat a food with 'illegal' effects, these effects will be removed from the stack.
+config.foodpotions_enforceRestrictions.comment=How we enforce the limits defined in this category:\n - DISABLE: Do not restrict.\n - PREVENT_COMMAND: Prevent the 'foodpotion' command from adding 'illegal' effects.\n - PREVENT_APPLY: Prevent applying this effect by eating a food with it.\n - WRITE_STACK: If a player tries to eat a food with 'illegal' effects, these effects will be removed from the stack.
 
 
 # Config - Visual
@@ -95,8 +101,9 @@ enchantment.nutritious=Nutritious
 enchantment.saturating=Saturating
 enchantment.digestible=Digestible
 enchantment.alwaysedible=Always Edible
-enchantment.notNutritious=Not Nutritious
-enchantment.notSaturating=Not Saturating
+enchantment.notnutritious=Not Nutritious
+enchantment.notsaturating=Not Saturating
+enchantment.notedible=Inedible
 
 # Tooltip
 tooltip.foodPotion.showMore=Hiding %s more effects.

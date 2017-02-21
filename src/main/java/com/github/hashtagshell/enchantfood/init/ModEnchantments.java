@@ -12,6 +12,7 @@ public class ModEnchantments
     public static EnchantmentFood alwaysEdible;
     public static EnchantmentFood notNutritious;
     public static EnchantmentFood notSaturating;
+    public static EnchantmentFood notEdible;
 
     public static void preInit()
     {
@@ -21,5 +22,7 @@ public class ModEnchantments
         alwaysEdible = new EnchantmentFood("alwaysedible", 1).register(enableAlwaysEdible);
         notNutritious = new EnchantmentFood("notnutritious", 1).register(enableNotNutritious);
         notSaturating = new EnchantmentFood("notsaturating", 1).register(enableNotSaturating);
+        //TODO implement notEdible ench with ASM (fallback already exists)
+        notEdible = new EnchantmentFood("notedible", 1).register(enableNotEdible);
     }
 }
