@@ -17,6 +17,6 @@ public class LivingHandler
         ItemStack stack = e.getItem();
         if (!(stack.getItem() instanceof ItemFood) || !NBT.hasModTag(stack)) return;
         PropertyPotionEffect prop = PropertyPotionEffect.fromStack(stack);
-        prop.applyToEntity(e.getEntityLiving());
+        prop.applyToEntity(e.getEntityLiving(), stack);
     }
 }

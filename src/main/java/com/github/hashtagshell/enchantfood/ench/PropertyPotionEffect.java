@@ -19,6 +19,8 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.PREVENT_APPLY;
+import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.WRITE_STACK;
 import static com.github.hashtagshell.enchantfood.potion.food.PotionCategory.*;
 import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.*;
 import static com.github.hashtagshell.enchantfood.utility.ChatColor.*;
@@ -114,7 +116,21 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
         return this;
     }
 
-    public PropertyPotionEffect applyToEntity(EntityLivingBase entity)
+    public PropertyPotionEffect applyToEntity(EntityLivingBase entity, ItemStack stack)
+    {
+        List<PotionEffect> toRemove = new ArrayList<>();
+        for (PotionEffect effect : effects.values())
+            if (Conf.FoodPotions.enforceRestrictions.includes(PREVENT_APPLY) && clampArgs(effect))
+                toRemove.add(effect);
+            else
+                entity.addPotionEffect(effect);
+        toRemove.forEach(effects::remove);
+        if (stack != null && Conf.FoodPotions.enforceRestrictions.includes(WRITE_STACK))
+            writeToStack(stack);
+        return this;
+    }
+
+    public PropertyPotionEffect applyToEntityUnrestricted(EntityLivingBase entity)
     {
         effects.values().forEach(entity::addPotionEffect);
         return this;
@@ -139,8 +155,7 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
                                          .append(" x").append(effect.getAmplifier()); //TODO Maybe Roman numerals?
                                      if (!effect.getPotion().isInstant())
                                          line.append(" for ").append(effect.getDuration() / 1200) // ticks to mins (/ 20 / 60)
-                                             .append(':').append(effect.getDuration() / 20 % 60) // to seconds, mod of minute
-                                             .append(',').append(effect.getDuration() % 20 / 2); // mod of second, divide by 20, multiply by 10 to get decimal
+                                             .append(':').append(effect.getDuration() / 20 % 60); // to seconds, mod of minute
                                      map.get(category).add(new Pair<>(name, line.toString()));
                                  });
 
@@ -272,5 +287,22 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
     public ItemStack writeAddToStack(ItemStack stack)
     {
         return fromStack(stack).apply(this).writeToStack(stack);
+    }
+
+    public static boolean isEffectEnabled(PotionEffect effect)
+    {
+        return Conf.FoodPotions.enable
+               && effect.getAmplifier() <= Conf.FoodPotions.maxAmplifier
+               && effect.getDuration() <= Conf.FoodPotions.maxDuration
+               && !Conf.FoodPotions.disabledPotions.contains(effect.getPotion().getRegistryName());
+    }
+
+    public static boolean clampArgs(PotionEffect effect)
+    {
+        if (!Conf.FoodPotions.enable || Conf.FoodPotions.disabledPotions.contains(effect.getPotion().getRegistryName()))
+            return true;
+        if (effect.getAmplifier() > Conf.FoodPotions.maxAmplifier) effect.amplifier = Conf.FoodPotions.maxAmplifier;
+        if (effect.getDuration() > Conf.FoodPotions.maxDuration) effect.duration = Conf.FoodPotions.maxDuration;
+        return false;
     }
 }

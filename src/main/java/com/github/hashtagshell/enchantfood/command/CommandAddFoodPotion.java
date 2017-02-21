@@ -9,6 +9,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
+import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
 import com.github.hashtagshell.enchantfood.reference.Ref.Command;
 import com.github.hashtagshell.enchantfood.utility.Log;
@@ -89,8 +90,12 @@ public class CommandAddFoodPotion extends CommandBase
 
         PotionEffect effect = new PotionEffect(potion, duration, amplifier, false, !hideParticles);
 
-        prop.addEffect(effect).writeToStack(stack);
-        notifyCommandListener(sender, this, "command.foodPotion.success.add", Log.translate(potion.getName()));
+        if (!Conf.FoodPotions.enforceRestrictions.includes(Conf.FoodPotions.EnforceRestrictions.PREVENT_COMMAND) || PropertyPotionEffect.isEffectEnabled(effect))
+        {
+            prop.addEffect(effect).writeToStack(stack);
+            notifyCommandListener(sender, this, "command.foodPotion.success.add", Log.translate(potion.getName()));
+        }
+        else {throw new CommandException("command.foodPotion.fail.effectDisabled");}
     }
 
     @Override

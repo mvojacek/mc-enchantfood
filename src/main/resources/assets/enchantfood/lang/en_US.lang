@@ -1,3 +1,7 @@
+# lessee wotdis ll do
+#PARSE_ESCAPES
+
+
 # Commands
 command.foodPotion.usage=/foodpotion <player> <add|remove|clear> <potion> <durationTicks> <amplifier> <hideParticles=false>
 command.foodPotion.wrong.invalidAction=%s is not a valid action.
@@ -16,44 +20,71 @@ config_category.general=General
 config_category.general.tooltip=General settings (ie. everything that didn't fit elsewhere)
 
 config_category.enchants=Enchantments
-config_category.enchants.tooltip=Changing how enchantments work, disabling them, modifiers...
+config_category.enchants.tooltip=Change how enchantments work, disabling them, modifiers...
+
+config_category.foodpotions=Food Potions
+config_category.foodpotions.tooltip=Configure how potion effects on foods behave
 
 config_category.visual=Visual
 config_category.visual.tooltip=Everything about the look and feel of the mod
 
 # Config - General
-config.foodUseTicksMin=Minimum food eating ticks
-config.foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game. Has no effect if the ItemFood#getMaxItemUseDuration transformer is disabled
+config.general_foodUseTicksMin=Minimum food eating ticks
+config.general_foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game. Has no effect if the ItemFood#getMaxItemUseDuration transformer is disabled
 
 # Config - Enchants
-config.enableNutritious=Enable Nutritious enchantment
-config.enableNutritious.comment=Set to false to disable the Nutritious enchantment. You can also disable the transformer on ItemFood#getHealAmount in asm.properties
+config.enchants_enableNutritious=Enable Nutritious enchantment
+config.enchants_enableNutritious.comment=Set to false to disable the Nutritious enchantment. You can also disable the transformer on ItemFood#getHealAmount in asm.properties
 
-config.enableSaturating=Enable Saturating enchantment
-config.enableSaturating.comment=Set to false to disable the Saturating enchantment. You can also disable the transformer on ItemFood#getSaturationModifier in asm.properties
+config.enchants_enableSaturating=Enable Saturating enchantment
+config.enchants_enableSaturating.comment=Set to false to disable the Saturating enchantment. You can also disable the transformer on ItemFood#getSaturationModifier in asm.properties
 
-config.enableDigestible=Enable Digestible enchantment
-config.enableDigestible.comment=Set to false to disable the Digestible enchantment. You can also disable the transformer on ItemFood#getMaxItemUseDuration in asm.properties
+config.enchants_enableDigestible=Enable Digestible enchantment
+config.enchants_enableDigestible.comment=Set to false to disable the Digestible enchantment. You can also disable the transformer on ItemFood#getMaxItemUseDuration in asm.properties
 
-config.enableAlwaysEdible=Enable AlwaysEdible enchantment
-config.enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. You can also disable the transformer on ItemFood#onItemRightClick in asm.properties
+config.enchants_enableAlwaysEdible=Enable AlwaysEdible enchantment
+config.enchants_enableAlwaysEdible.comment=Set to false to disable the AlwaysEdible enchantment. You can also disable the transformer on ItemFood#onItemRightClick in asm.properties
+
+config.enchants_enableNotNutritious=Enable NotNutritious enchantment
+config.enchants_enableNotNutritious.comment=Set to false to disable the NotNutritious enchantment.
+
+config.enchants_enableNotSaturating=Enable NotSaturating enchantment
+config.enchants_enableNotSaturating.comment=Set to false to disable the NotSaturating enchantment.
 
 
-config.modifierNutritious=Nutritious Modifier
-config.modifierNutritious.comment=Nutritious enchantment modifier. More on the wiki.
+config.enchants_modifierNutritious=Nutritious Modifier
+config.enchants_modifierNutritious.comment=Nutritious enchantment modifier. More on the wiki.
 
-config.modifierSaturating=Saturating Modifier
-config.modifierSaturating.comment=Saturating enchantment modifier. More on the wiki.
+config.enchants_modifierSaturating=Saturating Modifier
+config.enchants_modifierSaturating.comment=Saturating enchantment modifier. More on the wiki.
 
-config.modifierDigestible=Digestible Modifier
-config.modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
+config.enchants_modifierDigestible=Digestible Modifier
+config.enchants_modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
+
+# Config - FoodPotions
+
+config.foodpotions_enable=Enable FoodPotions
+config.foodpotions_enable.comment=Set to false to entirely disable potion effects on foods.
+
+config.foodpotions_disabledPotions=Disabled potions list
+config.foodpotions_disabledPotions.comment=List of potion registry names (e.g. minecraft:speed) that will be disabled. Which effect this has is defined by config.foodpotions_enforceRestrictions
+
+config.foodpotions_maxAmplifier=Maximum FoodPotion amplifier
+config.foodpotions_maxAmplifier.comment=Global maximum amplifier for food potion effects. Default is vanilla '/effect' behaviour. Which effect this has is defined by config.foodpotions_enforceRestrictions
+
+config.foodpotions_maxDuration=Maximum FoodPotion duration
+config.foodpotions_maxDuration.comment=Global maximum duration in ticks for food potion effects. Default is vanilla '/effect' behaviour. Which effect this has is defined by config.foodpotions_enforceRestrictions
+
+config.foodpotions_enforceRestrictions=Enforce restrictions strategy
+config.foodpotions_enforceRestrictions.comment=How we enforce the limits defined in this category:\n  DISABLE - Do not restrict.\n  PREVENT_APPLY - Prevent applying this effect by eating a food with it.\n  WRITE_STACK - If a player tries to eat a food with 'illegal' effects, these effects will be removed from the stack.
+
 
 # Config - Visual
-config.foodPotionPreviewLines=Food potions tooltip preview lines
-config.foodPotionPreviewLines.comment=Maximum amount of lines the preview of potion effects in the tooltip of items will take up, including the potential "Show more" line.
+config.visual_foodPotionPreviewLines=Food potions tooltip preview lines
+config.visual_foodPotionPreviewLines.comment=Maximum amount of lines the preview of potion effects in the tooltip of items will take up, including the potential "Show more" line.
 
-config.foodPotionPreviewFull=Food potions tooltip always expanded
-config.foodPotionPreviewFull.comment=Disables wrapping of potion effects in foods' tooltips, always displays all of them.
+config.visual_foodPotionPreviewFull=Food potions tooltip always expanded
+config.visual_foodPotionPreviewFull.comment=Disables wrapping of potion effects in foods' tooltips, always displays all of them.
 
 # Items
 item.test.name=Test
@@ -64,6 +95,8 @@ enchantment.nutritious=Nutritious
 enchantment.saturating=Saturating
 enchantment.digestible=Digestible
 enchantment.alwaysedible=Always Edible
+enchantment.notNutritious=Not Nutritious
+enchantment.notSaturating=Not Saturating
 
 # Tooltip
 tooltip.foodPotion.showMore=Hiding %s more effects.

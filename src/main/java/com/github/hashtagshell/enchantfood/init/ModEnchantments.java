@@ -10,6 +10,8 @@ public class ModEnchantments
     public static EnchantmentFood saturating;
     public static EnchantmentFood digestible;
     public static EnchantmentFood alwaysEdible;
+    public static EnchantmentFood notNutritious;
+    public static EnchantmentFood notSaturating;
 
     public static void preInit()
     {
@@ -17,5 +19,7 @@ public class ModEnchantments
         saturating = new EnchantmentFood("saturating", 3).register(enableSaturating);
         digestible = new EnchantmentFood("digestible", 3).register(enableDigestible);
         alwaysEdible = new EnchantmentFood("alwaysedible", 1).register(enableAlwaysEdible);
+        notNutritious = new EnchantmentFood("notnutritious", 1).register(enableNotNutritious);
+        notSaturating = new EnchantmentFood("notsaturating", 1).register(enableNotSaturating);
     }
 }
