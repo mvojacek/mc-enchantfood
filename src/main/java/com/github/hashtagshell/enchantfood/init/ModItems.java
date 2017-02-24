@@ -11,8 +11,7 @@ public class ModItems
 
     public static void preInit()
     {
-        //TODO Remove test items
-        test = new ItemGeneric("test").register();
-        enchFood = new ItemEnchantableFood("enchFood", 1, 1, false).register();
+        test = new ItemGeneric("test").register(false);
+        enchFood = new ItemEnchantableFood("enchFood", 1, 1, false).register(false);
     }
 }

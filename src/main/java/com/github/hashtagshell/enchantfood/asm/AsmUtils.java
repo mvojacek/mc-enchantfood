@@ -1,5 +1,6 @@
 package com.github.hashtagshell.enchantfood.asm;
 
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import org.objectweb.asm.tree.*;
 
 import com.github.hashtagshell.enchantfood.asm.obf.ObfClass;
@@ -52,11 +53,6 @@ public class AsmUtils
             }
     }
 
-    public static boolean isObf(String name, String nameDeobf)
-    {
-        return !name.equals(nameDeobf);
-    }
-
     public static void staticHookAllInsns(MethodNode method, Predicate<AbstractInsnNode> labelInsn,
                                           HookInsertRelativePos pos,
                                           int loadParInsn, int loadParIndex,
@@ -67,6 +63,11 @@ public class AsmUtils
                            hookMethod.desc(state), hookClass.isInterface());
     }
 
+    public static boolean isObf(String name, String nameDeobf)
+    {
+        return !name.equals(nameDeobf);
+    }
+
     enum HookInsertRelativePos
     {
         BEFORE, AFTER;
@@ -74,5 +75,25 @@ public class AsmUtils
         public boolean isBefore() {return this == BEFORE;}
 
         public boolean isAfter()  {return this == AFTER;}
+    }
+
+    public static String toDeobfClassName(ObfState state, String obfClassName)
+    {
+        return state == ObfState.OBF ? forceToDeobfClassName(obfClassName) : obfClassName;
+    }
+
+    public static String forceToDeobfClassName(String obfClassName)
+    {
+        return FMLDeobfuscatingRemapper.INSTANCE.map(obfClassName.replace('.', '/')).replace('/', '.');
+    }
+
+    public static String toObfClassName(ObfState state, String deobfClassName)
+    {
+        return state == ObfState.OBF ? forceToObfClassName(deobfClassName) : deobfClassName;
+    }
+
+    public static String forceToObfClassName(String deobfClassName)
+    {
+        return FMLDeobfuscatingRemapper.INSTANCE.unmap(deobfClassName.replace('.', '/')).replace('/', '.');
     }
 }

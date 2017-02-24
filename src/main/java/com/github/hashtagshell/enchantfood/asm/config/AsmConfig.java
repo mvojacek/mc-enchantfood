@@ -77,8 +77,8 @@ public class AsmConfig
         {
             props.store(fos, "EnchantFood ASM config. This is typical Java Properties file. "
                              + "You can use values 'true', 'yes', '1', 'one' and 'false', "
-                             + "'no', '0', 'zero'. Any other values will be silently ignored "
-                             + "and the hardcoded default will be used.");
+                             + "'no', '0', 'zero'. Any other values will be overwritten with "
+                             + "defaults.");
         }
         catch (IOException | IllegalArgumentException e)
         {

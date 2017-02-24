@@ -20,9 +20,8 @@ public class ModEnchantments
         saturating = new EnchantmentFood("saturating", 3).register(enableSaturating);
         digestible = new EnchantmentFood("digestible", 3).register(enableDigestible);
         alwaysEdible = new EnchantmentFood("alwaysedible", 1).register(enableAlwaysEdible);
-        notNutritious = new EnchantmentFood("notnutritious", 1).register(enableNotNutritious);
-        notSaturating = new EnchantmentFood("notsaturating", 1).register(enableNotSaturating);
-        //TODO implement notEdible ench with ASM (fallback already exists)
+        notNutritious = new EnchantmentFood("notnutritious", 1).addIncompE(nutritious).register(enableNotNutritious);
+        notSaturating = new EnchantmentFood("notsaturating", 1).addIncompE(saturating).register(enableNotSaturating);
         notEdible = new EnchantmentFood("notedible", 1).register(enableNotEdible);
     }
 }

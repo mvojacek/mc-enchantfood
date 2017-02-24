@@ -13,6 +13,7 @@ import com.github.hashtagshell.enchantfood.reference.Ref;
 import com.github.hashtagshell.enchantfood.utility.INBTSerializer;
 import com.github.hashtagshell.enchantfood.utility.Log;
 import com.github.hashtagshell.enchantfood.utility.NBT;
+import com.github.hashtagshell.enchantfood.utility.RomanNumerals;
 import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.util.*;
@@ -150,12 +151,15 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
                                      PotionCategory category = PotionCategory.ofPotion(effect.getPotion());
                                      String name = Log.translate(effect.getPotion().getName());
                                      StringBuilder line = new StringBuilder(category.getChatFormatting());
-                                     if (effect.showParticles) line.append(BOLD);
+                                     if (effect.doesShowParticles()) line.append(BOLD);
                                      line.append(name)
-                                         .append(" x").append(effect.getAmplifier()); //TODO Maybe Roman numerals?
+                                         .append(" ")
+                                         .append(RomanNumerals.toRoman(effect.getAmplifier()));
                                      if (!effect.getPotion().isInstant())
-                                         line.append(" for ").append(effect.getDuration() / 1200) // ticks to mins (/ 20 / 60)
-                                             .append(':').append(effect.getDuration() / 20 % 60); // to seconds, mod of minute
+                                         line.append(" for ")
+                                             .append(effect.getDuration() / 1200) // ticks to mins (/ 20 / 60)
+                                             .append(':')
+                                             .append(effect.getDuration() / 20 % 60); // to seconds, mod of minute
                                      map.get(category).add(new Pair<>(name, line.toString()));
                                  });
 
@@ -253,11 +257,28 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
             NBTTagCompound tag = list.getCompoundTagAt(i);
             if (tag.hasKey("Id", BYTE.id()))
             {
-                PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(tag);
-                effects.put(effect.getPotion(), effect);
+                PotionEffect effect = readEffectFromNBTInASensibleNotMojangManner(tag);
+                if (effect != null)
+                    effects.put(effect.getPotion(), effect);
             }
         }
         return this;
+    }
+
+    private static PotionEffect readEffectFromNBTInASensibleNotMojangManner(NBTTagCompound nbt)
+    {
+        int id = nbt.getByte("Id") & 0xFF;
+        Potion potion = Potion.getPotionById(id);
+        if (potion == null) return null;
+
+        // You are reading a 0-255 int that you stored as a signed byte, you have to apply a mask to convert back
+        // to the original int value. In vanilla this breaks 127+ amplifiers. Also the formatting was messed up.
+        // Seriously just take a look at PotionEffect#readCustomPotionEffectFromNBT and see for yourself.
+        int amplifier = nbt.getByte("Amplifier") & 0xFF;
+        int duration = nbt.getInteger("Duration");
+        boolean ambient = nbt.getBoolean("Ambient");
+        boolean particles = !nbt.hasKey("ShowParticles", 1) || nbt.getBoolean("ShowParticles");
+        return new PotionEffect(potion, duration, amplifier, ambient, particles);
     }
 
     public static PropertyPotionEffect fromStack(ItemStack stack)

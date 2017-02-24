@@ -1,5 +1,6 @@
 package com.github.hashtagshell.enchantfood.handler;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -7,6 +8,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
+import com.github.hashtagshell.enchantfood.init.ModEnchantments;
 import com.github.hashtagshell.enchantfood.utility.ChatColor;
 import com.github.hashtagshell.enchantfood.utility.NBT;
 
@@ -38,5 +40,13 @@ public class ItemFoodHandler
                     break;
                 }
         }
+    }
+
+    @SubscribeEvent
+    public static void stopEatingNotEdible(LivingEntityUseItemEvent.Start e)
+    {
+        if (e.getItem().getItem() instanceof ItemFood
+            && 0 < EnchantmentHelper.getEnchantmentLevel(ModEnchantments.notEdible, e.getItem()))
+            e.setCanceled(true);
     }
 }

@@ -1,16 +1,18 @@
-package com.github.hashtagshell.enchantfood.proxy;
+package com.github.hashtagshell.enchantfood.proxy.base;
 
 
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import com.github.hashtagshell.enchantfood.config.Config;
 import com.github.hashtagshell.enchantfood.init.*;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
 
-public class CommonProxy implements IProxy
+public interface CommonProxyBase extends IProxyBase
 {
     @Override
-    public void preInit(FMLPreInitializationEvent e)
+    default void preInit(FMLPreInitializationEvent e)
     {
         Config.preInit(e);
 
@@ -24,13 +26,13 @@ public class CommonProxy implements IProxy
     }
 
     @Override
-    public void init(FMLInitializationEvent e)
+    default void init(FMLInitializationEvent e)
     {
         ModIntegration.init();
     }
 
     @Override
-    public void serverStarting(FMLServerStartingEvent e)
+    default void serverStarting(FMLServerStartingEvent e)
     {
         ModCommands.init(e.getServer());
     }

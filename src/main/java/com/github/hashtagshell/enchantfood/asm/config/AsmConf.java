@@ -12,15 +12,28 @@ public class AsmConf
     public static boolean transform_C_ItemFood_M_GetMaxItemUseDuration = true;
     public static boolean transform_C_ItemFood_M_OnItemRightClick      = true;
 
+    public static boolean transform_C_ItemStack                   = true;
+    public static boolean transform_C_ItemStack_M_IsItemEnchanted = true;
+
     private static String  name;
     private static boolean defaultBool;
 
     static void loadProps()
     {
+        loadGeneral();
+        loadItemFood();
+        loadItemStack();
+    }
+
+    private static void loadGeneral()
+    {
         name = "transform_ALL";
         defaultBool = transform_ALL;
         transform_ALL = getBoolean();
+    }
 
+    private static void loadItemFood()
+    {
         name = "transform_C_ItemFood";
         defaultBool = transform_C_ItemFood;
         transform_C_ItemFood = getBoolean();
@@ -40,6 +53,17 @@ public class AsmConf
         name = "transform_C_ItemFood_M_OnItemRightClick";
         defaultBool = transform_C_ItemFood_M_OnItemRightClick;
         transform_C_ItemFood_M_OnItemRightClick = getBoolean();
+    }
+
+    private static void loadItemStack()
+    {
+        name = "transform_C_ItemStack";
+        defaultBool = transform_C_ItemStack;
+        transform_C_ItemStack = getBoolean();
+
+        name = "transform_C_ItemStack_M_IsItemEnchanted";
+        defaultBool = transform_C_ItemStack_M_IsItemEnchanted;
+        transform_C_ItemStack_M_IsItemEnchanted = getBoolean();
     }
 
     private static boolean getBoolean()

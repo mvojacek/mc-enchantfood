@@ -8,10 +8,16 @@ import net.minecraft.util.math.MathHelper;
 
 import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.init.RegisterMethods;
+import com.github.hashtagshell.enchantfood.utility.Predicates;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class EnchantmentFood extends Enchantment
 {
-    public int maxLevel = 1;
+    public int                          maxLevel     = 1;
+    public List<Predicate<Enchantment>> incompatible = new ArrayList<>();
 
     public EnchantmentFood(String name, int maxLevel)
     {
@@ -20,6 +26,27 @@ public class EnchantmentFood extends Enchantment
         this.maxLevel = maxLevel;
         setName(name);
         setRegistryName(name);
+    }
+
+    public EnchantmentFood addIncompE(Predicate<Enchantment> rest)
+    {
+        incompatible.add(rest);
+        return this;
+    }
+
+    public EnchantmentFood addIncompE(Enchantment e)
+    {
+        return addIncompE(en -> en.getName().equals(e.getName()));
+    }
+
+    public EnchantmentFood addIncompS(Predicate<String> rest)
+    {
+        return addIncompE(e -> rest.test(e.getName()));
+    }
+
+    public EnchantmentFood addIncompS(String name)
+    {
+        return addIncompS(name::equals);
     }
 
     public static int foodBonus(int foodHeal, int lvl)
@@ -47,14 +74,14 @@ public class EnchantmentFood extends Enchantment
         return maxLevel;
     }
 
+    {
+        addIncompS(getName());
+    }
+
     @Override
     public boolean canApplyTogether(Enchantment ench)
     {
-        //TODO Actually logic for enchantment compatibility
-
-        // The default impl by Object compares references, which is fine, but if devs add a different way
-        // to compare enchantments it will surely be used to override Object.equals()
-        return !equals(ench);
+        return !Predicates.or(incompatible, ench);
     }
 
     @Override

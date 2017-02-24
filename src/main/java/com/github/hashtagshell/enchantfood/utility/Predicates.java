@@ -1,6 +1,7 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class Predicates
@@ -41,5 +42,19 @@ public class Predicates
         }
 
         public abstract boolean apply(T input);
+    }
+
+    public static <T> boolean and(List<Predicate<T>> list, T t)
+    {
+        for (Predicate<T> p : list)
+            if (!p.test(t)) return false;
+        return true;
+    }
+
+    public static <T> boolean or(List<Predicate<T>> list, T t)
+    {
+        for (Predicate<T> p : list)
+            if (p.test(t)) return true;
+        return false;
     }
 }

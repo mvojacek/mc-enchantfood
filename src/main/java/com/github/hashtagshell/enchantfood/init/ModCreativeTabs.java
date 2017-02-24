@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
 
-public class ModCreativeTab
+public class ModCreativeTabs
 {
     public static CreativeTabs main;
 

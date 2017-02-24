@@ -52,9 +52,7 @@ public class Ref
 
     public static class Asm
     {
-        public static final int     SORTING_INDEX             = 1000000; // Very high because I want my thing to run last
-        //This is only used as a last resort is no transformers set a value in ObfState.classesObfuscated
-        public static final boolean RUNS_AFTER_DEOBF_REMAPPER = SORTING_INDEX > 1000;
+        public static final int SORTING_INDEX = 1000000; // Very high because I want my thing to run last
     }
 
     public static class Proxy

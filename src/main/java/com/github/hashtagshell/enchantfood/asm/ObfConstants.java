@@ -44,27 +44,41 @@ public final class ObfConstants
                                 "(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;");
     }
 
+    public static final class ObfItemStack
+    {
+        public static final ObfMethod IS_ITEM_ENCHANTED
+                = new ObfMethod("x",
+                                "func_77948_v",
+                                "isItemEnchanted",
+                                "()Z");
+    }
+
     public static final class ObfHooks
     {
         public static final ObfClass CLS = new ObfClass(EnchantFoodHooks.class);
 
-        public static final ObfMethod PROCESS_HEAL_AMOUNT
+        public static final ObfMethod PROCESS_ITEM_FOOD_HEAL_AMOUNT
                 = new ObfMethod("processItemFoodHealAmount",
                                 "(ILafi;)I",
                                 "(ILnet/minecraft/item/ItemStack;)I");
 
-        public static final ObfMethod PROCESS_SATURATION_AMOUNT
+        public static final ObfMethod PROCESS_ITEM_FOOD_SATURATION_AMOUNT
                 = new ObfMethod("processItemFoodSaturationAmount",
                                 "(FLafi;)F",
                                 "(FLnet/minecraft/item/ItemStack;)F");
 
-        public static final ObfMethod PROCESS_MAX_ITEM_USE_DURATION
+        public static final ObfMethod PROCESS_ITEM_FOOD_MAX_ITEM_USE_DURATION
                 = new ObfMethod("processItemFoodMaxUseDuration",
                                 "(ILafi;)I",
                                 "(ILnet/minecraft/item/ItemStack;)I");
 
-        public static final ObfMethod PROCESS_CAN_ALWAYS_EAT
+        public static final ObfMethod PROCESS_ITEM_FOOD_CAN_ALWAYS_EAT
                 = new ObfMethod("processItemFoodCanAlwaysEat",
+                                "(ZLafi;)Z",
+                                "(ZLnet/minecraft/item/ItemStack;)Z");
+
+        public static final ObfMethod PROCESS_ITEM_STACK_IS_ITEM_ENCHANTED
+                = new ObfMethod("processItemStackIsItemEnchanted",
                                 "(ZLafi;)Z",
                                 "(ZLnet/minecraft/item/ItemStack;)Z");
     }

@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.ench.EnchantmentFood;
+import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
 import com.github.hashtagshell.enchantfood.init.ModEnchantments;
 
 public class EnchantFoodHooks
@@ -42,5 +43,12 @@ public class EnchantFoodHooks
         return canAlwaysEat
                || 0 != EnchantmentHelper.getEnchantmentLevel(ModEnchantments.alwaysEdible, stack)
                || 0 != EnchantmentHelper.getEnchantmentLevel(ModEnchantments.notNutritious, stack);
+    }
+
+    @SuppressWarnings("unused") //used in dynamically generated code
+    public static boolean processItemStackIsItemEnchanted(boolean isEnchanted, ItemStack stack)
+    {
+        return isEnchanted
+               || PropertyPotionEffect.tagPresent(stack) && !PropertyPotionEffect.fromStack(stack).isEmpty();
     }
 }
