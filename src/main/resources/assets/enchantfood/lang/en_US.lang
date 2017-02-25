@@ -1,6 +1,4 @@
-# lessee wotdis ll do
 #PARSE_ESCAPES
-
 
 # Commands
 command.foodPotion.usage=/foodpotion <player> <add|remove|clear> <potion> <durationTicks> <amplifier> <hideParticles=false>
@@ -13,14 +11,16 @@ command.foodPotion.success.add=Successfully added effect %s to the stack.
 command.foodPotion.success.clear=Cleared all effects.
 command.foodPotion.success.remove=Removed effect %s from stack.
 
+
 # Messages
+
 
 # Config categories
 config_category.general=General
 config_category.general.tooltip=General settings (ie. everything that didn't fit elsewhere)
 
 config_category.enchants=Enchantments
-config_category.enchants.tooltip=Change how enchantments work, disabling them, modifiers...
+config_category.enchants.tooltip=Change how enchantments work, disable them, modifiers...
 
 config_category.foodpotions=Food Potions
 config_category.foodpotions.tooltip=Configure how potion effects on foods behave
@@ -28,12 +28,17 @@ config_category.foodpotions.tooltip=Configure how potion effects on foods behave
 config_category.visual=Visual
 config_category.visual.tooltip=Everything about the look and feel of the mod
 
+config_category.stupid=Stupid
+config_category.stupid.tooltip=Stupid stuff you won't use because you know it's stupid to shut oneself in a wardrobe
+
+
 # Config - General
 config.general_foodUseTicksMin=Minimum food eating ticks
 config.general_foodUseTicksMin.comment=Minimum amount of time in ticks it takes to eat any ItemFood in the game.
 
 config.general_useFallbackHandlers=Use fallback handlers for ASM
 config.general_useFallbackHandlers.comment=If any ASM hooks are disabled, should we register event handlers which will at least partially cover the functionality?
+
 
 # Config - Enchants
 config.enchants_enableNutritious=Enable Nutritious enchantment
@@ -67,8 +72,8 @@ config.enchants_modifierSaturating.comment=Saturating enchantment modifier. More
 config.enchants_modifierDigestible=Digestible Modifier
 config.enchants_modifierDigestible.comment=Digestible enchantment modifier. More on the wiki.
 
-# Config - FoodPotions
 
+# Config - FoodPotions
 config.foodpotions_enable=Enable FoodPotions
 config.foodpotions_enable.comment=Set to false to entirely disable potion effects on foods.
 
@@ -92,9 +97,16 @@ config.visual_foodPotionPreviewLines.comment=Maximum amount of lines the preview
 config.visual_foodPotionPreviewFull=Food potions tooltip always expanded
 config.visual_foodPotionPreviewFull.comment=Disables wrapping of potion effects in foods' tooltips, always displays all of them.
 
+
+# Config - Stupid
+config.stupid_shiny=Oooh, Shiny!
+config.stupid_shiny.comment=Configures the super-important aspect of shininess (actually a word):\n  - OFF: No shininess for you.\n  - FLASHY: Makes all the items twinkle randomly.\n  - ON: Pure shininess!
+
+
 # Items
 item.test.name=Test
 item.enchFood.name=Enchantible Food Test
+
 
 # Enchants
 enchantment.nutritious=Nutritious
@@ -104,6 +116,7 @@ enchantment.alwaysedible=Always Edible
 enchantment.notnutritious=Not Nutritious
 enchantment.notsaturating=Not Saturating
 enchantment.notedible=Inedible
+
 
 # Tooltip
 tooltip.foodPotion.showMore=Hiding %s more effects.

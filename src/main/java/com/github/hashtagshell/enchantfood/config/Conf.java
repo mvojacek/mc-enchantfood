@@ -14,6 +14,9 @@ import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.*;
 import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.WRITE_STACK;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.foodUseTicksMin;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.useFallbackHandlers;
+import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.Shiny;
+import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.Shiny.OFF;
+import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.shiny;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewFull;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewLines;
 import static com.github.hashtagshell.enchantfood.config.Config.config;
@@ -79,6 +82,18 @@ public class Conf
         public static boolean foodPotionPreviewFull  = false;
     }
 
+    public static class Stupid
+    {
+        public static final String category = "stupid";
+
+        public static Shiny shiny = OFF;
+
+        public enum Shiny
+        {
+            OFF, FLASHY, ON
+        }
+    }
+
     private static String name, category;
     private static float defaultFloat, minFloat, maxFloat;
     private static int defaultInt, minInt, maxInt;
@@ -92,6 +107,7 @@ public class Conf
         loadConfigurationEnchants();
         loadConfigurationFoodPotions();
         loadConfigurationVisual();
+        loadConfigurationStupid();
     }
 
     private static void loadConfigurationGeneral()
@@ -202,6 +218,15 @@ public class Conf
         name = "foodPotionPreviewFull";
         defaultBool = foodPotionPreviewFull;
         foodPotionPreviewFull = getBoolean();
+    }
+
+    private static void loadConfigurationStupid()
+    {
+        category = Stupid.category;
+
+        name = "shiny";
+        defaultEnum = shiny;
+        shiny = getEnum(Shiny::valueOf, Shiny::values);
     }
 
     private static int getInt()
