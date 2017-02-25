@@ -104,8 +104,7 @@ config.stupid_shiny.comment=Configures the super-important aspect of shininess (
 
 
 # Items
-item.test.name=Test
-item.enchFood.name=Enchantible Food Test
+item.blank.name=A Blank Square.
 
 
 # Enchants

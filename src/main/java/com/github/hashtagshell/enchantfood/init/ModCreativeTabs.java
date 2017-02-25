@@ -14,7 +14,7 @@ public class ModCreativeTabs
             @Override
             public ItemStack getTabIconItem()
             {
-                return new ItemStack(ModItems.test);
+                return new ItemStack(ModItems.blank);
             }
         };
     }
