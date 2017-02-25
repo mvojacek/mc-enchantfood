@@ -10,12 +10,23 @@ public class RomanNumerals
     static
     {
         mapBase.put(1000, "M"); // regular
+        mapBase.put(999, "IM");
+        mapBase.put(995, "VM");
+        mapBase.put(990, "XM");
+        mapBase.put(950, "LM");
         mapBase.put(900, "CM");
         mapBase.put(500, "D");
+        mapBase.put(499, "ID");
+        mapBase.put(490, "XD");
+        mapBase.put(450, "LD");
         mapBase.put(400, "CD");
         mapBase.put(100, "C");
+        mapBase.put(99, "IC");
+        mapBase.put(95, "VC");
         mapBase.put(90, "XC");
         mapBase.put(50, "L");
+        mapBase.put(49, "IL");
+        mapBase.put(45, "VL");
         mapBase.put(40, "XL");
         mapBase.put(10, "X");
         mapBase.put(9, "IX");
@@ -23,22 +34,31 @@ public class RomanNumerals
         mapBase.put(4, "IV");
         mapBase.put(1, "I");
 
-        mapVinculum.put(1000000, "M^"); // vinculum notation, '^' represents overline
+        mapVinculum.put(1000000, "M^"); // vinculum
+        mapVinculum.put(999000, "I^M^");
+        mapVinculum.put(995000, "V^M^");
+        mapVinculum.put(990000, "X^M^");
+        mapVinculum.put(950000, "L^M^");
         mapVinculum.put(900000, "C^M^");
         mapVinculum.put(500000, "D^");
+        mapVinculum.put(499000, "I^D^");
+        mapVinculum.put(490000, "X^D^");
+        mapVinculum.put(450000, "L^D^");
         mapVinculum.put(400000, "C^D^");
         mapVinculum.put(100000, "C^");
+        mapVinculum.put(99000, "I^C^");
+        mapVinculum.put(95000, "V^C^");
         mapVinculum.put(90000, "X^C^");
         mapVinculum.put(50000, "L^");
+        mapVinculum.put(49000, "I^L^");
+        mapVinculum.put(45000, "V^L^");
         mapVinculum.put(40000, "X^L^");
         mapVinculum.put(10000, "X^");
-        mapVinculum.put(9000, "MX^");
+        mapVinculum.put(9000, "I^X^");
         mapVinculum.put(5000, "V^");
-        mapVinculum.put(4000, "MV^");
-
+        mapVinculum.put(4000, "I^V^");
     }
 
-    //FIXME Not flawless - 3999 will become MMMCMXCIX instead of MMMIM or vinculum IMV^
     public static String toRoman(int number)
     {
         if (number == 0) return "0";

@@ -142,7 +142,7 @@ public class PropertyPotionEffect implements INBTSerializer<PropertyPotionEffect
     public List<String> getToolTip(boolean advanced)
     {
         int linesTotal = Conf.Visual.foodPotionPreviewLines;
-        boolean wrap = !Conf.Visual.foodPotionPreviewFull && effects.values().size() > linesTotal;
+        boolean wrap = !(Conf.Visual.foodPotionPreviewFull || advanced) && effects.values().size() > linesTotal;
         SortedMap<PotionCategory, SortedSet<Pair<String, String>>> map = new TreeMap<>();
         for (PotionCategory cat : PotionCategory.values())
             map.put(cat, new TreeSet<>(compareKeys));
