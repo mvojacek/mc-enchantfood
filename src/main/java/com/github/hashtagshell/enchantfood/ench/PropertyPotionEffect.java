@@ -20,8 +20,8 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.PREVENT_APPLY;
-import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.WRITE_STACK;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.EnforceRestrictions.PREVENT_APPLY;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.EnforceRestrictions.WRITE_STACK;
 import static com.github.hashtagshell.enchantfood.potion.food.PotionCategory.*;
 import static com.github.hashtagshell.enchantfood.reference.Ref.Nbt.TagType.*;
 import static com.github.hashtagshell.enchantfood.utility.ChatColor.*;

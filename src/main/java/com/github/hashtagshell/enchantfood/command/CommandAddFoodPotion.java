@@ -90,7 +90,7 @@ public class CommandAddFoodPotion extends CommandBase
 
         PotionEffect effect = new PotionEffect(potion, duration, amplifier, false, !hideParticles);
 
-        if (!Conf.FoodPotions.enforceRestrictions.includes(Conf.FoodPotions.EnforceRestrictions.PREVENT_COMMAND) || PropertyPotionEffect.isEffectEnabled(effect))
+        if (!Conf.FoodPotions.enforceRestrictions.includes(Conf.Enums.EnforceRestrictions.PREVENT_COMMAND) || PropertyPotionEffect.isEffectEnabled(effect))
         {
             prop.addEffect(effect).writeToStack(stack);
             notifyCommandListener(sender, this, "command.foodPotion.success.add", Log.translate(potion.getName()));

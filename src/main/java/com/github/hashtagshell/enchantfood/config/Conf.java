@@ -9,13 +9,15 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.github.hashtagshell.enchantfood.config.Conf.Defaults.*;
 import static com.github.hashtagshell.enchantfood.config.Conf.Enchants.*;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.EnforceRestrictions;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.EnforceRestrictions.WRITE_STACK;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.Shiny;
+import static com.github.hashtagshell.enchantfood.config.Conf.Enums.Shiny.OFF;
 import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.*;
-import static com.github.hashtagshell.enchantfood.config.Conf.FoodPotions.EnforceRestrictions.WRITE_STACK;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.foodUseTicksMin;
 import static com.github.hashtagshell.enchantfood.config.Conf.General.useFallbackHandlers;
-import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.Shiny;
-import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.Shiny.OFF;
 import static com.github.hashtagshell.enchantfood.config.Conf.Stupid.shiny;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewFull;
 import static com.github.hashtagshell.enchantfood.config.Conf.Visual.foodPotionPreviewLines;
@@ -23,45 +25,112 @@ import static com.github.hashtagshell.enchantfood.config.Config.config;
 
 public class Conf
 {
-    public static class Enchants
-    {
-        private static final String category = "enchants";
-
-        public static boolean enableNutritious    = true;
-        public static boolean enableSaturating    = true;
-        public static boolean enableDigestible    = true;
-        public static boolean enableAlwaysEdible  = true;
-        public static boolean enableNotNutritious = true;
-        public static boolean enableNotSaturating = true;
-        public static boolean enableNotEdible     = true;
-
-        public static float modifierNutritious = 0.333F;
-        public static float modifierSaturating = 0.333F;
-        public static float modifierDigestible = 0.1F;
-    }
-
     public static class General
     {
         private static final String category = "general";
 
-        public static int     foodUseTicksMin     = 2;
-        public static boolean useFallbackHandlers = true;
+        public static int     foodUseTicksMin     = DefGeneral.foodUseTicksMin;
+        public static boolean useFallbackHandlers = DefGeneral.useFallbackHandlers;
+    }
+
+    public static class Enchants
+    {
+        private static final String category = "enchants";
+
+        public static boolean enableNutritious    = DefEnchants.enableNutritious;
+        public static boolean enableSaturating    = DefEnchants.enableSaturating;
+        public static boolean enableDigestible    = DefEnchants.enableDigestible;
+        public static boolean enableAlwaysEdible  = DefEnchants.enableAlwaysEdible;
+        public static boolean enableNotNutritious = DefEnchants.enableNotNutritious;
+        public static boolean enableNotSaturating = DefEnchants.enableNotSaturating;
+
+        public static boolean enableNotEdible    = DefEnchants.enableNotEdible;
+        public static float   modifierNutritious = DefEnchants.modifierNutritious;
+        public static float   modifierSaturating = DefEnchants.modifierSaturating;
+        public static float   modifierDigestible = DefEnchants.modifierDigestible;
+
     }
 
     public static class FoodPotions
     {
         public static final String category = "foodpotions";
 
-        // @formatter:off
         public static SortedSet<ResourceLocation> disabledPotions
                 = new TreeSet<>((r1, r2) -> r1.toString().compareTo(r2.toString()));
-        static final String[] disabledPotionsDefault = {};
-        // @formatter:on
 
-        public static boolean             enable              = true;
-        public static int                 maxAmplifier        = 255;
-        public static int                 maxDuration         = 20000000; // in ticks, = 1000000 seconds
-        public static EnforceRestrictions enforceRestrictions = WRITE_STACK;
+        public static boolean             enable              = DefFoodPotions.enable;
+        public static int                 maxAmplifier        = DefFoodPotions.maxAmplifier;
+        public static int                 maxDuration         = DefFoodPotions.maxDuration;
+        public static EnforceRestrictions enforceRestrictions = DefFoodPotions.enforceRestrictions;
+
+    }
+
+    public static class Visual
+    {
+        public static final String category = "visual";
+
+        public static int     foodPotionPreviewLines = DefVisual.foodPotionPreviewLines;
+        public static boolean foodPotionPreviewFull  = DefVisual.foodPotionPreviewFull;
+    }
+
+    public static class Stupid
+    {
+        public static final String category = "stupid";
+
+        public static Shiny shiny = DefStupid.shiny;
+    }
+
+    static class Defaults
+    {
+        public static class DefGeneral
+        {
+            public static final int     foodUseTicksMin     = 2;
+            public static final boolean useFallbackHandlers = true;
+        }
+
+        public static class DefEnchants
+        {
+            public static final boolean enableNutritious    = true;
+            public static final boolean enableSaturating    = true;
+            public static final boolean enableDigestible    = true;
+            public static final boolean enableAlwaysEdible  = true;
+            public static final boolean enableNotNutritious = true;
+            public static final boolean enableNotSaturating = true;
+
+            public static final boolean enableNotEdible    = true;
+            public static final float   modifierNutritious = 0.333F;
+            public static final float   modifierSaturating = 0.333F;
+            public static final float   modifierDigestible = 0.1F;
+
+        }
+
+        public static class DefFoodPotions
+        {
+            public static final String[]            disabledPotionsDefault = {};
+            public static final boolean             enable                 = true;
+            public static final int                 maxAmplifier           = 255;
+            public static final int                 maxDuration            = 20000000; // in ticks, = 1000000 seconds
+            public static final EnforceRestrictions enforceRestrictions    = WRITE_STACK;
+        }
+
+        public static class DefVisual
+        {
+            public static final int     foodPotionPreviewLines = 8;
+            public static final boolean foodPotionPreviewFull  = false;
+        }
+
+        public static class DefStupid
+        {
+            public static final Shiny shiny = OFF;
+        }
+    }
+
+    public static class Enums
+    {
+        public enum Shiny
+        {
+            OFF, FLASHY, ON
+        }
 
         public enum EnforceRestrictions
         {
@@ -74,26 +143,6 @@ public class Conf
         }
     }
 
-    public static class Visual
-    {
-        public static final String category = "visual";
-
-        public static int     foodPotionPreviewLines = 8;
-        public static boolean foodPotionPreviewFull  = false;
-    }
-
-    public static class Stupid
-    {
-        public static final String category = "stupid";
-
-        public static Shiny shiny = OFF;
-
-        public enum Shiny
-        {
-            OFF, FLASHY, ON
-        }
-    }
-
     private static String name, category;
     private static float defaultFloat, minFloat, maxFloat;
     private static int defaultInt, minInt, maxInt;
@@ -101,7 +150,7 @@ public class Conf
     private static String[] defaultStringArray, validStringArray;
     private static Enum<?> defaultEnum;
 
-    public static void loadConfiguration()
+    static void loadConfiguration()
     {
         loadConfigurationGeneral();
         loadConfigurationEnchants();
@@ -115,13 +164,13 @@ public class Conf
         category = General.category;
 
         name = "foodUseTicksMin";
-        defaultInt = foodUseTicksMin;
+        defaultInt = DefGeneral.foodUseTicksMin;
         minInt = 0;
         maxInt = Integer.MAX_VALUE;
         foodUseTicksMin = getInt();
 
         name = "useFallbackHandlers";
-        defaultBool = useFallbackHandlers;
+        defaultBool = DefGeneral.useFallbackHandlers;
         useFallbackHandlers = getBoolean();
     }
 
@@ -131,31 +180,31 @@ public class Conf
         category = Enchants.category;
 
         name = "enableNutritious";
-        defaultBool = enableNutritious;
+        defaultBool = DefEnchants.enableNutritious;
         enableNutritious = getBoolean();
 
         name = "enableSaturating";
-        defaultBool = enableSaturating;
+        defaultBool = DefEnchants.enableSaturating;
         enableSaturating = getBoolean();
 
         name = "enableDigestible";
-        defaultBool = enableDigestible;
+        defaultBool = DefEnchants.enableDigestible;
         enableDigestible = getBoolean();
 
         name = "enableAlwaysEdible";
-        defaultBool = enableAlwaysEdible;
+        defaultBool = DefEnchants.enableAlwaysEdible;
         enableAlwaysEdible = getBoolean();
 
         name = "enableNotNutritious";
-        defaultBool = enableNotNutritious;
+        defaultBool = DefEnchants.enableNotNutritious;
         enableNotNutritious = getBoolean();
 
         name = "enableNotSaturating";
-        defaultBool = enableNotSaturating;
+        defaultBool = DefEnchants.enableNotSaturating;
         enableNotSaturating = getBoolean();
 
         name = "enableNotEdible";
-        defaultBool = enableNotEdible;
+        defaultBool = DefEnchants.enableNotEdible;
         enableNotEdible = getBoolean();
 
 
@@ -163,15 +212,15 @@ public class Conf
         maxFloat = Float.MAX_VALUE;
 
         name = "modifierNutritious";
-        defaultFloat = modifierNutritious;
+        defaultFloat = DefEnchants.modifierNutritious;
         modifierNutritious = getFloat();
 
         name = "modifierSaturating";
-        defaultFloat = modifierSaturating;
+        defaultFloat = DefEnchants.modifierSaturating;
         modifierSaturating = getFloat();
 
         name = "modifierDigestible";
-        defaultFloat = modifierDigestible;
+        defaultFloat = DefEnchants.modifierDigestible;
         modifierDigestible = getFloat();
     }
 
@@ -180,12 +229,12 @@ public class Conf
         category = FoodPotions.category;
 
         name = "enable";
-        defaultBool = enable;
+        defaultBool = DefFoodPotions.enable;
         enable = getBoolean();
 
         name = "disabledPotions";
         validStringArray = null;
-        defaultStringArray = disabledPotionsDefault;
+        defaultStringArray = DefFoodPotions.disabledPotionsDefault;
         disabledPotions.clear();
         for (String s : getStringArray())
             disabledPotions.add(new ResourceLocation(s));
@@ -193,17 +242,17 @@ public class Conf
         name = "maxAmplifier";
         minInt = 0;
         maxInt = 255;
-        defaultInt = maxAmplifier;
+        defaultInt = DefFoodPotions.maxAmplifier;
         maxAmplifier = getInt();
 
         name = "maxDuration";
         minInt = 0;
         maxInt = Integer.MAX_VALUE;
-        defaultInt = maxDuration;
+        defaultInt = DefFoodPotions.maxDuration;
         maxDuration = getInt();
 
         name = "enforceRestrictions";
-        defaultEnum = enforceRestrictions;
+        defaultEnum = DefFoodPotions.enforceRestrictions;
         enforceRestrictions = getEnum(EnforceRestrictions::valueOf, EnforceRestrictions::values);
     }
 
@@ -212,11 +261,11 @@ public class Conf
         category = Visual.category;
 
         name = "foodPotionPreviewLines";
-        defaultInt = foodPotionPreviewLines;
+        defaultInt = DefVisual.foodPotionPreviewLines;
         foodPotionPreviewLines = getInt();
 
         name = "foodPotionPreviewFull";
-        defaultBool = foodPotionPreviewFull;
+        defaultBool = DefVisual.foodPotionPreviewFull;
         foodPotionPreviewFull = getBoolean();
     }
 
@@ -225,7 +274,7 @@ public class Conf
         category = Stupid.category;
 
         name = "shiny";
-        defaultEnum = shiny;
+        defaultEnum = DefStupid.shiny;
         shiny = getEnum(Shiny::valueOf, Shiny::values);
     }
 

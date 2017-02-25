@@ -5,7 +5,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
 import com.github.hashtagshell.enchantfood.config.Conf;
-import com.github.hashtagshell.enchantfood.config.Conf.Stupid.Shiny;
 import com.github.hashtagshell.enchantfood.ench.EnchantmentFood;
 import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
 import com.github.hashtagshell.enchantfood.init.ModEnchantments;
@@ -52,8 +51,8 @@ public class EnchantFoodHooks
     {
         return isEnchanted
                || PropertyPotionEffect.tagPresent(stack) && !PropertyPotionEffect.fromStack(stack).isEmpty()
-               || Conf.Stupid.shiny == Shiny.ON
-               || (Conf.Stupid.shiny == Shiny.FLASHY && shouldFlashStack(stack));
+               || Conf.Stupid.shiny == Conf.Enums.Shiny.ON
+               || (Conf.Stupid.shiny == Conf.Enums.Shiny.FLASHY && shouldFlashStack(stack));
     }
 
     private static boolean shouldFlashStack(ItemStack stack)
