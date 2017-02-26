@@ -4,6 +4,7 @@ package com.github.hashtagshell.enchantfood.init;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.command.ICommand;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -84,6 +85,14 @@ public class RegisterMethods
         {
             ItemRenderRegister.schedule(item);
             return GameRegistry.register(item);
+        }
+    }
+
+    public static class Recipe
+    {
+        public static void craft(IRecipe recipe)
+        {
+            GameRegistry.addRecipe(recipe);
         }
     }
 

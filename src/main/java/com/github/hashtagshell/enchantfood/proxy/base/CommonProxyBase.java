@@ -28,6 +28,8 @@ public interface CommonProxyBase extends IProxyBase
     @Override
     default void init(FMLInitializationEvent e)
     {
+        ModRecipes.init();
+
         ModIntegration.init();
     }
 

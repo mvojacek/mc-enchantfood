@@ -39,7 +39,7 @@ public class NBT
      *
      * @param itemStack The ItemStack for which its NBT Tag Compound is being checked for initialization
      */
-    private static NBTTagCompound initNBTTagCompound(ItemStack itemStack)
+    public static NBTTagCompound initNBTTagCompound(ItemStack itemStack)
     {
         if (itemStack.getTagCompound() == null)
         {
