@@ -85,8 +85,12 @@ public class CommandAddFoodPotion extends CommandBase
         }
 
         boolean hideParticles = args.length > 5 && parseBoolean(args[5]);
-        int duration = parseInt(args[3], 0);
-        int amplifier = parseInt(args[4], 0, 255);
+        int duration = Conf.FoodPotions.enforceRestrictions.includes(Conf.Enums.EnforceRestrictions.PREVENT_COMMAND)
+                       ? parseInt(args[3], 0, Conf.FoodPotions.maxDuration)
+                       : parseInt(args[3], 0);
+        int amplifier = Conf.FoodPotions.enforceRestrictions.includes(Conf.Enums.EnforceRestrictions.PREVENT_COMMAND)
+                        ? parseInt(args[4], 0, Conf.FoodPotions.maxAmplifier)
+                        : parseInt(args[4], 0);
 
         PotionEffect effect = new PotionEffect(potion, duration, amplifier, false, !hideParticles);
 

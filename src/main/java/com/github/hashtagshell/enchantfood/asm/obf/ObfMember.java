@@ -2,35 +2,31 @@ package com.github.hashtagshell.enchantfood.asm.obf;
 
 import com.github.hashtagshell.enchantfood.asm.ObfState;
 
+import static com.github.hashtagshell.enchantfood.asm.ObfState.DEOBF;
+import static com.github.hashtagshell.enchantfood.asm.ObfState.OBF;
+
 public abstract class ObfMember
 {
     protected final String[] name = new String[ObfState.values().length];
     protected final String[] desc = new String[ObfState.values().length];
 
-    public ObfMember(String nameObfSrgDeobf, String descObfDeobf)
+    public ObfMember(String nameObfDeobf, String descObfDeobf)
     {
-        this(nameObfSrgDeobf, descObfDeobf, descObfDeobf);
+        this(nameObfDeobf, descObfDeobf, descObfDeobf);
     }
 
-    public ObfMember(String nameObfSrgDeobf, String descObf, String descDeobf)
+    public ObfMember(String nameObfDeobf, String descObf, String descDeobf)
     {
-        this(nameObfSrgDeobf, nameObfSrgDeobf, nameObfSrgDeobf, descObf, descDeobf);
+        this(nameObfDeobf, nameObfDeobf, descObf, descDeobf);
     }
 
-    public ObfMember(String nameObf, String nameSrg, String nameDeobf, String descObf, String descDeobf)
+    public ObfMember(String nameObf, String nameDeobf, String descObf, String descDeobf)
     {
-        name[ObfState.OBF.id()] = nameObf;
-        name[ObfState.DEOBF_FULL.id()] = nameDeobf;
-        name[ObfState.DEOBF_SRG.id()] = nameSrg;
+        name[OBF.id()] = nameObf;
+        name[DEOBF.id()] = nameDeobf;
 
-        desc[ObfState.OBF.id()] = descObf;
-        desc[ObfState.DEOBF_FULL.id()] = descDeobf;
-        desc[ObfState.DEOBF_SRG.id()] = descDeobf;
-    }
-
-    public ObfMember(String nameObf, String nameSrg, String nameDeobf, String descObfDeobf)
-    {
-        this(nameObf, nameSrg, nameDeobf, descObfDeobf, descObfDeobf);
+        desc[OBF.id()] = descObf;
+        desc[DEOBF.id()] = descDeobf;
     }
 
     public boolean check(ObfState state, String name, String desc)

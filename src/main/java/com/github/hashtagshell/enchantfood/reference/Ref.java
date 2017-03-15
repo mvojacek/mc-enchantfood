@@ -78,7 +78,7 @@ public class Ref
 
     public static class Nbt
     {
-        public static final String COMP_MOD                              = "securepm";
+        public static final String COMP_MOD                              = Mod.ID;
         public static final String LIST_COMP_FOOD_PROPERTY_POTION_EFFECT = "foodPropertyPotionEffect";
 
         public enum TagType

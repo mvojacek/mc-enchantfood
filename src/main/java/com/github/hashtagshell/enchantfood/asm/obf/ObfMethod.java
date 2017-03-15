@@ -7,24 +7,19 @@ import com.github.hashtagshell.enchantfood.asm.ObfState;
 
 public final class ObfMethod extends ObfMember
 {
-    public ObfMethod(String nameObfSrgDeobf, String descObfDeobf)
+    public ObfMethod(String nameObfDeobf, String descObfDeobf)
     {
-        super(nameObfSrgDeobf, descObfDeobf);
+        super(nameObfDeobf, descObfDeobf);
     }
 
-    public ObfMethod(String nameObfSrgDeobf, String descObf, String descDeobf)
+    public ObfMethod(String nameObfDeobf, String descObf, String descDeobf)
     {
-        super(nameObfSrgDeobf, descObf, descDeobf);
+        super(nameObfDeobf, descObf, descDeobf);
     }
 
-    public ObfMethod(String nameObf, String nameSrg, String nameDeobf, String descObfDeobf)
+    public ObfMethod(String nameObf, String nameDeobf, String descObf, String descDeobf)
     {
-        super(nameObf, nameSrg, nameDeobf, descObfDeobf);
-    }
-
-    public ObfMethod(String nameObf, String nameSrg, String nameDeobf, String descObf, String descDeobf)
-    {
-        super(nameObf, nameSrg, nameDeobf, descObf, descDeobf);
+        super(nameObf, nameDeobf, descObf, descDeobf);
     }
 
     public boolean check(ObfState state, MethodNode node)

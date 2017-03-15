@@ -7,24 +7,19 @@ import com.github.hashtagshell.enchantfood.asm.ObfState;
 
 public final class ObfField extends ObfMember
 {
-    public ObfField(String nameObfSrgDeobf, String descObfDeobf)
+    public ObfField(String nameObfDeobf, String descObfDeobf)
     {
-        super(nameObfSrgDeobf, descObfDeobf);
+        super(nameObfDeobf, descObfDeobf);
     }
 
-    public ObfField(String nameObfSrgDeobf, String descObf, String descDeobf)
+    public ObfField(String nameObfDeobf, String descObf, String descDeobf)
     {
-        super(nameObfSrgDeobf, descObf, descDeobf);
+        super(nameObfDeobf, descObf, descDeobf);
     }
 
-    public ObfField(String nameObf, String nameSrg, String nameDeobf, String descObfDeobf)
+    public ObfField(String nameObf, String nameDeobf, String descObf, String descDeobf)
     {
-        super(nameObf, nameSrg, nameDeobf, descObfDeobf);
-    }
-
-    public ObfField(String nameObf, String nameSrg, String nameDeobf, String descObf, String descDeobf)
-    {
-        super(nameObf, nameSrg, nameDeobf, descObf, descDeobf);
+        super(nameObf, nameDeobf, descObf, descDeobf);
     }
 
     public boolean check(ObfState state, FieldInsnNode node)

@@ -22,8 +22,7 @@ public final class ObfClass
     public ObfClass(String nameObf, String nameDeobf, boolean isInterface)
     {
         name[ObfState.OBF.id()] = nameObf;
-        name[ObfState.DEOBF_FULL.id()] = nameDeobf;
-        name[ObfState.DEOBF_SRG.id()] = nameDeobf;
+        name[ObfState.DEOBF.id()] = nameDeobf;
         isIface = isInterface;
     }
 
