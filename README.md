@@ -1,4 +1,4 @@
-![build status](https://gitlab.com/hashtagshell/enchantfood/badges/master/build.svg)
+![build status](https://gitlab.com/mvojacek/mc-enchantfood/badges/master/build.svg)
 # EnchantFood 1.11
 Enhance most foods in the game with useful
 enchantments that increase food value,
@@ -9,11 +9,6 @@ saturation, eating speed...
 #### [Vazkii](http://vazkii.us/)
 - [Generic Packet implementation from Psi](src/main/java/com/github/hashtagshell/enchantfood/network/message/MessageGeneric.java)
 
-#### [LexManos](http://www.minecraftforge.net/forum/profile/9-lexmanos/)
-- For being
-  [really](http://www.minecraftforge.net/forum/topic/49538-load-ifmlloadingplugin-in-develepment-workspace-asm/)
-  [helpful](http://www.minecraftforge.net/forum/profile/85088-hashtagshell/warnings/)
-  at times
 
 # DETAILS
 
@@ -82,11 +77,8 @@ saturation, eating speed...
 # LEGAL
 
 #### Copyright notice:  
-All rights reserved.  
-Contact me at hashtagshell@email.cz or create
-an issue over at my
-[Written Consents repo @ Gitlab](https://gitlab.com/HashtagShell/consents/issues)
-for any special terms.  
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EnchantFood</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://gitlab.com/mvojacek" property="cc:attributionName" rel="cc:attributionURL">HashtagShell</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://gitlab.com/mvojacek/mc-enchantfood" rel="dct:source">https://gitlab.com/mvojacek/mc-enchantfood</a>.
 
 #### Modpacks:
 You are free to re-distribute this mod in a modpack, but only if you have permission to re-distribute all other mods in that modpack.  
