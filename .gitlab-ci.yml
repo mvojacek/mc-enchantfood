@@ -25,5 +25,13 @@ before_script:
 build:
   stage: build
   script:
-    - ./gradlew -g /cache/.gradle clean build
+    - ./gradlew -g /cache/.gradle clean deleteOldBuilds releaseJar releaseSource releaseDeobf releaseJavadoc
+  artifacts:
+    paths:
+      - "releases/*/*" 
+  cache:
+    paths:
+      - build
+      - .gradle
+      - /cache/.gradle
   allow_failure: false
