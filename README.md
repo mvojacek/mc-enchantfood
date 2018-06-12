@@ -4,6 +4,8 @@ Enhance most foods in the game with useful
 enchantments that increase food value,
 saturation, eating speed...  
 
+[Download latest build](https://gitlab.com/mvojacek/mc-enchantfood/-/jobs/artifacts/master/download?job=build)
+
 # CREDIT
 
 #### [Vazkii](http://vazkii.us/)
