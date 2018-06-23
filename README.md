@@ -14,19 +14,11 @@ saturation, eating speed...
 
 # DETAILS
 
-[//]: # (%GRADLE%:modid:2:':')
-
 **ModID:** 'enchantfood'  
-
-[//]: # (%GRADLE%:version:2:':')
 
 **Minecraft version:** '1.11'  
 
-[//]: # (%GRADLE%:forgeversion:2:':')
-
 **Forge version:** '13.19.1.2189'  
-
-[//]: # (%GRADLE%:mappings:2:':')
 
 **MCP mappings:** 'snapshot_20170211'  
 
@@ -80,7 +72,7 @@ saturation, eating speed...
 
 #### Copyright notice:  
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EnchantFood</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://gitlab.com/mvojacek" property="cc:attributionName" rel="cc:attributionURL">HashtagShell</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://gitlab.com/mvojacek/mc-enchantfood" rel="dct:source">https://gitlab.com/mvojacek/mc-enchantfood</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EnchantFood</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://gitlab.com/mvojacek" property="cc:attributionName" rel="cc:attributionURL">HashtagShell</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
 #### Modpacks:
 You are free to re-distribute this mod in a modpack, but only if you have permission to re-distribute all other mods in that modpack.  
