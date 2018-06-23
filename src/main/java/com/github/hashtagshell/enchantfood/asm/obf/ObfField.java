@@ -5,21 +5,21 @@ import org.objectweb.asm.tree.FieldNode;
 
 import com.github.hashtagshell.enchantfood.asm.ObfState;
 
-public final class ObfField extends ObfMember
+public class ObfField extends ObfMember
 {
-    public ObfField(String nameObfDeobf, String descObfDeobf)
+    public ObfField(String nameAll, String descAll)
     {
-        super(nameObfDeobf, descObfDeobf);
+        super(nameAll, descAll);
     }
 
-    public ObfField(String nameObfDeobf, String descObf, String descDeobf)
+    public ObfField(String nameAll, String descNotch, String descMcp)
     {
-        super(nameObfDeobf, descObf, descDeobf);
+        super(nameAll, descNotch, descMcp);
     }
 
-    public ObfField(String nameObf, String nameDeobf, String descObf, String descDeobf)
+    public ObfField(String nameSrg, String nameDev, String nameNotch, String descNotch, String descMcp)
     {
-        super(nameObf, nameDeobf, descObf, descDeobf);
+        super(nameSrg, nameDev, nameNotch, descNotch, descMcp);
     }
 
     public boolean check(ObfState state, FieldInsnNode node)
@@ -31,4 +31,15 @@ public final class ObfField extends ObfMember
     {
         return check(state, node.name, node.desc);
     }
+
+    public boolean check(FieldInsnNode node)
+    {
+        return check(ObfState.get(), node.name, node.desc);
+    }
+
+    public boolean check(FieldNode node)
+    {
+        return check(ObfState.get(), node.name, node.desc);
+    }
+
 }

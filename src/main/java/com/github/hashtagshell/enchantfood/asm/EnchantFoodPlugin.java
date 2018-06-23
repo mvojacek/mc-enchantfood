@@ -31,7 +31,7 @@ public class EnchantFoodPlugin implements IFMLLoadingPlugin
     @Override
     public void injectData(Map<String, Object> data)
     {
-        ObfState.setObfuscatedEnvironment((Boolean) data.get("runtimeDeobfuscationEnabled"));
+        ObfState.set(AsmUtils.getEnvStateWithoutLoadingClasses((Boolean) data.get("runtimeDeobfuscationEnabled")));
         Ref.Files.MC_LOCATION = (File) data.get("mcLocation");
         AsmConfig.setFileWithModConfigDir();
     }

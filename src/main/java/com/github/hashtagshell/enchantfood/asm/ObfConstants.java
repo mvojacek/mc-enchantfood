@@ -11,30 +11,35 @@ public final class ObfConstants
         public static final ObfField F_ALWAYS_EDIBLE
                 = new ObfField("field_77852_bZ",
                                "alwaysEdible",
+                               "::unused::",
                                "Z",
                                "Z");
 
         public static final ObfMethod GET_SATURATION_MODIFIER
                 = new ObfMethod("func_150906_h",
                                 "getSaturationModifier",
+                                "::unused::",
                                 "(Lafi;)F",
                                 "(Lnet/minecraft/item/ItemStack;)F");
 
         public static final ObfMethod GET_HEAL_AMOUNT
                 = new ObfMethod("func_150905_g",
                                 "getHealAmount",
+                                "::unused::",
                                 "(Lafi;)I",
                                 "(Lnet/minecraft/item/ItemStack;)I");
 
         public static final ObfMethod GET_MAX_ITEM_USE_DURATION
                 = new ObfMethod("func_77626_a",
                                 "getMaxItemUseDuration",
+                                "::unused::",
                                 "(Lafi;)I",
                                 "(Lnet/minecraft/item/ItemStack;)I");
 
         public static final ObfMethod ON_ITEM_RIGHTCLICK
                 = new ObfMethod("func_77659_a",
                                 "onItemRightClick",
+                                "::unused::",
                                 "(Lajq;Laax;Lrh;)Lrk;",
                                 "(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Lnet/minecraft/util/ActionResult;");
     }
@@ -44,6 +49,7 @@ public final class ObfConstants
         public static final ObfMethod IS_ITEM_ENCHANTED
                 = new ObfMethod("func_77948_v",
                                 "isItemEnchanted",
+                                "::unused::",
                                 "()Z",
                                 "()Z");
     }

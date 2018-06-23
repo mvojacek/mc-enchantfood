@@ -4,30 +4,38 @@ import com.github.hashtagshell.enchantfood.utility.Log;
 
 public enum ObfState
 {
-    OBF, DEOBF;
+    SRG, DEV, NOTCH;
 
-    private static ObfState current = null;
+    private static ObfState state = null;
 
-    private static boolean obfuscatedEnvironment = true;
-
-    static void setObfuscatedEnvironment(boolean obf)
+    static void set(ObfState state)
     {
-        obfuscatedEnvironment = obf;
+        ObfState.state = state;
     }
 
     public static ObfState get()
     {
-        if (current == null)
-        {
-            //: :IF ENABLE_RUN_DEOBF :IE !DEV_ENV :THEN OBF :ELSE DEOBF :END
-            current = obfuscatedEnvironment ? OBF : DEOBF;
-            Log.infof("This environment is %s", current);
-        }
-        return current;
+        if (state == null)
+            Log.fatal("Obfuscation state is not set!");
+        return state;
     }
 
     public final int id()
     {
         return ordinal();
+    }
+
+    public static String decideClassMcpNotch(ObfState state, String notch, String mcp)
+    {
+        switch (state)
+        {
+            case NOTCH:
+                return notch;
+
+            case DEV:
+            case SRG:
+            default:
+                return mcp;
+        }
     }
 }

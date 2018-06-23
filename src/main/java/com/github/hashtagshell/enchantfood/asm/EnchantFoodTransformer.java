@@ -19,7 +19,10 @@ import static com.github.hashtagshell.enchantfood.asm.AsmUtils.HookInsertRelativ
 import static com.github.hashtagshell.enchantfood.asm.AsmUtils.staticHookAllInsns;
 import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfHooks;
 import static com.github.hashtagshell.enchantfood.asm.ObfConstants.ObfItemFood;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.FRETURN;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IRETURN;
 
 public class EnchantFoodTransformer implements IClassTransformer
 {
@@ -43,7 +46,7 @@ public class EnchantFoodTransformer implements IClassTransformer
                                         BiConsumer<ClassNode, ObfState> transformer)
     {
         ObfState state = ObfState.get();
-        Log.infof("Transforming %s (%s):", name, nameDeobf);
+        Log.infof("Transforming %s (%s) in env %s:", name, nameDeobf, state);
         try
         {
             ClassNode classNode = new ClassNode();
@@ -74,30 +77,30 @@ public class EnchantFoodTransformer implements IClassTransformer
             for (MethodNode method : node.methods)
             {
                 if (AsmConf.transform_C_ItemFood_M_GetHealAmount
-                    && ObfItemFood.GET_HEAL_AMOUNT.check(state, method))
+                    && ObfItemFood.GET_HEAL_AMOUNT.check(method))
                 {
                     staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_ITEM_FOOD_HEAL_AMOUNT);
                 }
                 else if (AsmConf.transform_C_ItemFood_M_GetSaturationModifier
-                         && ObfItemFood.GET_SATURATION_MODIFIER.check(state, method))
+                         && ObfItemFood.GET_SATURATION_MODIFIER.check(method))
                 {
                     staticHookAllInsns(method, FRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_ITEM_FOOD_SATURATION_AMOUNT);
                 }
                 else if (AsmConf.transform_C_ItemFood_M_GetMaxItemUseDuration
-                         && ObfItemFood.GET_MAX_ITEM_USE_DURATION.check(state, method))
+                         && ObfItemFood.GET_MAX_ITEM_USE_DURATION.check(method))
                 {
                     staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 1,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_ITEM_FOOD_MAX_ITEM_USE_DURATION);
                 }
                 else if (AsmConf.transform_C_ItemFood_M_OnItemRightClick
-                         && ObfItemFood.ON_ITEM_RIGHTCLICK.check(state, method))
+                         && ObfItemFood.ON_ITEM_RIGHTCLICK.check(method))
                 {
                     staticHookAllInsns(method,
                                        insn ->
                                                insn.getOpcode() == GETFIELD
-                                               && ObfItemFood.F_ALWAYS_EDIBLE.check(state, (FieldInsnNode) insn),
+                                               && ObfItemFood.F_ALWAYS_EDIBLE.check((FieldInsnNode) insn),
                                        AFTER, ALOAD, 4, state, HOOK_CLASS, ObfHooks.PROCESS_ITEM_FOOD_CAN_ALWAYS_EAT);
                 }
             }
@@ -111,7 +114,7 @@ public class EnchantFoodTransformer implements IClassTransformer
             for (MethodNode method : node.methods)
             {
                 if (AsmConf.transform_C_ItemStack_M_IsItemEnchanted // CLIENT-ONLY (ignored on server)
-                    && ObfItemStack.IS_ITEM_ENCHANTED.check(state, method))
+                    && ObfItemStack.IS_ITEM_ENCHANTED.check(method))
                 {
                     staticHookAllInsns(method, IRETURN, BEFORE, ALOAD, 0,
                                        state, HOOK_CLASS, ObfHooks.PROCESS_ITEM_STACK_IS_ITEM_ENCHANTED);

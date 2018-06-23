@@ -5,21 +5,21 @@ import org.objectweb.asm.tree.MethodNode;
 
 import com.github.hashtagshell.enchantfood.asm.ObfState;
 
-public final class ObfMethod extends ObfMember
+public class ObfMethod extends ObfMember
 {
-    public ObfMethod(String nameObfDeobf, String descObfDeobf)
+    public ObfMethod(String nameAll, String descAll)
     {
-        super(nameObfDeobf, descObfDeobf);
+        super(nameAll, descAll);
     }
 
-    public ObfMethod(String nameObfDeobf, String descObf, String descDeobf)
+    public ObfMethod(String nameAll, String descNotch, String descMcp)
     {
-        super(nameObfDeobf, descObf, descDeobf);
+        super(nameAll, descNotch, descMcp);
     }
 
-    public ObfMethod(String nameObf, String nameDeobf, String descObf, String descDeobf)
+    public ObfMethod(String nameSrg, String nameDev, String nameNotch, String descNotch, String descMcp)
     {
-        super(nameObf, nameDeobf, descObf, descDeobf);
+        super(nameSrg, nameDev, nameNotch, descNotch, descMcp);
     }
 
     public boolean check(ObfState state, MethodNode node)
@@ -30,5 +30,15 @@ public final class ObfMethod extends ObfMember
     public boolean check(ObfState state, MethodInsnNode node)
     {
         return check(state, node.name, node.desc);
+    }
+
+    public boolean check(MethodNode node)
+    {
+        return check(ObfState.get(), node);
+    }
+
+    public boolean check(MethodInsnNode node)
+    {
+        return check(ObfState.get(), node);
     }
 }

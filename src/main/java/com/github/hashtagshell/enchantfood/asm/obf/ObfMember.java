@@ -2,31 +2,32 @@ package com.github.hashtagshell.enchantfood.asm.obf;
 
 import com.github.hashtagshell.enchantfood.asm.ObfState;
 
-import static com.github.hashtagshell.enchantfood.asm.ObfState.DEOBF;
-import static com.github.hashtagshell.enchantfood.asm.ObfState.OBF;
-
 public abstract class ObfMember
 {
-    protected final String[] name = new String[ObfState.values().length];
-    protected final String[] desc = new String[ObfState.values().length];
+    private final String nameSrg;
+    private final String nameDev;
+    private final String nameNotch;
 
-    public ObfMember(String nameObfDeobf, String descObfDeobf)
+    private final String descNotch;
+    private final String descMcp;
+
+    public ObfMember(String nameAll, String descAll)
     {
-        this(nameObfDeobf, descObfDeobf, descObfDeobf);
+        this(nameAll, descAll, descAll);
     }
 
-    public ObfMember(String nameObfDeobf, String descObf, String descDeobf)
+    public ObfMember(String nameAll, String descNotch, String descMcp)
     {
-        this(nameObfDeobf, nameObfDeobf, descObf, descDeobf);
+        this(nameAll, nameAll, nameAll, descNotch, descMcp);
     }
 
-    public ObfMember(String nameObf, String nameDeobf, String descObf, String descDeobf)
+    public ObfMember(String nameSrg, String nameDev, String nameNotch, String descNotch, String descMcp)
     {
-        name[OBF.id()] = nameObf;
-        name[DEOBF.id()] = nameDeobf;
-
-        desc[OBF.id()] = descObf;
-        desc[DEOBF.id()] = descDeobf;
+        this.nameSrg = nameSrg;
+        this.nameDev = nameDev;
+        this.nameNotch = nameNotch;
+        this.descNotch = descNotch;
+        this.descMcp = descMcp;
     }
 
     public boolean check(ObfState state, String name, String desc)
@@ -36,12 +37,35 @@ public abstract class ObfMember
 
     public String name(ObfState state)
     {
-        return name[state.id()];
+        switch (state)
+        {
+            case SRG:
+                return nameSrg;
+            case NOTCH:
+                return nameNotch;
+            case DEV:
+            default:
+                return nameDev;
+        }
     }
 
     public String desc(ObfState state)
     {
-        return desc[state.id()];
+        return ObfState.decideClassMcpNotch(state, descNotch, descMcp);
     }
 
+    public String name()
+    {
+        return name(ObfState.get());
+    }
+
+    public String desc()
+    {
+        return desc(ObfState.get());
+    }
+
+    public boolean check(String name, String desc)
+    {
+        return check(ObfState.get(), name, desc);
+    }
 }

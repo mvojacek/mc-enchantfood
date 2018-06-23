@@ -4,35 +4,35 @@ import org.objectweb.asm.Type;
 
 import com.github.hashtagshell.enchantfood.asm.ObfState;
 
-public final class ObfClass
+public class ObfClass
 {
-    private final String[] name = new String[ObfState.values().length];
-    private final boolean isIface;
+    private final String nameNotch, nameMcp;
+    private final boolean isInterface;
 
-    public ObfClass(Class clsObfDeobf)
+    public ObfClass(Class clsNotchMcp)
     {
-        this(Type.getInternalName(clsObfDeobf), clsObfDeobf.isInterface());
+        this(Type.getInternalName(clsNotchMcp), clsNotchMcp.isInterface());
     }
 
-    public ObfClass(String nameObfDeobf, boolean isInterface)
+    public ObfClass(String nameNotchMcp, boolean isInterface)
     {
-        this(nameObfDeobf, nameObfDeobf, isInterface);
+        this(nameNotchMcp, nameNotchMcp, isInterface);
     }
 
-    public ObfClass(String nameObf, String nameDeobf, boolean isInterface)
+    public ObfClass(String nameNotch, String nameMcp, boolean isInterface)
     {
-        name[ObfState.OBF.id()] = nameObf;
-        name[ObfState.DEOBF.id()] = nameDeobf;
-        isIface = isInterface;
+        this.nameNotch = nameNotch;
+        this.nameMcp = nameMcp;
+        this.isInterface = isInterface;
     }
 
     public String name(ObfState state)
     {
-        return name[state.id()];
+        return ObfState.decideClassMcpNotch(state, nameNotch, nameMcp);
     }
 
     public boolean isInterface()
     {
-        return isIface;
+        return isInterface;
     }
 }
