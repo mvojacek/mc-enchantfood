@@ -1,13 +1,12 @@
 package com.github.hashtagshell.enchantfood.proxy.base;
 
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-
 import com.github.hashtagshell.enchantfood.config.Config;
 import com.github.hashtagshell.enchantfood.init.*;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public interface CommonProxyBase extends IProxyBase
 {
@@ -19,6 +18,8 @@ public interface CommonProxyBase extends IProxyBase
         ModEnchantments.preInit();
 
         ModItems.preInit();
+
+        ModBlocks.preInit();
 
         NetworkWrapper.preInit();
 

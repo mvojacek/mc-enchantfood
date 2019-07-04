@@ -1,17 +1,21 @@
 package com.github.hashtagshell.enchantfood.init;
 
 
+import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
+import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
+import com.github.hashtagshell.enchantfood.reference.Ref;
+import net.minecraft.block.Block;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.command.ICommand;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
-
-import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
 
 public class RegisterMethods
 {
@@ -62,7 +66,7 @@ public class RegisterMethods
             MinecraftForge.EVENT_BUS.register(o);
         }
 
-        public static void registerOregen(Object o)
+        public static void lok(Object o)
         {
             MinecraftForge.ORE_GEN_BUS.register(o);
         }
@@ -85,6 +89,57 @@ public class RegisterMethods
         {
             ItemRenderRegister.schedule(item);
             return GameRegistry.register(item);
+        }
+    }
+
+    public static class Blocks {
+        public static <T extends Block> T register(T block, boolean enable) {
+            return enable ? register(block) : block;
+        }
+
+        public static <T extends Block> T register(T block) {
+            ItemBlock item = new ItemBlock(block);
+            //noinspection ConstantConditions - if the registry name is null there is a bug elsewhere
+            item.setRegistryName(block.getRegistryName());
+            return register(block, item);
+        }
+
+        public static <T extends Block, I extends ItemBlock> T register(T block, I item, boolean enable) {
+            if (enable) register(block, item);
+            return block;
+        }
+
+        public static <T extends Block, I extends ItemBlock> T register(T block, I item) {
+            if (item != null) Items.register(item);
+            return RegistryObjects.register(block);
+        }
+
+        public static <T extends BlockTileGeneric, I extends ItemBlock> T registerTile(T block, I item, boolean enable) {
+            return enable ? registerTile(block, item) : block;
+        }
+
+        @SuppressWarnings("unchecked")
+        // - Class<T> from BlockTileGeneric<T extends TileEntity> -> Class<T extends TileEntity>
+        public static <T extends BlockTileGeneric, I extends ItemBlock> T registerTile(T block, I item) {
+            Tiles.register(block.tileClass(), block.tileId());
+            return register(block, item);
+        }
+
+        public static <T extends BlockTileGeneric> T registerTile(T block, boolean enable) {
+            return enable ? register(block) : block;
+        }
+
+        @SuppressWarnings("unchecked")
+        // - Class<T> from BlockTileGeneric<T extends TileEntity> -> Class<T extends TileEntity>
+        public static <T extends BlockTileGeneric> T registerTile(T block) {
+            Tiles.register(block.tileClass(), block.tileId());
+            return register(block);
+        }
+    }
+
+    public static class Tiles {
+        public static void register(Class<? extends TileEntity> tile, String id) {
+            GameRegistry.registerTileEntity(tile, Ref.Mod.ID + "_" + id);
         }
     }
 
