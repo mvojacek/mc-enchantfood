@@ -48,6 +48,6 @@ public class BlockGuiFoodEnchanter extends GuiContainer {
         String name = I18n.format(ModBlocks.foodEnchanter.getUnlocalizedName() + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
-        fontRenderer.drawString(foodEnchanterContainer.fuel + " Fuel", 8, ySize - 180, 0x404040);
+        //fontRenderer.drawString(foodEnchanterContainer.fuel + " Fuel", 8, ySize - 180, 0x404040);
     }
 }
