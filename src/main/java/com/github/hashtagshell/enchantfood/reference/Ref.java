@@ -50,6 +50,10 @@ public class Ref
         }
     }
 
+    public static class Resources {
+        public static final String GUI_RESOURCE_FOLDER = "textures/gui/";
+    }
+
     public static class Asm
     {
         public static final int SORTING_INDEX = 1000000; // Very high because I want my thing to run last

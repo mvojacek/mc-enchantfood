@@ -1,13 +1,12 @@
 package com.github.hashtagshell.enchantfood.network;
 
 
+import com.github.hashtagshell.enchantfood.reference.Ref.Network;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.github.hashtagshell.enchantfood.reference.Ref.Network;
 
 public class NetworkWrapper
 {

@@ -15,6 +15,9 @@ package com.github.hashtagshell.enchantfood.network.message;
  */
 
 
+import com.github.hashtagshell.enchantfood.utility.EntityPos;
+import com.github.hashtagshell.enchantfood.utility.NBT;
+import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,10 +25,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.github.hashtagshell.enchantfood.utility.EntityPos;
-import com.github.hashtagshell.enchantfood.utility.NBT;
-import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -1,16 +1,15 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
+import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers;
+import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Reader;
+import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Writer;
+import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.network.PacketBuffer;
-
-import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers;
-import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Reader;
-import com.github.hashtagshell.enchantfood.network.message.MessageGeneric.SerializationHandlers.Writer;
-import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

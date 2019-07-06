@@ -1,11 +1,10 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
-
 import com.github.hashtagshell.enchantfood.EnchantFood;
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 public class Log
 {

@@ -1,15 +1,14 @@
 package com.github.hashtagshell.enchantfood.command;
 
 
+import com.github.hashtagshell.enchantfood.reference.Ref.Command;
+import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.text.TextComponentString;
-
-import com.github.hashtagshell.enchantfood.reference.Ref.Command;
-import com.github.hashtagshell.enchantfood.utility.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

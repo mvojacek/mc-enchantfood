@@ -1,10 +1,9 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
+import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.util.ResourceLocation;
 import org.w3c.dom.Document;
-
-import com.github.hashtagshell.enchantfood.reference.Ref;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;

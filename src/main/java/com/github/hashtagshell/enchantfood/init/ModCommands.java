@@ -1,11 +1,10 @@
 package com.github.hashtagshell.enchantfood.init;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-
 import com.github.hashtagshell.enchantfood.command.CommandAddFoodPotion;
 import com.github.hashtagshell.enchantfood.command.CommandFood;
 import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 import static com.github.hashtagshell.enchantfood.init.RegisterMethods.Commands.registerServer;
 

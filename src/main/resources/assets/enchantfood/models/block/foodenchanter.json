@@ -1,5 +1,6 @@
 {
   "textures": {
+    "particle": "minecraft:blocks/cobblestone",
     "enchanting_table_top": "minecraft:blocks/enchanting_table_top",
     "cobblestone": "minecraft:blocks/cobblestone",
     "planks_oak": "minecraft:blocks/planks_oak"
@@ -111,6 +112,7 @@
   "elements": [
     {
       "name": "Top",
+      "shade": false,
       "from": [
         5,
         1,
@@ -171,6 +173,7 @@
     },
     {
       "name": "Bottom",
+      "shade": false,
       "from": [
         3,
         0,
@@ -240,6 +243,7 @@
     },
     {
       "name": "SideNorth",
+      "shade": false,
       "from": [
         5,
         0,
@@ -318,6 +322,7 @@
     },
     {
       "name": "SideSouth",
+      "shade": false,
       "from": [
         5,
         0,
@@ -396,6 +401,7 @@
     },
     {
       "name": "SideWest",
+      "shade": false,
       "from": [
         9,
         0,
@@ -474,6 +480,7 @@
     },
     {
       "name": "SideEast",
+      "shade": false,
       "from": [
         6,
         0,
@@ -552,6 +559,7 @@
     },
     {
       "name": "MiddleW",
+      "shade": false,
       "from": [
         5,
         4,
@@ -612,6 +620,7 @@
     },
     {
       "name": "MiddleE",
+      "shade": false,
       "from": [
         10,
         4,
@@ -672,6 +681,7 @@
     },
     {
       "name": "MiddleS",
+      "shade": false,
       "from": [
         7,
         4,
@@ -732,6 +742,7 @@
     },
     {
       "name": "MiddleN",
+      "shade": false,
       "from": [
         7,
         4,

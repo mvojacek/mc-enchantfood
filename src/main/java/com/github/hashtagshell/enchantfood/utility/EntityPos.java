@@ -1,11 +1,10 @@
 package com.github.hashtagshell.enchantfood.utility;
 
 
+import com.github.hashtagshell.enchantfood.utility.tuple.Quadruplet;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.hashtagshell.enchantfood.utility.tuple.Quadruplet;
 
 public class EntityPos extends Quadruplet<Double, Double, Double, Integer>
         implements INBTSerializer<EntityPos, NBTTagCompound>

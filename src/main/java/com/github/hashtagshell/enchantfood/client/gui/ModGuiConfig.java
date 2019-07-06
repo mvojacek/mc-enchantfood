@@ -1,15 +1,14 @@
 package com.github.hashtagshell.enchantfood.client.gui;
 
 
+import com.github.hashtagshell.enchantfood.config.Config;
+import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
+import com.github.hashtagshell.enchantfood.utility.Array;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
-
-import com.github.hashtagshell.enchantfood.config.Config;
-import com.github.hashtagshell.enchantfood.reference.Ref.Mod;
-import com.github.hashtagshell.enchantfood.utility.Array;
 
 import java.util.List;
 

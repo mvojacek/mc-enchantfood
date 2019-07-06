@@ -1,12 +1,11 @@
 package com.github.hashtagshell.enchantfood;
 
+import com.github.hashtagshell.enchantfood.proxy.IProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
-
-import com.github.hashtagshell.enchantfood.proxy.IProxy;
 
 import static com.github.hashtagshell.enchantfood.reference.Ref.Config.GUI_FACTORY_CLASS;
 import static com.github.hashtagshell.enchantfood.reference.Ref.Mod.*;

@@ -1,8 +1,7 @@
 package com.github.hashtagshell.enchantfood.proxy.base;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-
 import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public interface ClientProxyBase extends CommonProxyBase
 {

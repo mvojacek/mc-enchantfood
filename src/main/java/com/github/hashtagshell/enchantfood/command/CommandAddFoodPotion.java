@@ -1,6 +1,10 @@
 package com.github.hashtagshell.enchantfood.command;
 
 
+import com.github.hashtagshell.enchantfood.config.Conf;
+import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
+import com.github.hashtagshell.enchantfood.reference.Ref.Command;
+import com.github.hashtagshell.enchantfood.utility.Log;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,11 +12,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.hashtagshell.enchantfood.config.Conf;
-import com.github.hashtagshell.enchantfood.ench.PropertyPotionEffect;
-import com.github.hashtagshell.enchantfood.reference.Ref.Command;
-import com.github.hashtagshell.enchantfood.utility.Log;
 
 import java.util.ArrayList;
 import java.util.List;
