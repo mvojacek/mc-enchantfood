@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.Random;
+
 public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
     public ItemStackHandler inventory = new ItemStackHandler(3);
@@ -32,6 +34,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     public final int progressMax = 200;
 
     private int lastSendFuel = 0;
+    private Random random = new Random();
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -101,6 +104,36 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
             double z = mypos.getZ();
             double range = 16;
             NetworkWrapper.network.sendToAllAround(new MessageFoodEnchanter(getPos(), fuel, progress, working), new NetworkRegistry.TargetPoint(world.provider.getDimension(), x, y, z, range));
+        }
+
+        ItemStack craftingItem = inventory.getStackInSlot(0);
+
+        if (craftingItem != ItemStack.EMPTY && craftingItem.getCount() == 1 && craftingItem.getItem() instanceof ItemFood) {
+            ItemFood food = (ItemFood) fuelItem.getItem();
+            int itemValue = food.getHealAmount(fuelItem);
+            int operationCost = (int) Math.ceil((double) itemValue * 24.0 / 200.0);
+            if (fuel > operationCost) {
+
+                if (itemValue * 24 >= fuel && working == false) {
+                    working = true;
+                }
+
+                if (working) {
+                    progress++;
+                    fuel -= operationCost;
+
+                    if (progress == progressMax) {
+                        working = false;
+                        ItemStack output = craftingItem.copy();
+                        inventory.setStackInSlot(0, ItemStack.EMPTY);
+                        int enchantCount = random.nextInt(3) + 1;
+
+                        for (int i = 0; i < enchantCount; i++) {
+
+                        }
+                    }
+                }
+            }
         }
     }
 

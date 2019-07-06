@@ -24,6 +24,11 @@ public class ContainerFoodEnchanter extends Container {
             public void onSlotChanged() {
                 foodEnchanter.markDirty();
             }
+
+            @Override
+            public int getSlotStackLimit() {
+                return 1;
+            }
         });
 
         //Add Fuel slot
@@ -40,6 +45,12 @@ public class ContainerFoodEnchanter extends Container {
             public void onSlotChanged() {
                 foodEnchanter.markDirty();
             }
+
+            @Override
+            public int getSlotStackLimit() {
+                return 1;
+            }
+
         });
 
 

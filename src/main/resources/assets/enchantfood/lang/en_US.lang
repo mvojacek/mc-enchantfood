@@ -109,7 +109,6 @@ item.blank.name=A Blank Square.
 # Blocks
 
 # Tiles
-foodenchanter.name=Food Enchanter
 tile.enchantfood:foodenchanter.name=Food Enchanter
 
 # Enchants
