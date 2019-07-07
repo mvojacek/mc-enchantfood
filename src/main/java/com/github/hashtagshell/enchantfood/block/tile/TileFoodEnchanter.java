@@ -136,14 +136,13 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                         for (int i = 0; i < enchantCount; i++) {
                             int enchRoll = random.nextInt(ModEnchantments.foodEnchants.size());
                             EnchantmentFood ench = ModEnchantments.foodEnchants.get(enchRoll);
-                            if (EnchantmentHelper.getEnchantments(output).size() > 0)
-                                if (EnchantmentHelper.getEnchantments(output).get(ench) != ench.maxLevel) {
+                            if (EnchantmentHelper.getEnchantments(output).size() > 0) {
                                     if (EnchantmentHelper.getEnchantments(output).containsKey(ench)) {
-                                        output.addEnchantment(ench, EnchantmentHelper.getEnchantments(output).get(ench) + 1);
-                                    } else if (ench.canApply(output)) {
-                                        output.addEnchantment(ench, random.nextInt(ModEnchantments.foodEnchants.get(enchRoll).maxLevel) + 1);
+                                        output.addEnchantment(ench, ench.maxLevel);
                                     }
-                                }
+                            } else if (ench.canApply(output)) {
+                                output.addEnchantment(ench, random.nextInt(ModEnchantments.foodEnchants.get(enchRoll).maxLevel) + 1);
+                            }
                         }
 
                         inventory.setStackInSlot(2, output);
@@ -165,7 +164,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
         double radian = random.nextDouble() * 8.0;
         double zPos = pos.getZ() + 0.5 + radius * Math.sin(radian);
         double xPos = pos.getX() + 0.5 + radius * Math.cos(radian);
-        double yPos = pos.getY() + 1;
+        double yPos = pos.getY() + 1.6;
         double xVel = Math.cos(radian) * (1 / (radius / 2));
         double zVel = Math.sin(radian) * (1 / (radius / 2));
         double yVel = -0.4;
