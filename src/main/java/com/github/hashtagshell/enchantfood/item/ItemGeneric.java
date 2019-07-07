@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 
 import com.github.hashtagshell.enchantfood.init.ModCreativeTabs;
 import com.github.hashtagshell.enchantfood.init.RegisterMethods;
+import com.github.hashtagshell.enchantfood.reference.Ref;
 
 public class ItemGeneric extends Item
 {
@@ -11,8 +12,8 @@ public class ItemGeneric extends Item
     {
         super();
         setCreativeTab(ModCreativeTabs.main);
-        setUnlocalizedName(name);
         setRegistryName(name);
+        setUnlocalizedName(Ref.Mod.ID + "." + getRegistryName().getResourcePath());
     }
 
     public ItemGeneric register()
