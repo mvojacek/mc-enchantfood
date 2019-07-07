@@ -1,9 +1,6 @@
 package com.github.hashtagshell.enchantfood.init;
 
 
-import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
-import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
-import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.command.ICommand;
@@ -16,6 +13,10 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+
+import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
+import com.github.hashtagshell.enchantfood.client.render.ItemRenderRegister;
+import com.github.hashtagshell.enchantfood.reference.Ref;
 
 public class RegisterMethods
 {
@@ -99,7 +100,6 @@ public class RegisterMethods
 
         public static <T extends Block> T register(T block) {
             ItemBlock item = new ItemBlock(block);
-            //noinspection ConstantConditions - if the registry name is null there is a bug elsewhere
             item.setRegistryName(block.getRegistryName());
             return register(block, item);
         }
