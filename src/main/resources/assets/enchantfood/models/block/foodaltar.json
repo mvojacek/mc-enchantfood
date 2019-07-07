@@ -1,0 +1,1102 @@
+{
+  "textures": {
+    "particle": "minecraft:blocks/obsidian",
+    "enchanting_table_top": "minecraft:blocks/enchanting_table_top",
+    "obsidian": "minecraft:blocks/obsidian",
+    "cobblestone": "minecraft:blocks/cobblestone",
+    "emerald_block": "minecraft:blocks/emerald_block",
+    "planks_oak": "minecraft:blocks/planks_oak"
+  },
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        315,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        315,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    }
+  },
+  "elements": [
+    {
+      "name": "Top",
+      "from": [
+        5,
+        1,
+        5
+      ],
+      "to": [
+        11,
+        4,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cobblestone",
+          "uv": [
+            2,
+            5,
+            8,
+            8
+          ]
+        },
+        "east": {
+          "texture": "#cobblestone",
+          "uv": [
+            3,
+            2,
+            9,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#cobblestone",
+          "uv": [
+            6,
+            4,
+            12,
+            7
+          ]
+        },
+        "west": {
+          "texture": "#cobblestone",
+          "uv": [
+            2,
+            3,
+            8,
+            6
+          ]
+        },
+        "up": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bottom",
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        1,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#planks_oak",
+          "uv": [
+            3,
+            4,
+            13,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#planks_oak",
+          "uv": [
+            5,
+            1,
+            15,
+            2
+          ]
+        },
+        "south": {
+          "texture": "#planks_oak",
+          "uv": [
+            5,
+            2,
+            15,
+            3
+          ]
+        },
+        "west": {
+          "texture": "#planks_oak",
+          "uv": [
+            3,
+            1,
+            13,
+            2
+          ]
+        },
+        "up": {
+          "texture": "#planks_oak",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "down": {
+          "texture": "#planks_oak",
+          "uv": [
+            0,
+            0,
+            10,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "SideNorth",
+      "from": [
+        5,
+        0,
+        9
+      ],
+      "to": [
+        11,
+        3,
+        10
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "x",
+        "angle": 45.0
+      },
+      "faces": {
+        "north": {
+          "texture": "#cobblestone",
+          "uv": [
+            6,
+            6,
+            12,
+            9
+          ]
+        },
+        "east": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "west": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "up": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ]
+        },
+        "down": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "SideSouth",
+      "from": [
+        5,
+        0,
+        6
+      ],
+      "to": [
+        11,
+        3,
+        7
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "x",
+        "angle": -45.0
+      },
+      "faces": {
+        "north": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "west": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "up": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ]
+        },
+        "down": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "SideWest",
+      "from": [
+        9,
+        0,
+        5
+      ],
+      "to": [
+        10,
+        3,
+        11
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "z",
+        "angle": -45.0
+      },
+      "faces": {
+        "north": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "west": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "up": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ]
+        },
+        "down": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "name": "SideEast",
+      "from": [
+        6,
+        0,
+        5
+      ],
+      "to": [
+        7,
+        3,
+        11
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "z",
+        "angle": 45.0
+      },
+      "faces": {
+        "north": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            3
+          ]
+        },
+        "west": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            6,
+            3
+          ]
+        },
+        "up": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ]
+        },
+        "down": {
+          "texture": "#cobblestone",
+          "uv": [
+            0,
+            0,
+            1,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "name": "MiddleW",
+      "from": [
+        5,
+        4,
+        7
+      ],
+      "to": [
+        6,
+        5,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            6,
+            2,
+            7
+          ]
+        },
+        "east": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            7,
+            1,
+            9,
+            2
+          ]
+        },
+        "south": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            14,
+            7,
+            15,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            7,
+            1,
+            9,
+            2
+          ]
+        },
+        "up": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            0,
+            6,
+            1,
+            8
+          ]
+        }
+      }
+    },
+    {
+      "name": "MiddleE",
+      "from": [
+        10,
+        4,
+        7
+      ],
+      "to": [
+        11,
+        5,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            2,
+            6,
+            3,
+            7
+          ]
+        },
+        "east": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            6,
+            14,
+            8,
+            15
+          ]
+        },
+        "south": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            6,
+            2,
+            7
+          ]
+        },
+        "west": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            7,
+            1,
+            9,
+            2
+          ]
+        },
+        "up": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            7,
+            2,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "name": "MiddleS",
+      "from": [
+        7,
+        4,
+        10
+      ],
+      "to": [
+        9,
+        5,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            6,
+            1,
+            8,
+            2
+          ]
+        },
+        "east": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            5,
+            2,
+            6
+          ]
+        },
+        "south": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            8,
+            3,
+            9
+          ]
+        },
+        "west": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            9,
+            2,
+            10,
+            3
+          ]
+        },
+        "up": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            9,
+            2,
+            11,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "name": "MiddleN",
+      "from": [
+        7,
+        4,
+        5
+      ],
+      "to": [
+        9,
+        5,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            1,
+            8,
+            3,
+            9
+          ]
+        },
+        "east": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            3,
+            6,
+            4,
+            7
+          ]
+        },
+        "south": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            10,
+            0,
+            12,
+            1
+          ]
+        },
+        "west": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            8,
+            1,
+            9,
+            2
+          ]
+        },
+        "up": {
+          "texture": "#enchanting_table_top",
+          "uv": [
+            8,
+            13,
+            10,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "name": "CoreAltar",
+      "from": [
+        7,
+        3.5,
+        7
+      ],
+      "to": [
+        9,
+        4.5,
+        9
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#emerald_block",
+          "uv": [
+            10,
+            10,
+            12,
+            11
+          ]
+        },
+        "east": {
+          "texture": "#emerald_block",
+          "uv": [
+            7,
+            9,
+            9,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#emerald_block",
+          "uv": [
+            9,
+            7,
+            11,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#emerald_block",
+          "uv": [
+            6,
+            10,
+            8,
+            11
+          ]
+        },
+        "up": {
+          "texture": "#emerald_block",
+          "uv": [
+            9,
+            8,
+            11,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "name": "CornerNW",
+      "from": [
+        4,
+        1,
+        4
+      ],
+      "to": [
+        5,
+        6,
+        5
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "up": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "CornerNE",
+      "from": [
+        11,
+        1,
+        4
+      ],
+      "to": [
+        12,
+        6,
+        5
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "up": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "CornerES",
+      "from": [
+        11,
+        1,
+        11
+      ],
+      "to": [
+        12,
+        6,
+        12
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "up": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "CornerSW",
+      "from": [
+        4,
+        1,
+        11
+      ],
+      "to": [
+        5,
+        6,
+        12
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "east": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "south": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "west": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            5
+          ]
+        },
+        "up": {
+          "texture": "#obsidian",
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ]
+        }
+      }
+    }
+  ]
+}

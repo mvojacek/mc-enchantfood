@@ -84,10 +84,6 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
         return new AxisAlignedBB(3, 0, 3, 11, 5, 11);
     }
 
-
-
-
-
     @Override
     public void onLoad() {
         if (world.isRemote) {

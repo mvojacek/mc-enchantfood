@@ -16,8 +16,11 @@ public class Ref
 
     public static class Blocks {
         public static final String BLANK = "blankstone";
+        public static final String ITEM_HOLDER = "itemholder";
         public static final String FOOD_ENCHANTER = "foodenchanter";
+        public static final String FOOD_ALTAR = "foodaltar";
         public static final String ESSENCE_PROVIDER = "essenceprovider";
+        public static final String ESSENCE_FOCUSER = "essencefocuser";
     }
 
     public static class Gui {
@@ -27,6 +30,11 @@ public class Ref
     public static class Items {
         public static final String BLANK = "blank";
         public static final String ESSENCE_SHARD = "essenceshard";
+        public static final String MAGICAL_BEEF_STICK = "magicalbeefonstick";
+    }
+
+    public static class ToolTips {
+        public static final String MAGICAL_BEEF_STICK_TOOLTIP = "Oh shiny!";
     }
 
     public static class Files
