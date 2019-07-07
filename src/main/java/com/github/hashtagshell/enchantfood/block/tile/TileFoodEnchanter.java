@@ -103,12 +103,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
         }
 
         if (fuel != lastSendFuel && world.isRemote) {
-            BlockPos mypos = getPos();
-            double x = mypos.getX();
-            double y = mypos.getY();
-            double z = mypos.getZ();
-            double range = 16;
-            NetworkWrapper.network.sendToAllAround(new MessageFoodEnchanter(getPos(), fuel, progress, working), new NetworkRegistry.TargetPoint(world.provider.getDimension(), x, y, z, range));
+            sendToAroundUpdate();
         }
 
         ItemStack craftingItem = inventory.getStackInSlot(0);
@@ -145,6 +140,9 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                             }
                         }
 
+                        if (world.isRemote) {
+                            sendToAroundUpdate();
+                        }
                         inventory.setStackInSlot(2, output);
                     }
                 }
@@ -155,6 +153,15 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
             progress = 0;
             working = false;
         }
+    }
+
+    private void sendToAroundUpdate() {
+        BlockPos pos = getPos();
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
+        double range = 16;
+        NetworkWrapper.network.sendToAllAround(new MessageFoodEnchanter(getPos(), fuel, progress, working), new NetworkRegistry.TargetPoint(world.provider.getDimension(), x, y, z, range));
     }
 
     public void spawnWorkingParticles() {
