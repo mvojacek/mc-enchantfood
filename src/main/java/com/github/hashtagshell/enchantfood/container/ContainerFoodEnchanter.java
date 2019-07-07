@@ -24,11 +24,6 @@ public class ContainerFoodEnchanter extends Container {
             public void onSlotChanged() {
                 foodEnchanter.markDirty();
             }
-
-            @Override
-            public int getSlotStackLimit() {
-                return 1;
-            }
         });
 
         //Add Fuel slot
@@ -45,12 +40,6 @@ public class ContainerFoodEnchanter extends Container {
             public void onSlotChanged() {
                 foodEnchanter.markDirty();
             }
-
-            @Override
-            public int getSlotStackLimit() {
-                return 1;
-            }
-
         });
 
 
@@ -69,11 +58,9 @@ public class ContainerFoodEnchanter extends Container {
 
     public final int FUEL_ID = 0;
     public final int PROGRESS_ID = 1;
-    public final int WORKING_ID = 2;
 
     public int progress;
     public int fuel;
-    public boolean working;
 
     @Override
     public void updateProgressBar(int id, int data) {

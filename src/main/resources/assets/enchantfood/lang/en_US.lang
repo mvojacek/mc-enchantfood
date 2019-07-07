@@ -105,6 +105,7 @@ config.stupid_shiny.comment=Configures the super-important aspect of shininess (
 
 # Items
 item.enchantfood.blank.name=A Blank Square.
+item.enchantfood.essenceshard.name=Essence Shard
 
 # Blocks
 tile.enchantfood.blankstone.name=A Blank Stone.

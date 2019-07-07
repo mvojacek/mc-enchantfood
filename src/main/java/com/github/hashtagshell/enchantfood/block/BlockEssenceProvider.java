@@ -8,6 +8,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -24,6 +25,23 @@ public class BlockEssenceProvider extends BlockTileGeneric<TileEssenceProvider> 
     @Override
     public Class<TileEssenceProvider> tileClass() {
         return TileEssenceProvider.class;
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+        return true;
+    }
+
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        TileEssenceProvider tileEssenceProvider = (TileEssenceProvider) world.getTileEntity(pos);
+        if (world.getStrongPower(pos, EnumFacing.NORTH) > 0) {
+            tileEssenceProvider.enabled = false;
+        } else {
+            tileEssenceProvider.enabled = false;
+        }
+        super.onNeighborChange(world, pos, neighbor);
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12

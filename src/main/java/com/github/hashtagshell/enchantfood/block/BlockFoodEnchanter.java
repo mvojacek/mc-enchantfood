@@ -2,7 +2,6 @@ package com.github.hashtagshell.enchantfood.block;
 
 import com.github.hashtagshell.enchantfood.EnchantFood;
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
-import com.github.hashtagshell.enchantfood.block.tile.TileEssenceProvider;
 import com.github.hashtagshell.enchantfood.block.tile.TileFoodEnchanter;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.SoundType;
@@ -58,12 +57,6 @@ public class BlockFoodEnchanter extends BlockTileGeneric<TileFoodEnchanter> {
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return new AxisAlignedBB(1.0 / 16.0 * 3.0, 0.0, 1.0 / 16.0 * 3.0, 1.0 / 16.0 * 13.0, 1.0 / 16.0 * 5.0, 1.0 / 16.0 * 13.0);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        BlockPos underMe = pos.add(0, -1, 0);
-        return worldIn.getTileEntity(underMe) != null && worldIn.getTileEntity(underMe) instanceof TileEssenceProvider;
     }
 
     @Nullable

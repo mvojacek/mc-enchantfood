@@ -12,23 +12,28 @@ public class TileEssenceProvider extends TileGeneric implements ITickable {
     private boolean charging = false;
     private Random random = new Random();
 
+    public boolean enabled = false;
+
     @Override
     public void update() {
-        if (world.getTileEntity(getPos().add(0, 1, 0)) != null && world.getTileEntity(getPos().add(0, 1, 0)) instanceof TileFoodEnchanter) {
-            TileFoodEnchanter foodEnchanter = (TileFoodEnchanter) world.getTileEntity(getPos().add(0, 1, 0));
-            if (foodEnchanter.fuel < foodEnchanter.fuelMax) {
-                foodEnchanter.fuel++;
-                charging = true;
-                chargingParticle();
-            } else if (charging) {
-                charging = false;
+        if (enabled) {
+            if (world.getTileEntity(getPos().add(0, 1, 0)) != null && world.getTileEntity(getPos().add(0, 1, 0)) instanceof TileFoodEnchanter) {
+                TileFoodEnchanter foodEnchanter = (TileFoodEnchanter) world.getTileEntity(getPos().add(0, 1, 0));
+                if (foodEnchanter.fuel < foodEnchanter.fuelMax) {
+                    foodEnchanter.fuel++;
+                    if (!charging) {
+                        charging = true;
+                    }
+                    chargingParticle();
+                } else if (charging) {
+                    charging = false;
+                }
             }
         }
-
     }
 
     private void chargingParticle() {
-        BlockPos myPos = getPos(); //Center Particle Source
+        BlockPos myPos = getPos();
         world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, myPos.getX() + 0.6, myPos.getY() + 0.6 + random.nextDouble() * 0.4, myPos.getZ() + 0.6, 0.0, 0.5, 0.0);
     }
 }

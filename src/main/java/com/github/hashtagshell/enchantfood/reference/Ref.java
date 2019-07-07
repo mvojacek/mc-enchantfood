@@ -26,6 +26,7 @@ public class Ref
 
     public static class Items {
         public static final String BLANK = "blank";
+        public static final String ESSENCE_SHARD = "essenceshard";
     }
 
     public static class Files

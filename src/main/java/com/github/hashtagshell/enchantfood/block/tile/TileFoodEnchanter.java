@@ -3,10 +3,12 @@ package com.github.hashtagshell.enchantfood.block.tile;
 import com.github.hashtagshell.enchantfood.block.lib.tile.TileGeneric;
 import com.github.hashtagshell.enchantfood.ench.EnchantmentFood;
 import com.github.hashtagshell.enchantfood.init.ModEnchantments;
+import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
 import com.github.hashtagshell.enchantfood.network.message.MessageFoodEnchanter;
 import com.github.hashtagshell.enchantfood.network.message.MessageFoodEnchanterReq;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +29,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
     public ItemStackHandler inventory = new ItemStackHandler(3);
 
-
+    public static final int VALUE_REQ_MULTIPLYIER = 24;
 
     public static final String INVENTORY_NBT = "inventory";
     public static final String PROGRESS_NBT = "progress";
@@ -119,24 +121,41 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
         ItemStack craftingItem = inventory.getStackInSlot(0);
 
-        if (craftingItem != ItemStack.EMPTY && craftingItem.getCount() == 1 && craftingItem.getItem() instanceof ItemFood) {
+        if (craftingItem.getItem() == Items.EMERALD && fuel > 600 && craftingItem.getCount() > 0) {
+            working = true;
+            progress++;
+            fuel--;
+            spawnWorkingParticles();
+
+            if (progress >= progressMax) {
+                ItemStack output = new ItemStack(ModItems.essenceShard);
+                output.setCount(1);
+                inventory.extractItem(0, 1, false);
+                inventory.insertItem(2, output, false);
+                progress = 0;
+            }
+
+        }
+
+        if (craftingItem != ItemStack.EMPTY && craftingItem.getCount() > 0 && craftingItem.getItem() instanceof ItemFood) {
             ItemFood food = (ItemFood) craftingItem.getItem();
             int itemValue = food.getHealAmount(craftingItem);
-            int operationCost = (int) Math.ceil((double) itemValue * 24.0 / 200.0);
+            int operationCost = (int) Math.ceil((double) itemValue * VALUE_REQ_MULTIPLYIER / 200.0);
             if (fuel > operationCost) {
 
-                if (itemValue * 24 <= fuel && !working) {
+                if (itemValue * VALUE_REQ_MULTIPLYIER <= fuel && !working) {
                     working = true;
                 }
 
                 if (working) {
                     progress++;
-                    fuel--;
+                    fuel -= operationCost;
                     spawnWorkingParticles();
                     if (progress >= progressMax) {
                         working = false;
                         ItemStack output = craftingItem.copy();
-                        inventory.setStackInSlot(0, ItemStack.EMPTY);
+                        output.setCount(1);
+                        inventory.extractItem(0, 1, false);
                         int enchantCount = random.nextInt(3) + 1;
 
                         for (int i = 0; i < enchantCount; i++) {
@@ -154,7 +173,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                         if (world.isRemote) {
                             sendToAroundUpdate();
                         }
-                        inventory.setStackInSlot(2, output);
+                        inventory.insertItem(2, output, false);
                     }
                 }
             }
