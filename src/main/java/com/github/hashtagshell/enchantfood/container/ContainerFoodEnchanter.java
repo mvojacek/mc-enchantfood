@@ -69,6 +69,7 @@ public class ContainerFoodEnchanter extends Container {
 
     public final int FUEL_ID = 0;
     public final int PROGRESS_ID = 1;
+    public final int WORKING_ID = 2;
 
     public int progress;
     public int fuel;

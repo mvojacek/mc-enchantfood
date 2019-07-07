@@ -14,6 +14,20 @@ public class Ref
         public static final String DEPS       = "";
     }
 
+    public static class Blocks {
+        public static final String BLANK = "blankstone";
+        public static final String FOOD_ENCHANTER = "foodenchanter";
+        public static final String ESSENCE_PROVIDER = "essenceprovider";
+    }
+
+    public static class Gui {
+        public static final int FOOD_ENCHANTER_GUI = 0;
+    }
+
+    public static class Items {
+        public static final String BLANK = "blank";
+    }
+
     public static class Files
     {
         public static  File MC_LOCATION  = null;

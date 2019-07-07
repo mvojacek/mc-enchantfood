@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,6 +26,7 @@ import java.util.Random;
 public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
     public ItemStackHandler inventory = new ItemStackHandler(3);
+
 
 
     public static final String INVENTORY_NBT = "inventory";
@@ -76,6 +78,15 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     }
 
     @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(3, 0, 3, 11, 5, 11);
+    }
+
+
+
+
+
+    @Override
     public void onLoad() {
         if (world.isRemote) {
             NetworkWrapper.network.sendToServer(new MessageFoodEnchanterReq(this));
@@ -111,7 +122,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
         if (craftingItem != ItemStack.EMPTY && craftingItem.getCount() == 1 && craftingItem.getItem() instanceof ItemFood) {
             ItemFood food = (ItemFood) craftingItem.getItem();
             int itemValue = food.getHealAmount(craftingItem);
-            int operationCost = (int) Math.ceil((double) itemValue * 48.0 / 200.0);
+            int operationCost = (int) Math.ceil((double) itemValue * 24.0 / 200.0);
             if (fuel > operationCost) {
 
                 if (itemValue * 24 <= fuel && !working) {
@@ -120,7 +131,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
                 if (working) {
                     progress++;
-                    fuel -= operationCost;
+                    fuel--;
                     spawnWorkingParticles();
                     if (progress >= progressMax) {
                         working = false;
@@ -139,7 +150,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                                 output.addEnchantment(ench, random.nextInt(ModEnchantments.foodEnchants.get(enchRoll).maxLevel) + 1);
                             }
                         }
-
+                        progress = 0;
                         if (world.isRemote) {
                             sendToAroundUpdate();
                         }
@@ -149,7 +160,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
             }
         }
 
-        if (craftingItem == ItemStack.EMPTY && progress != 0) {
+        if (craftingItem == ItemStack.EMPTY && working) {
             progress = 0;
             working = false;
         }

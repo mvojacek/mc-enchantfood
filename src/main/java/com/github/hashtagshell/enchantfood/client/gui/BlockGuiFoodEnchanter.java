@@ -34,11 +34,11 @@ public class BlockGuiFoodEnchanter extends GuiContainer {
             GlStateManager.color(1, 1, 1, 1);
             mc.getTextureManager().bindTexture(texture);
             int x = xs + 9;
-            double y = ys + 48.0 - 38.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel;
+            double y = ys + 48.0 - Math.ceil(38.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel);
             int textureX = 176;
-            double textureY = 36 - 36.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel;
+            double textureY = 36 - Math.ceil(36.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel);
             int width = 14;
-            double height = 38.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel;
+            double height = Math.ceil(38.0 / foodEnchanterContainer.foodEnchanter.fuelMax * foodEnchanterContainer.fuel);
             drawTexturedModalRect(x, (int) (y), textureX, (int) textureY, width, (int) height);
         }
 

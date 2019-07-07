@@ -111,6 +111,7 @@ tile.enchantfood.blankstone.name=A Blank Stone.
 
 # Tiles
 tile.enchantfood.foodenchanter.name=Food Enchanter
+tile.enchantfood.essenceprovider.name=Essence Provider
 
 # Enchants
 enchantment.nutritious=Nutritious
