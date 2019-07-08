@@ -22,6 +22,7 @@ public class BlockFoodEnchanter extends BlockTileGeneric<TileFoodEnchanter> {
     public BlockFoodEnchanter(String name) {
         super(name, Material.WOOD);
         setSoundType(SoundType.WOOD);
+        setHardness(2.0f);
     }
 
     @Override

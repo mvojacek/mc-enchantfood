@@ -113,18 +113,22 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
         if (ticksNotCheckMultiblock >= multiblockCheckFrequency) {
             ticksNotCheckMultiblock = 0;
 
-            if (checkMultiblock()) {
-                if (!isValidMultiblock) {
-                    isValidMultiblock = true;
-                    spawnMultiblockSuccessParticles();
-                }
-            } else if (isValidMultiblock) {
+            if (isValidMultiblock && !checkMultiblock()) {
                 isValidMultiblock = false;
             }
         }
 
         if (isValidMultiblock) {
             //Process
+        }
+    }
+
+    public void wrenchClick() {
+        if (checkMultiblock()) {
+            if (!isValidMultiblock) {
+                isValidMultiblock = true;
+                spawnMultiblockSuccessParticles();
+            }
         }
     }
 
