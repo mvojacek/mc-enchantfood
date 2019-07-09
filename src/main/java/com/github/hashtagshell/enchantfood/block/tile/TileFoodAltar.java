@@ -129,6 +129,14 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
                 isValidMultiblock = true;
                 spawnMultiblockSuccessParticles();
             }
+        } else {
+            int r = 2;
+            for (int i = 0; i < SUCCESS_MULTIBLOCK_PARTICLE_COUNT; i++) {
+                double x = Math.sin(2 * Math.PI / SUCCESS_MULTIBLOCK_PARTICLE_COUNT * i) * r + 0.5 + getPos().getX();
+                double y = getPos().getY() + 0.5;
+                double z = Math.cos(2 * Math.PI / SUCCESS_MULTIBLOCK_PARTICLE_COUNT * i) * r + 0.5 + getPos().getZ();
+                world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, x, y, z, 0, 0.3F, 0);
+            }
         }
     }
 

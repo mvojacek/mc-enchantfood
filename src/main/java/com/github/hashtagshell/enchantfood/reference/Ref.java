@@ -75,6 +75,7 @@ public class Ref
 
     public static class Resources {
         public static final String GUI_RESOURCE_FOLDER = "textures/gui/";
+        public static final String MODEL_RESOURCE_FOLDER = "models/";
     }
 
     public static class Asm

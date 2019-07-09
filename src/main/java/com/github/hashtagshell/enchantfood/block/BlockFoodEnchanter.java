@@ -70,7 +70,6 @@ public class BlockFoodEnchanter extends BlockTileGeneric<TileFoodEnchanter> {
         if (!world.isRemote) {
             if (!player.isSneaking()) {
                 TileFoodEnchanter tileFoodEnchanter = getTileAt(world, pos);
-                tileFoodEnchanter.reqData();
                 player.openGui(EnchantFood.instance, Ref.Gui.FOOD_ENCHANTER_GUI, world, pos.getX(), pos.getY(), pos.getZ());
             } else {
                 //Something when sneaking

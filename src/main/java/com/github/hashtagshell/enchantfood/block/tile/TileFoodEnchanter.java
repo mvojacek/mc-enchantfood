@@ -5,8 +5,6 @@ import com.github.hashtagshell.enchantfood.ench.EnchantmentFood;
 import com.github.hashtagshell.enchantfood.init.ModEnchantments;
 import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
-import com.github.hashtagshell.enchantfood.network.message.MessageFoodEnchanter;
-import com.github.hashtagshell.enchantfood.network.message.MessageFoodEnchanterReq;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
@@ -19,7 +17,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -87,7 +84,7 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     @Override
     public void onLoad() {
         if (world.isRemote) {
-            NetworkWrapper.network.sendToServer(new MessageFoodEnchanterReq(this));
+            NetworkWrapper.dispatchTEToNearbyPlayers(this);
         }
         super.onLoad();
     }
@@ -109,10 +106,6 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                 fuel += itemFuelValue;
 
             }
-        }
-
-        if (fuel != lastSendFuel && world.isRemote) {
-            sendToAroundUpdate();
         }
 
         ItemStack craftingItem = inventory.getStackInSlot(0);
@@ -141,9 +134,10 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
                 if (itemValue * VALUE_REQ_MULTIPLYIER <= fuel && !working) {
                     working = true;
+                    NetworkWrapper.dispatchTEToNearbyPlayers(this);
                 }
 
-                if (working) {
+                if (working && inventory.getStackInSlot(2).isEmpty()) {
                     progress++;
                     fuel -= operationCost;
                     spawnWorkingParticles();
@@ -158,16 +152,16 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
                             int enchRoll = random.nextInt(ModEnchantments.foodEnchants.size());
                             EnchantmentFood ench = ModEnchantments.foodEnchants.get(enchRoll);
                             if (EnchantmentHelper.getEnchantments(output).size() > 0) {
-                                    if (EnchantmentHelper.getEnchantments(output).containsKey(ench)) {
-                                        output.addEnchantment(ench, ench.maxLevel);
-                                    }
+                                if (EnchantmentHelper.getEnchantments(output).containsKey(ench)) {
+                                    output.addEnchantment(ench, ench.maxLevel);
+                                }
                             } else if (ench.canApply(output)) {
                                 output.addEnchantment(ench, random.nextInt(ModEnchantments.foodEnchants.get(enchRoll).maxLevel) + 1);
                             }
                         }
                         progress = 0;
                         if (world.isRemote) {
-                            sendToAroundUpdate();
+                            NetworkWrapper.dispatchTEToNearbyPlayers(this);
                         }
                         inventory.insertItem(2, output, false);
                     }
@@ -181,33 +175,35 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
         }
     }
 
-    private void sendToAroundUpdate() {
-        BlockPos pos = getPos();
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
-        double range = 16;
-        NetworkWrapper.network.sendToAllAround(new MessageFoodEnchanter(getPos(), fuel, progress, working), new NetworkRegistry.TargetPoint(world.provider.getDimension(), x, y, z, range));
+    @Override
+    public void writePacketNBT(NBTTagCompound cmp) {
+        cmp.setTag(INVENTORY_NBT, inventory.serializeNBT());
+        cmp.setInteger(PROGRESS_NBT, progress);
+        cmp.setInteger(FUEL_NBT, fuel);
+        cmp.setBoolean(WORKING_NBT, working);
+    }
+
+    @Override
+    public void readPacketNBT(NBTTagCompound cmp) {
+        fuel = cmp.getInteger(FUEL_NBT);
+        progress = cmp.getInteger(PROGRESS_NBT);
+        inventory.deserializeNBT(cmp.getCompoundTag(INVENTORY_NBT));
+        working = cmp.getBoolean(WORKING_NBT);
     }
 
     public void spawnWorkingParticles() {
         World thisWorld = getWorld();
         BlockPos pos = getPos();
+        //TODO
         double radius = 0.5;
-        double radian = random.nextDouble() * 8.0;
-        double zPos = pos.getZ() + 0.5 + radius * Math.sin(radian);
-        double xPos = pos.getX() + 0.5 + radius * Math.cos(radian);
+        double radian = random.nextDouble() * 2.0;
+        double zPos = pos.getZ() + 0.5 + radius * Math.sin(radian * Math.PI);
+        double xPos = pos.getX() + 0.5 + radius * Math.cos(radian * Math.PI);
         double yPos = pos.getY() + 1.6;
-        double xVel = Math.cos(radian) * (1 / (radius / 2));
-        double zVel = Math.sin(radian) * (1 / (radius / 2));
+        double xVel = Math.cos(radian * Math.PI) * (1 / (radius / 2));
+        double zVel = Math.sin(radian * Math.PI) * (1 / (radius / 2));
         double yVel = -0.4;
 
         thisWorld.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, xPos, yPos, zPos, xVel, yVel, zVel);
-    }
-
-    public void reqData() {
-        if (world.isRemote) {
-            NetworkWrapper.network.sendToServer(new MessageFoodEnchanterReq(this));
-        }
     }
 }

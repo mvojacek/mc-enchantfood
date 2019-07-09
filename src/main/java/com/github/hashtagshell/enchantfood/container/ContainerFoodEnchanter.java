@@ -13,6 +13,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class ContainerFoodEnchanter extends Container {
     public ContainerFoodEnchanter(InventoryPlayer playerInv, final TileFoodEnchanter foodEnchanter) {
         IItemHandler inventory = foodEnchanter.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
@@ -39,6 +41,11 @@ public class ContainerFoodEnchanter extends Container {
             @Override
             public void onSlotChanged() {
                 foodEnchanter.markDirty();
+            }
+
+            @Override
+            public boolean isItemValid(@Nonnull ItemStack stack) {
+                return false;
             }
         });
 

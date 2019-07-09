@@ -1,7 +1,19 @@
 {
   "variants": {
-    "normal": {
+    "facing=north": {
       "model": "enchantfood:essencefocuser"
+    },
+    "facing=east": {
+      "model": "enchantfood:essencefocuser",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "enchantfood:essencefocuser",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "enchantfood:essencefocuser",
+      "y": 270
     }
   }
 }

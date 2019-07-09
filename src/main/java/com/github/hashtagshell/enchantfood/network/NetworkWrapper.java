@@ -2,6 +2,10 @@ package com.github.hashtagshell.enchantfood.network;
 
 
 import com.github.hashtagshell.enchantfood.reference.Ref.Network;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.server.management.PlayerChunkMapEntry;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -35,5 +39,17 @@ public class NetworkWrapper
         register(messageHandler, requestMessageType, Side.CLIENT);
     }
 
+
+    //Credits:: Vazkii : https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/api/internal/VanillaPacketDispatcher.java
+    public static void dispatchTEToNearbyPlayers(TileEntity tile) {
+        SPacketUpdateTileEntity packet = tile.getUpdatePacket();
+
+        if (packet != null && tile.getWorld() instanceof WorldServer) {
+            PlayerChunkMapEntry chunk = ((WorldServer) tile.getWorld()).getPlayerChunkMap().getEntry(tile.getPos().getX() >> 4, tile.getPos().getZ() >> 4);
+            if (chunk != null) {
+                chunk.sendPacket(packet);
+            }
+        }
+    }
 }
 
