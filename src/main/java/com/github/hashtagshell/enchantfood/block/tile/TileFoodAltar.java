@@ -1,6 +1,7 @@
 package com.github.hashtagshell.enchantfood.block.tile;
 
 import com.github.hashtagshell.enchantfood.block.AltarMultiblock;
+import com.github.hashtagshell.enchantfood.block.BlockMultiblockFoodAltar;
 import com.github.hashtagshell.enchantfood.block.lib.tile.TileGeneric;
 import com.github.hashtagshell.enchantfood.init.ModBlocks;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
@@ -48,7 +49,7 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     };
 
     private EnumFacing[] MB_STONE_SLABS_ROTATIONS = {
-            EnumFacing.NORTH, EnumFacing.EAST,
+            EnumFacing.EAST, EnumFacing.NORTH,
             EnumFacing.SOUTH, EnumFacing.WEST
     };
 
@@ -196,15 +197,15 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     private void activateMultiblock() {
         replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB, AltarMultiblock.CORNER);
         replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA, AltarMultiblock.MAGMA);
-        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblock.GOLD);
+        replaceMultiblocks(MB_GOLD_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblock.GOLD);
         NetworkWrapper.dispatchTEToNearbyPlayers(this);
     }
 
     private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, Block baseBlock, AltarMultiblock multiBlockType) {
         for (int i = 0; i < offsets.length; i++) {
             world.setBlockState(getPos().add(offsets[i]), ModBlocks.multiblockFoodAltar.getDefaultState()
-                    .withProperty(ModBlocks.multiblockFoodAltar.FACING, rotations[i])
-                    .withProperty(ModBlocks.multiblockFoodAltar.ALTAR_PART, multiBlockType));
+                    .withProperty(BlockMultiblockFoodAltar.FACING, rotations[i])
+                    .withProperty(BlockMultiblockFoodAltar.ALTAR_PART, multiBlockType));
 
             TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) world.getTileEntity(getPos().add(offsets[i]));
             tmfa.altar = this;

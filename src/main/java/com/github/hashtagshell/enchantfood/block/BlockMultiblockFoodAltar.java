@@ -20,8 +20,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoodAltar> {
-    public PropertyEnum<AltarMultiblock> ALTAR_PART;
-    public PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyEnum<AltarMultiblock> ALTAR_PART = PropertyEnum.create("altarpart", AltarMultiblock.class);
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+
 
     public BlockMultiblockFoodAltar(String name) {
         super(name, Material.ANVIL);
@@ -36,6 +37,12 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
     @Override
     public String tileId() {
         return Ref.Blocks.MULTIBLOCK_FOOD_ALTAR;
+    }
+
+    @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
     @Nullable
@@ -53,9 +60,6 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
 
     @Override
     protected BlockStateContainer createBlockState() {
-        ALTAR_PART = PropertyEnum.create("altarpart", AltarMultiblock.class);
-        FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-
         IProperty[] propertyArray = {FACING, ALTAR_PART};
         return new BlockStateContainer(this, propertyArray);
     }

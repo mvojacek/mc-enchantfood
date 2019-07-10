@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "enchantfood:blocks/magma",
-    "particle": "enchantfood:blocks/magma"
+    "0": "minecraft:blocks/magma",
+    "particle": "minecraft:blocks/magma"
   },
   "display": {
     "gui": {
