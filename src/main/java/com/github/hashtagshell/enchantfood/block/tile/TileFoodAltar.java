@@ -1,7 +1,9 @@
 package com.github.hashtagshell.enchantfood.block.tile;
 
+import com.github.hashtagshell.enchantfood.block.AltarMultiblock;
 import com.github.hashtagshell.enchantfood.block.lib.tile.TileGeneric;
 import com.github.hashtagshell.enchantfood.init.ModBlocks;
+import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,8 +20,6 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
 
     public ItemStackHandler inventory = new ItemStackHandler(1);
 
-    public static final int VALUE_REQ_MULTIPLYIER = 8;
-
     public static final String INVENTORY_NBT = "inventory";
     public static final String REM_PROGRESS_NBT = "remainingProgress";
     public static final String WORKING_NBT = "isWorking";
@@ -29,15 +29,17 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     public int remainingProgress = 0;
 
     public boolean isValidMultiblock = false;
-    private int ticksNotCheckMultiblock = 0;
 
-    private final int SUCCESS_MULTIBLOCK_PARTICLE_COUNT = 32;
-
-    private final int multiblockCheckFrequency = 40;
+    private final int SUCCESS_MULTIBLOCK_PARTICLE_COUNT = 64;
 
     private BlockPos[] MB_GOLD_BLOCKS = {
             new BlockPos(2, -1, 2), new BlockPos(2, -1, -2),
             new BlockPos(-2, -1, 2), new BlockPos(-2, -1, -2),
+    };
+
+    private EnumFacing[] MB_GOLD_BLOCKS_ROTATIONS = {
+            EnumFacing.NORTH, EnumFacing.NORTH,
+            EnumFacing.NORTH, EnumFacing.NORTH
     };
 
     private BlockPos[] MB_STONE_SLABS = {
@@ -45,11 +47,23 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
             new BlockPos(-1, -1, 1), new BlockPos(-1, -1, -1)
     };
 
+    private EnumFacing[] MB_STONE_SLABS_ROTATIONS = {
+            EnumFacing.NORTH, EnumFacing.EAST,
+            EnumFacing.SOUTH, EnumFacing.WEST
+    };
+
     private BlockPos[] MB_MAGMA_BLOCKS = {
             new BlockPos(2, -1, 1), new BlockPos(2, -1, -1),
             new BlockPos(1, -1, -2), new BlockPos(-1, -1, -2),
             new BlockPos(-2, -1, 1), new BlockPos(-2, -1, -1),
             new BlockPos(1, -1, 2), new BlockPos(-1, -1, 2),
+    };
+
+    private EnumFacing[] MB_MAGMA_BLOCKS_ROTATIONS = {
+            EnumFacing.NORTH, EnumFacing.NORTH,
+            EnumFacing.EAST, EnumFacing.EAST,
+            EnumFacing.SOUTH, EnumFacing.SOUTH,
+            EnumFacing.WEST, EnumFacing.WEST
     };
 
     private BlockPos[] MB_ESSENCE_FOCUSERS = {
@@ -109,15 +123,6 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
 
     @Override
     public void update() {
-        ticksNotCheckMultiblock++;
-        if (ticksNotCheckMultiblock >= multiblockCheckFrequency) {
-            ticksNotCheckMultiblock = 0;
-
-            if (isValidMultiblock && !checkMultiblock()) {
-                isValidMultiblock = false;
-            }
-        }
-
         if (isValidMultiblock) {
             //Process
         }
@@ -128,6 +133,7 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
             if (!isValidMultiblock) {
                 isValidMultiblock = true;
                 spawnMultiblockSuccessParticles();
+                activateMultiblock();
             }
         } else {
             int r = 2;
@@ -149,6 +155,31 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
                 checkBlock(MB_ESSENCE_PROVIDER, ModBlocks.essenceProvider);
     }
 
+    private void placeOldBlocks() {
+        BlockPos[] MB_ESSENCE_PROVIDER_ARRAY = {MB_ESSENCE_PROVIDER};
+        placeOldBlockSet(MB_ESSENCE_FOCUSERS);
+        placeOldBlockSet(MB_GOLD_BLOCKS);
+        placeOldBlockSet(MB_ITEM_TABLES);
+        placeOldBlockSet(MB_STONE_SLABS);
+        placeOldBlockSet(MB_MAGMA_BLOCKS);
+        placeOldBlockSet(MB_ESSENCE_PROVIDER_ARRAY);
+    }
+
+    public void destroyMultiblock() {
+        placeOldBlocks();
+        isValidMultiblock = false;
+        NetworkWrapper.dispatchTEToNearbyPlayers(this);
+    }
+
+    private void placeOldBlockSet(BlockPos[] offsets) {
+        for (int i = 0; i < offsets.length; i++) {
+            if (!world.isAirBlock(getPos().add(offsets[i]))) {
+                TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) world.getTileEntity(getPos().add(offsets[i]));
+                tmfa.revertMultiblock();
+            }
+        }
+    }
+
     private boolean checkBlockSet(BlockPos[] pos, Block block) {
         for (BlockPos poz : pos) {
             if (!checkBlock(poz, block)) {
@@ -162,11 +193,30 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
         return world.getBlockState(getPos().add(pos.getX(), pos.getY(), pos.getZ())).getBlock() == block;
     }
 
+    private void activateMultiblock() {
+        replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB, AltarMultiblock.CORNER);
+        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA, AltarMultiblock.MAGMA);
+        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblock.GOLD);
+        NetworkWrapper.dispatchTEToNearbyPlayers(this);
+    }
+
+    private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, Block baseBlock, AltarMultiblock multiBlockType) {
+        for (int i = 0; i < offsets.length; i++) {
+            world.setBlockState(getPos().add(offsets[i]), ModBlocks.multiblockFoodAltar.getDefaultState()
+                    .withProperty(ModBlocks.multiblockFoodAltar.FACING, rotations[i])
+                    .withProperty(ModBlocks.multiblockFoodAltar.ALTAR_PART, multiBlockType));
+
+            TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) world.getTileEntity(getPos().add(offsets[i]));
+            tmfa.altar = this;
+            tmfa.prevBlock = baseBlock;
+        }
+    }
+
     private void sendToAroundUpdate() {
 
     }
 
-    public void spawnWorkingParticles() {
+    private void spawnWorkingParticles() {
 
     }
 

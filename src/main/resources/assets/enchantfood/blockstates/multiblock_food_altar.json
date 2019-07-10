@@ -1,0 +1,46 @@
+{
+  "forge_marker﻿": 1,
+  "variants": {
+    "altarpart": {
+      "corner": {
+        "model": "enchantfood:altarpart"
+      },
+      "magma": {
+        "model": "enchantfood:altarouterring"
+      },
+      "gold": {
+        "model": "minecraft:gold_block"
+      }
+    },
+    "facing": {
+      "north": {
+        "transform": {
+          "rotation": {
+            "y": 0
+          }
+        }
+      },
+      "south": {
+        "transform": {
+          "rotation": {
+            "y": 180
+          }
+        }
+      },
+      "west": {
+        "transform": {
+          "rotation": {
+            "y": 90
+          }
+        }
+      },
+      "east": {
+        "transform": {
+          "rotation": {
+            "y": -90
+          }
+        }
+      }
+    }
+  }
+}

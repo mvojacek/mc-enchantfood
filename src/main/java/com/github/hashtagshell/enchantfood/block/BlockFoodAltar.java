@@ -6,16 +6,22 @@ import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+
+import static com.github.hashtagshell.enchantfood.network.NetworkWrapper.dispatchTEToNearbyPlayers;
 
 public class BlockFoodAltar extends BlockTileGeneric<TileFoodAltar> {
     public BlockFoodAltar(String name) {
@@ -65,13 +71,33 @@ public class BlockFoodAltar extends BlockTileGeneric<TileFoodAltar> {
 
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
+            TileFoodAltar tileFoodAltar = (TileFoodAltar) world.getTileEntity(pos);
             if (!player.isSneaking()) {
-                TileFoodAltar tileAltar = (TileFoodAltar) world.getTileEntity(pos);
                 if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == ModItems.beefStick) {
-                    tileAltar.wrenchClick();
+                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("Food Altar Contains: " + tileFoodAltar.inventory.getStackInSlot(0).getItem().getUnlocalizedName()));
+                    tileFoodAltar.wrenchClick();
+                    return true;
                 }
+
+                if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == Items.AIR && tileFoodAltar.inventory.getStackInSlot(0) != ItemStack.EMPTY) {
+                    player.inventory.addItemStackToInventory(tileFoodAltar.inventory.getStackInSlot(0));
+                    tileFoodAltar.inventory.setStackInSlot(0, ItemStack.EMPTY);
+                    dispatchTEToNearbyPlayers(tileFoodAltar);
+                    return true;
+                }
+
+                if (player.inventory.getStackInSlot(player.inventory.currentItem) != ItemStack.EMPTY && tileFoodAltar.inventory.getStackInSlot(0).getItem() == Items.AIR) {
+                    ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem).copy();
+                    item.setCount(1);
+                    player.inventory.decrStackSize(player.inventory.currentItem, 1);
+                    tileFoodAltar.inventory.setStackInSlot(0, item);
+                    dispatchTEToNearbyPlayers(tileFoodAltar);
+                    return true;
+                }
+
+
             } else {
-                //Something when sneaking
+
             }
         }
         return true;

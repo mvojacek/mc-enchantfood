@@ -18,6 +18,7 @@ public class ModBlocks {
     public static BlockTileGeneric<TileEssenceFocuser> essenceFocuser;
     public static BlockTileGeneric<TileItemHolder> itemTable;
     public static BlockTileGeneric<TileFoodAltar> foodAltar;
+    public static BlockMultiblockFoodAltar multiblockFoodAltar;
 
     public static void preInit() {
         blankStone = register(new BlockGeneric(Ref.Blocks.BLANK, Material.ROCK));
@@ -26,5 +27,6 @@ public class ModBlocks {
         essenceFocuser = registerTile(new BlockEssenceFocuser(Ref.Blocks.ESSENCE_FOCUSER));
         itemTable = registerTile(new BlockItemHolder(Ref.Blocks.ITEM_HOLDER));
         foodAltar = registerTile(new BlockFoodAltar(Ref.Blocks.FOOD_ALTAR));
+        multiblockFoodAltar = registerTile(new BlockMultiblockFoodAltar(Ref.Blocks.MULTIBLOCK_FOOD_ALTAR));
     }
 }

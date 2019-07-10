@@ -21,6 +21,8 @@ public class Ref
         public static final String FOOD_ALTAR = "foodaltar";
         public static final String ESSENCE_PROVIDER = "essenceprovider";
         public static final String ESSENCE_FOCUSER = "essencefocuser";
+        public static final String MULTIBLOCK_FOOD_ALTAR = "multiblock_food_altar";
+
     }
 
     public static class Gui {
