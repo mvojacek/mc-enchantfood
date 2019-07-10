@@ -13,7 +13,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -87,5 +89,24 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return super.getItemDropped(state, rand, fortune);
+    }
+
+    @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.5, 1.0);
+    }
+
+    @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.5, 1.0);
     }
 }

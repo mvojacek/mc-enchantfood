@@ -61,10 +61,10 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     };
 
     private EnumFacing[] MB_MAGMA_BLOCKS_ROTATIONS = {
-            EnumFacing.NORTH, EnumFacing.NORTH,
             EnumFacing.EAST, EnumFacing.EAST,
-            EnumFacing.SOUTH, EnumFacing.SOUTH,
-            EnumFacing.WEST, EnumFacing.WEST
+            EnumFacing.NORTH, EnumFacing.NORTH,
+            EnumFacing.WEST, EnumFacing.WEST,
+            EnumFacing.SOUTH, EnumFacing.SOUTH
     };
 
     private BlockPos[] MB_ESSENCE_FOCUSERS = {

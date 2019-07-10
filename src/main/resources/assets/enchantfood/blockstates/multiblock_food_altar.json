@@ -6,7 +6,7 @@
         "model": "enchantfood:altarpart"
       },
       "magma": {
-        "model": "enchantfood:altarouterring"
+        "model": "enchantfood:altarsecondpart"
       },
       "gold": {
         "model": "minecraft:gold_block"
