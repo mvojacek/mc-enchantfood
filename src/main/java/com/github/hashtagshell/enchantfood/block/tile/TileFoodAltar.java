@@ -1,6 +1,6 @@
 package com.github.hashtagshell.enchantfood.block.tile;
 
-import com.github.hashtagshell.enchantfood.block.AltarMultiblock;
+import com.github.hashtagshell.enchantfood.block.AltarMultiblockType;
 import com.github.hashtagshell.enchantfood.block.BlockMultiblockFoodAltar;
 import com.github.hashtagshell.enchantfood.block.lib.tile.TileGeneric;
 import com.github.hashtagshell.enchantfood.init.ModBlocks;
@@ -30,6 +30,8 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     public int remainingProgress = 0;
 
     public boolean isValidMultiblock = false;
+    private int timeSinceCheck = 0;
+    private final int checkTick = 80;
 
     private final int SUCCESS_MULTIBLOCK_PARTICLE_COUNT = 64;
 
@@ -83,6 +85,7 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
 
     private BlockPos MB_ESSENCE_PROVIDER = new BlockPos(0, -1, 0);
 
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         remainingProgress = compound.getInteger(REM_PROGRESS_NBT);
@@ -122,10 +125,18 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
         return new AxisAlignedBB(3, 0, 3, 11, 5, 11);
     }
 
+
     @Override
     public void update() {
         if (isValidMultiblock) {
-            //Process
+            timeSinceCheck++;
+            if (timeSinceCheck >= checkTick) {
+                if (!checkMultiblock()) {
+                    destroyMultiblock();
+                    isValidMultiblock = false;
+                }
+                timeSinceCheck = 0;
+            }
         }
     }
 
@@ -148,6 +159,11 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     }
 
     private boolean checkMultiblock() {
+        if (isValidMultiblock) {
+            return checkBlockSet(MB_GOLD_BLOCKS, ModBlocks.multiblockFoodAltar) &&
+                    checkBlockSet(MB_STONE_SLABS, ModBlocks.multiblockFoodAltar) &&
+                    checkBlockSet(MB_MAGMA_BLOCKS, ModBlocks.multiblockFoodAltar);
+        }
         return checkBlockSet(MB_ESSENCE_FOCUSERS, ModBlocks.essenceFocuser) &&
                 checkBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK) &&
                 checkBlockSet(MB_ITEM_TABLES, ModBlocks.itemTable) &&
@@ -157,13 +173,9 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     }
 
     private void placeOldBlocks() {
-        BlockPos[] MB_ESSENCE_PROVIDER_ARRAY = {MB_ESSENCE_PROVIDER};
-        placeOldBlockSet(MB_ESSENCE_FOCUSERS);
-        placeOldBlockSet(MB_GOLD_BLOCKS);
-        placeOldBlockSet(MB_ITEM_TABLES);
-        placeOldBlockSet(MB_STONE_SLABS);
-        placeOldBlockSet(MB_MAGMA_BLOCKS);
-        placeOldBlockSet(MB_ESSENCE_PROVIDER_ARRAY);
+        placeOldBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK);
+        placeOldBlockSet(MB_STONE_SLABS, Blocks.STONE_SLAB);
+        placeOldBlockSet(MB_MAGMA_BLOCKS, Blocks.MAGMA);
     }
 
     public void destroyMultiblock() {
@@ -172,11 +184,10 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
         NetworkWrapper.dispatchTEToNearbyPlayers(this);
     }
 
-    private void placeOldBlockSet(BlockPos[] offsets) {
+    private void placeOldBlockSet(BlockPos[] offsets, Block block) {
         for (int i = 0; i < offsets.length; i++) {
             if (!world.isAirBlock(getPos().add(offsets[i]))) {
-                TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) world.getTileEntity(getPos().add(offsets[i]));
-                tmfa.revertMultiblock();
+                world.setBlockState(getPos().add(offsets[i]), block.getDefaultState());
             }
         }
     }
@@ -195,21 +206,20 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
     }
 
     private void activateMultiblock() {
-        replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB, AltarMultiblock.CORNER);
-        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA, AltarMultiblock.MAGMA);
-        replaceMultiblocks(MB_GOLD_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblock.GOLD);
+        replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB, AltarMultiblockType.CORNER);
+        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA, AltarMultiblockType.MAGMA);
+        replaceMultiblocks(MB_GOLD_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblockType.GOLD);
         NetworkWrapper.dispatchTEToNearbyPlayers(this);
     }
 
-    private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, Block baseBlock, AltarMultiblock multiBlockType) {
+    private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, Block baseBlock, AltarMultiblockType multiBlockType) {
         for (int i = 0; i < offsets.length; i++) {
             world.setBlockState(getPos().add(offsets[i]), ModBlocks.multiblockFoodAltar.getDefaultState()
                     .withProperty(BlockMultiblockFoodAltar.FACING, rotations[i])
                     .withProperty(BlockMultiblockFoodAltar.ALTAR_PART, multiBlockType));
 
             TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) world.getTileEntity(getPos().add(offsets[i]));
-            tmfa.altar = this;
-            tmfa.prevBlock = baseBlock;
+            tmfa.altarPos = this.getPos();
         }
     }
 
@@ -230,4 +240,21 @@ public class TileFoodAltar extends TileGeneric implements ITickable {
             world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, x, y, z, 0, 0.3F, 0);
         }
     }
+
+    @Override
+    public void writePacketNBT(NBTTagCompound cmp) {
+        cmp.setTag(INVENTORY_NBT, inventory.serializeNBT());
+        cmp.setBoolean(WORKING_NBT, working);
+        cmp.setInteger(REM_PROGRESS_NBT, remainingProgress);
+        cmp.setBoolean(MULTIBLOCK_NBT, isValidMultiblock);
+    }
+
+    @Override
+    public void readPacketNBT(NBTTagCompound cmp) {
+        remainingProgress = cmp.getInteger(REM_PROGRESS_NBT);
+        inventory.deserializeNBT(cmp.getCompoundTag(INVENTORY_NBT));
+        working = cmp.getBoolean(WORKING_NBT);
+        isValidMultiblock = cmp.getBoolean(MULTIBLOCK_NBT);
+    }
+
 }
