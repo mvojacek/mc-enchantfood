@@ -7,7 +7,7 @@
     "pipe_north": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe1": {
             "model": "enchantfood:pipeconnector_advanced",
             "y": 90
           }
@@ -18,7 +18,7 @@
     "pipe_east": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe2": {
             "model": "enchantfood:pipeconnector_advanced"
           }
         }
@@ -28,7 +28,7 @@
     "pipe_south": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe3": {
             "model": "enchantfood:pipeconnector_advanced",
             "y": 270
           }
@@ -39,7 +39,7 @@
     "pipe_west": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe4": {
             "model": "enchantfood:pipeconnector_advanced",
             "y": 180
           }
@@ -50,9 +50,10 @@
     "pipe_up": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe5": {
             "model": "enchantfood:pipeconnector_advanced",
-            "x": 90
+            "x": 270,
+            "y": 0
           }
         }
       },
@@ -61,9 +62,10 @@
     "pipe_down": {
       "true": {
         "submodel": {
-          "pipee": {
+          "pipe6": {
             "model": "enchantfood:pipeconnector_advanced",
-            "x": 270
+            "x": 90,
+            "y": 0
           }
         }
       },
