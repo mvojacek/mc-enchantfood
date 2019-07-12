@@ -1,4 +1,7 @@
 package com.github.hashtagshell.enchantfood.essence;
 
-public interface IEssenceProvider {
+public interface IEssenceProvider extends IEssenceStorage {
+    int getMaxOuputEssence();
+
+    boolean getIsGenerating();
 }

@@ -2,6 +2,7 @@ package com.github.hashtagshell.enchantfood.init;
 
 import com.github.hashtagshell.enchantfood.block.*;
 import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
+import com.github.hashtagshell.enchantfood.block.lib.pipe.BlockPipeGeneric;
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
 import com.github.hashtagshell.enchantfood.block.tile.*;
 import com.github.hashtagshell.enchantfood.reference.Ref;
@@ -19,6 +20,7 @@ public class ModBlocks {
     public static BlockTileGeneric<TileItemHolder> itemTable;
     public static BlockTileGeneric<TileFoodAltar> foodAltar;
     public static BlockMultiblockFoodAltar multiblockFoodAltar;
+    public static BlockPipeGeneric advanced_pipe;
 
     public static void preInit() {
         blankStone = register(new BlockGeneric(Ref.Blocks.BLANK, Material.ROCK));
@@ -28,5 +30,6 @@ public class ModBlocks {
         itemTable = registerTile(new BlockItemHolder(Ref.Blocks.ITEM_HOLDER));
         foodAltar = registerTile(new BlockFoodAltar(Ref.Blocks.FOOD_ALTAR));
         multiblockFoodAltar = registerTile(new BlockMultiblockFoodAltar(Ref.Blocks.MULTIBLOCK_FOOD_ALTAR));
+        advanced_pipe = registerTile(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON));
     }
 }

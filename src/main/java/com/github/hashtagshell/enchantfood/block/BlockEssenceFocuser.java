@@ -2,6 +2,7 @@ package com.github.hashtagshell.enchantfood.block;
 
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
 import com.github.hashtagshell.enchantfood.block.tile.TileEssenceFocuser;
+import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
 import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.BlockHorizontal;
@@ -19,7 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
+public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> implements IEssenceConsumer {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public BlockEssenceFocuser(String name) {
         super(name, Material.WOOD);
@@ -93,4 +94,23 @@ public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
         return new TileEssenceFocuser();
     }
 
+    @Override
+    public int getMaxEssencePerTick() {
+        return 0;
+    }
+
+    @Override
+    public boolean getImConsuming() {
+        return false;
+    }
+
+    @Override
+    public int getMaxEssence() {
+        return 0;
+    }
+
+    @Override
+    public int getCurrentEssence() {
+        return 0;
+    }
 }

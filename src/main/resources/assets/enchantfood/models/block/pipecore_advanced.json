@@ -17,64 +17,6 @@
 				"up": {"uv": [0, 0, 4, 4], "texture": "#0"},
 				"down": {"uv": [0, 0, 4, 4], "texture": "#0"}
 			}
-		},
-		{
-			"name": "TopPipe",
-			"from": [10.5, 9.5, 6.5],
-			"to": [16, 10.5, 9.5],
-			"faces": {
-				"north": {"uv": [4, 0, 9.5, 1], "rotation": 180, "texture": "#0"},
-				"east": {"uv": [6, 0.5, 7, 3.5], "rotation": 270, "texture": "#0"},
-				"south": {"uv": [4, 3, 9.5, 4], "texture": "#0"},
-				"west": {"uv": [4, 0, 7, 1], "texture": "#0"},
-				"up": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"},
-				"down": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"}
-			}
-		},
-		{
-			"name": "BottomPipe",
-			"from": [10.5, 5.5, 6.5],
-			"to": [16, 6.5, 9.5],
-			"faces": {
-				"north": {"uv": [4, 0, 9.5, 1], "rotation": 180, "texture": "#0"},
-				"east": {"uv": [6, 0.5, 7, 3.5], "rotation": 270, "texture": "#0"},
-				"south": {"uv": [4, 3, 9.5, 4], "texture": "#0"},
-				"west": {"uv": [4, 0, 7, 1], "texture": "#0"},
-				"up": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"},
-				"down": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"}
-			}
-		},
-		{
-			"name": "RightPipe",
-			"from": [10.5, 6.5, 5.5],
-			"to": [16, 9.5, 6.5],
-			"faces": {
-				"north": {"uv": [4, 0.5, 9.5, 3.5], "rotation": 180, "texture": "#0"},
-				"east": {"uv": [6, 0.5, 7, 3.5], "texture": "#0"},
-				"south": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"},
-				"west": {"uv": [5, 0.5, 6, 3.5], "rotation": 90, "texture": "#0"},
-				"up": {"uv": [4, 3, 9.5, 4], "texture": "#0"},
-				"down": {"uv": [4, 0, 9.5, 1], "texture": "#0"}
-			}
-		},
-		{
-			"name": "LeftPipe",
-			"from": [10.5, 6.5, 9.5],
-			"to": [16, 9.5, 10.5],
-			"faces": {
-				"north": {"uv": [4, 0.5, 9.5, 3.5], "rotation": 180, "texture": "#0"},
-				"east": {"uv": [6, 0.5, 7, 3.5], "texture": "#0"},
-				"south": {"uv": [4, 0.5, 9.5, 3.5], "texture": "#0"},
-				"west": {"uv": [5, 0.5, 6, 3.5], "rotation": 90, "texture": "#0"},
-				"up": {"uv": [4, 3, 9.5, 4], "texture": "#0"},
-				"down": {"uv": [4, 0, 9.5, 1], "texture": "#0"}
-			}
-		}
-	],
-	"groups": [0,
-		{
-			"name": "Pipe",
-			"children": [1, 2, 3, 4]
 		}
 	]
 }
