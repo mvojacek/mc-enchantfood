@@ -2,7 +2,6 @@ package com.github.hashtagshell.enchantfood.init;
 
 import com.github.hashtagshell.enchantfood.block.*;
 import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
-import com.github.hashtagshell.enchantfood.block.lib.pipe.BlockPipeGeneric;
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
 import com.github.hashtagshell.enchantfood.block.tile.*;
 import com.github.hashtagshell.enchantfood.reference.Ref;
@@ -30,6 +29,6 @@ public class ModBlocks {
         itemTable = registerTile(new BlockItemHolder(Ref.Blocks.ITEM_HOLDER));
         foodAltar = registerTile(new BlockFoodAltar(Ref.Blocks.FOOD_ALTAR));
         multiblockFoodAltar = registerTile(new BlockMultiblockFoodAltar(Ref.Blocks.MULTIBLOCK_FOOD_ALTAR));
-        advanced_pipe = registerTile(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON));
+        advanced_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON));
     }
 }
