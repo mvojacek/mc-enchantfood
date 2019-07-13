@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "minecraft:redstone_block"
+    },
+    "inventory": {
+      "model": "minecraft:redstone_block"
+    }
+  }
+}

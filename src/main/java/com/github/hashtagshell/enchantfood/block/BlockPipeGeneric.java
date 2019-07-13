@@ -1,8 +1,8 @@
 package com.github.hashtagshell.enchantfood.block;
 
 import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
-import com.github.hashtagshell.enchantfood.essence.IEssenceStorage;
-import com.github.hashtagshell.enchantfood.init.ModBlocks;
+import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
+import com.github.hashtagshell.enchantfood.essence.pipe.IPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockPipeGeneric extends BlockGeneric {
+public class BlockPipeGeneric extends BlockGeneric implements IPipe {
     public static final PropertyBool CONNECT_NORTH = PropertyBool.create("pipe_north");
     public static final PropertyBool CONNECT_SOUTH = PropertyBool.create("pipe_south");
     public static final PropertyBool CONNECT_EAST = PropertyBool.create("pipe_east");
@@ -28,8 +28,11 @@ public class BlockPipeGeneric extends BlockGeneric {
     public static final PropertyBool CONNECT_UP = PropertyBool.create("pipe_up");
     public static final PropertyBool CONNECT_DOWN = PropertyBool.create("pipe_down");
 
-    public BlockPipeGeneric(String name, Material mat) {
+    private int tier;
+
+    public BlockPipeGeneric(String name, Material mat, int tier) {
         super(name, mat);
+        this.tier = tier;
         setDefaultState(
                 this.blockState.getBaseState()
                         .withProperty(CONNECT_NORTH, false)
@@ -130,33 +133,45 @@ public class BlockPipeGeneric extends BlockGeneric {
         return 1;
     }
 
+    @Override
+    public int getTier() {
+        return this.tier;
+    }
+
     private boolean canConnectTo(IBlockAccess world, BlockPos mypos, EnumFacing facing) {
         TileEntity te;
+        Block pipe;
         switch (facing) {
             case EAST:
                 BlockPos eastOffset = new BlockPos(1, 0, 0);
                 te = world.getTileEntity(mypos.add(eastOffset));
-                return world.getBlockState(mypos.add(eastOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(eastOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             case WEST:
                 BlockPos westOffset = new BlockPos(-1, 0, 0);
                 te = world.getTileEntity(mypos.add(westOffset));
-                return world.getBlockState(mypos.add(westOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(westOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             case SOUTH:
                 BlockPos southOffset = new BlockPos(0, 0, -1);
                 te = world.getTileEntity(mypos.add(southOffset));
-                return world.getBlockState(mypos.add(southOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(southOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             case NORTH:
                 BlockPos northOffset = new BlockPos(0, 0, 1);
                 te = world.getTileEntity(mypos.add(northOffset));
-                return world.getBlockState(mypos.add(northOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(northOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             case UP:
                 BlockPos upOffset = new BlockPos(0, 1, 0);
                 te = world.getTileEntity(mypos.add(upOffset));
-                return world.getBlockState(mypos.add(upOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(upOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             case DOWN:
                 BlockPos downOffset = new BlockPos(0, -1, 0);
                 te = world.getTileEntity(mypos.add(downOffset));
-                return world.getBlockState(mypos.add(downOffset)).getBlock() == ModBlocks.advanced_pipe || te instanceof IEssenceStorage;
+                pipe = world.getBlockState(mypos.add(downOffset)).getBlock();
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
             default:
                 return false;
         }

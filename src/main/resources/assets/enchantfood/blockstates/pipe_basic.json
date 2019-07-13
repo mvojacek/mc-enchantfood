@@ -1,19 +1,19 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "enchantfood:pipecore_advanced"
+    "model": "enchantfood:pipecore_basic"
   },
   "variants": {
     "inventory": [
       {
-        "model": "enchantfood:pipecore_advanced"
+        "model": "enchantfood:pipecore_basic"
       }
     ],
     "pipe_north": {
       "true": {
         "submodel": {
           "pipe1": {
-            "model": "enchantfood:pipeconnector_advanced",
+            "model": "enchantfood:pipeconnector_basic",
             "y": 180
           }
         }
@@ -24,7 +24,7 @@
       "true": {
         "submodel": {
           "pipe2": {
-            "model": "enchantfood:pipeconnector_advanced",
+            "model": "enchantfood:pipeconnector_basic",
             "y": 90
           }
         }
@@ -35,7 +35,7 @@
       "true": {
         "submodel": {
           "pipe3": {
-            "model": "enchantfood:pipeconnector_advanced"
+            "model": "enchantfood:pipeconnector_basic"
           }
         }
       },
@@ -45,7 +45,7 @@
       "true": {
         "submodel": {
           "pipe4": {
-            "model": "enchantfood:pipeconnector_advanced",
+            "model": "enchantfood:pipeconnector_basic",
             "y": 270
           }
         }
@@ -56,7 +56,7 @@
       "true": {
         "submodel": {
           "pipe5": {
-            "model": "enchantfood:pipeconnectortop_advanced"
+            "model": "enchantfood:pipeconnectortop_basic"
           }
         }
       },
@@ -66,7 +66,7 @@
       "true": {
         "submodel": {
           "pipe6": {
-            "model": "enchantfood:pipeconnectortop_advanced",
+            "model": "enchantfood:pipeconnectortop_basic",
             "x": 180
           }
         }

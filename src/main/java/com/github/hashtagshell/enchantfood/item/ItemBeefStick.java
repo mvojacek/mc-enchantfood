@@ -9,6 +9,7 @@ import java.util.List;
 public class ItemBeefStick extends ItemGeneric {
     public ItemBeefStick(String name) {
         super(name);
+        setMaxStackSize(1);
     }
 
     @Override

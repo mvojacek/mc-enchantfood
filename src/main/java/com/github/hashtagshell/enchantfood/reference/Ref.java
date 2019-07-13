@@ -23,6 +23,8 @@ public class Ref
         public static final String ESSENCE_FOCUSER = "essencefocuser";
         public static final String MULTIBLOCK_FOOD_ALTAR = "multiblock_food_altar";
         public static final String PIPE_ADVANCED = "pipe_advanced";
+        public static final String PIPE_BASIC = "pipe_basic";
+        public static final String INFINITE_ESSENCE_HOLE = "infinite_essence_hole";
     }
 
     public static class Gui {
