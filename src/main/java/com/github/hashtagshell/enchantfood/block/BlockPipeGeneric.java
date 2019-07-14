@@ -29,8 +29,9 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe {
     public static final PropertyBool CONNECT_DOWN = PropertyBool.create("pipe_down");
 
     private int tier;
+    private double pipeRadius;
 
-    public BlockPipeGeneric(String name, Material mat, int tier) {
+    public BlockPipeGeneric(String name, Material mat, int tier, double pipeRadius) {
         super(name, mat);
         this.tier = tier;
         setDefaultState(
@@ -65,6 +66,10 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe {
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        AxisAlignedBB[] hitboxes = new AxisAlignedBB[6];
+
+
+
         return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     }
 

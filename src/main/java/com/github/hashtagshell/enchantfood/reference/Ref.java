@@ -22,8 +22,12 @@ public class Ref
         public static final String ESSENCE_PROVIDER = "essenceprovider";
         public static final String ESSENCE_FOCUSER = "essencefocuser";
         public static final String MULTIBLOCK_FOOD_ALTAR = "multiblock_food_altar";
+        //Pipes
         public static final String PIPE_ADVANCED = "pipe_advanced";
         public static final String PIPE_BASIC = "pipe_basic";
+        //Essence Pumps
+        public static final String PUMP_ESSENCE_BASIC = "pump_essence_basic";
+        //Essence Sources
         public static final String INFINITE_ESSENCE_HOLE = "infinite_essence_hole";
     }
 
