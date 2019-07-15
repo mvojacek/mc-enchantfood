@@ -1,9 +1,5 @@
 package com.github.hashtagshell.enchantfood.block;
 
-import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
-import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
-import com.github.hashtagshell.enchantfood.essence.IEssencePump;
-import com.github.hashtagshell.enchantfood.essence.pipe.IPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -19,106 +15,128 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
+import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
+import com.github.hashtagshell.enchantfood.essence.IEssencePump;
+import com.github.hashtagshell.enchantfood.essence.pipe.IPipe;
+
 import javax.annotation.Nullable;
 
-public class BlockPipeGeneric extends BlockGeneric implements IPipe {
+public class BlockPipeGeneric extends BlockGeneric implements IPipe
+{
     public static final PropertyBool CONNECT_NORTH = PropertyBool.create("pipe_north");
     public static final PropertyBool CONNECT_SOUTH = PropertyBool.create("pipe_south");
-    public static final PropertyBool CONNECT_EAST = PropertyBool.create("pipe_east");
-    public static final PropertyBool CONNECT_WEST = PropertyBool.create("pipe_west");
-    public static final PropertyBool CONNECT_UP = PropertyBool.create("pipe_up");
-    public static final PropertyBool CONNECT_DOWN = PropertyBool.create("pipe_down");
+    public static final PropertyBool CONNECT_EAST  = PropertyBool.create("pipe_east");
+    public static final PropertyBool CONNECT_WEST  = PropertyBool.create("pipe_west");
+    public static final PropertyBool CONNECT_UP    = PropertyBool.create("pipe_up");
+    public static final PropertyBool CONNECT_DOWN  = PropertyBool.create("pipe_down");
 
-    private int tier;
+    private int    tier;
     private double pipeRadius;
 
-    public BlockPipeGeneric(String name, Material mat, int tier, double pipeRadius) {
+    public BlockPipeGeneric(String name, Material mat, int tier, double pipeRadius)
+    {
         super(name, mat);
         this.tier = tier;
         setDefaultState(
                 this.blockState.getBaseState()
-                        .withProperty(CONNECT_NORTH, false)
-                        .withProperty(CONNECT_SOUTH, false)
-                        .withProperty(CONNECT_EAST, false)
-                        .withProperty(CONNECT_WEST, false)
-                        .withProperty(CONNECT_UP, false)
-                        .withProperty(CONNECT_DOWN, false));
+                               .withProperty(CONNECT_NORTH, false)
+                               .withProperty(CONNECT_SOUTH, false)
+                               .withProperty(CONNECT_EAST, false)
+                               .withProperty(CONNECT_WEST, false)
+                               .withProperty(CONNECT_UP, false)
+                               .withProperty(CONNECT_DOWN, false));
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
     @Override
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(IBlockState state)
+    {
         return false;
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
         return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
     @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
         AxisAlignedBB[] hitboxes = new AxisAlignedBB[6];
-
 
 
         return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
         checkConnections(worldIn, pos);
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
-    private void checkConnections(World worldIn, BlockPos pos) {
-        if (worldIn.isRemote) {
+    private void checkConnections(World worldIn, BlockPos pos)
+    {
+        if (worldIn.isRemote)
+        {
             worldIn.setBlockState(pos, this.getActualState(this.getDefaultState(), worldIn, pos));
         }
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+                                ItemStack stack)
+    {
         checkConnections(worldIn, pos);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         IProperty[] propertyArray = {CONNECT_NORTH, CONNECT_SOUTH, CONNECT_WEST, CONNECT_EAST, CONNECT_UP, CONNECT_DOWN};
         return new BlockStateContainer(this, propertyArray);
     }
 
+    /**
+     * Can return IExtendedBlockState
+     */
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
         IBlockState beforeState = this.getDefaultState();
 
-
         return beforeState
-                .withProperty(CONNECT_EAST, canConnectTo(worldIn, pos, EnumFacing.EAST))
-                .withProperty(CONNECT_WEST, canConnectTo(worldIn, pos, EnumFacing.WEST))
-                .withProperty(CONNECT_SOUTH, canConnectTo(worldIn, pos, EnumFacing.SOUTH))
-                .withProperty(CONNECT_NORTH, canConnectTo(worldIn, pos, EnumFacing.NORTH))
-                .withProperty(CONNECT_UP, canConnectTo(worldIn, pos, EnumFacing.UP))
-                .withProperty(CONNECT_DOWN, canConnectTo(worldIn, pos, EnumFacing.DOWN));
+                .withProperty(CONNECT_EAST, canConnectTo(world, pos, EnumFacing.EAST))
+                .withProperty(CONNECT_WEST, canConnectTo(world, pos, EnumFacing.WEST))
+                .withProperty(CONNECT_SOUTH, canConnectTo(world, pos, EnumFacing.SOUTH))
+                .withProperty(CONNECT_NORTH, canConnectTo(world, pos, EnumFacing.NORTH))
+                .withProperty(CONNECT_UP, canConnectTo(world, pos, EnumFacing.UP))
+                .withProperty(CONNECT_DOWN, canConnectTo(world, pos, EnumFacing.DOWN));
+
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
         return this.getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
         /*
         boolean north = state.getValue(CONNECT_NORTH);
         boolean south = state.getValue(CONNECT_SOUTH);
@@ -140,58 +158,20 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe {
     }
 
     @Override
-    public int getTier() {
+    public int getTier()
+    {
         return this.tier;
     }
 
-    private boolean canConnectTo(IBlockAccess world, BlockPos mypos, EnumFacing facing) {
-        TileEntity te;
-        Block pipe;
-        switch (facing) {
-            case EAST:
-                BlockPos eastOffset = new BlockPos(1, 0, 0);
-                te = world.getTileEntity(mypos.add(eastOffset));
-                pipe = world.getBlockState(mypos.add(eastOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.EAST)
-                        || te instanceof IEssenceConsumer;
-            case WEST:
-                BlockPos westOffset = new BlockPos(-1, 0, 0);
-                te = world.getTileEntity(mypos.add(westOffset));
-                pipe = world.getBlockState(mypos.add(westOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.WEST)
-                        || te instanceof IEssenceConsumer;
-            case SOUTH:
-                BlockPos southOffset = new BlockPos(0, 0, -1);
-                te = world.getTileEntity(mypos.add(southOffset));
-                pipe = world.getBlockState(mypos.add(southOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.SOUTH)
-                        || te instanceof IEssenceConsumer;
-            case NORTH:
-                BlockPos northOffset = new BlockPos(0, 0, 1);
-                te = world.getTileEntity(mypos.add(northOffset));
-                pipe = world.getBlockState(mypos.add(northOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.NORTH)
-                        || te instanceof IEssenceConsumer;
-            case UP:
-                BlockPos upOffset = new BlockPos(0, 1, 0);
-                te = world.getTileEntity(mypos.add(upOffset));
-                pipe = world.getBlockState(mypos.add(upOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.UP)
-                        || te instanceof IEssenceConsumer;
-            case DOWN:
-                BlockPos downOffset = new BlockPos(0, -1, 0);
-                te = world.getTileEntity(mypos.add(downOffset));
-                pipe = world.getBlockState(mypos.add(downOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.DOWN)
-                        || te instanceof IEssenceConsumer;
-            default:
-                return false;
-        }
+    private boolean canConnectTo(IBlockAccess world, BlockPos mypos, EnumFacing direction)
+    {
+        BlockPos otherPos = mypos.offset(direction);
+        TileEntity otherTE = world.getTileEntity(otherPos);
+        IBlockState otherState = world.getBlockState(otherPos);
+        Block otherBlock = otherState.getBlock();
+
+        return otherBlock instanceof IPipe && (((IPipe) otherBlock).getTier() == this.getTier())
+               || otherTE instanceof IEssencePump && ((IEssencePump) otherTE).getTier() == this.getTier() && ((IEssencePump) otherTE).canConnectFromSide(direction.getOpposite())
+               || otherTE instanceof IEssenceConsumer;
     }
 }
