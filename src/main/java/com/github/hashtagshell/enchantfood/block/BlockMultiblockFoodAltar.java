@@ -1,9 +1,5 @@
 package com.github.hashtagshell.enchantfood.block;
 
-import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
-import com.github.hashtagshell.enchantfood.block.tile.TileFoodAltar;
-import com.github.hashtagshell.enchantfood.block.tile.TileMultiblockFoodAltar;
-import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -17,62 +13,81 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
+import com.github.hashtagshell.enchantfood.block.tile.TileFoodAltar;
+import com.github.hashtagshell.enchantfood.block.tile.TileMultiblockFoodAltar;
+import com.github.hashtagshell.enchantfood.reference.Ref;
+
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoodAltar> {
+public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoodAltar>
+{
     public static final PropertyEnum<AltarMultiblockType> ALTAR_PART = PropertyEnum.create("altarpart", AltarMultiblockType.class);
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyDirection                 FACING     = BlockHorizontal.FACING;
 
 
-    public BlockMultiblockFoodAltar(String name) {
+    public BlockMultiblockFoodAltar(String name)
+    {
         super(name, Material.ANVIL);
         setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ALTAR_PART, AltarMultiblockType.MAGMA));
     }
 
     @Override
-    public Class<TileMultiblockFoodAltar> tileClass() {
+    public Class<TileMultiblockFoodAltar> tileClass()
+    {
         return TileMultiblockFoodAltar.class;
     }
 
     @Override
-    public String tileId() {
+    public String tileId()
+    {
         return Ref.Blocks.MULTIBLOCK_FOOD_ALTAR;
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return false;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(World worldIn, int meta)
+    {
         return new TileMultiblockFoodAltar();
     }
 
+    /**
+     * Called serverside after this block is replaced with another in Chunk, but before the Tile Entity is updated
+     */
     @Override
-    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-        super.onBlockDestroyedByPlayer(worldIn, pos, state);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
         TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) worldIn.getTileEntity(pos);
-        if (tmfa != null) {
-            if (tmfa.altarPos != null) {
-                TileFoodAltar altar = (TileFoodAltar) worldIn.getTileEntity(tmfa.altarPos);
-                altar.destroyMultiblock();
-            }
+        assert tmfa != null;
+        if (tmfa.altarPos != null)
+        {
+            TileFoodAltar altar = (TileFoodAltar) worldIn.getTileEntity(tmfa.altarPos);
+            assert altar != null;
+            altar.destroyMultiblock();
         }
 
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected BlockStateContainer createBlockState()
+    {
         IProperty[] propertyArray = {FACING, ALTAR_PART};
         return new BlockStateContainer(this, propertyArray);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public IBlockState getStateFromMeta(int meta)
+    {
 
         int rotationMeta = meta & 0b11;
         int type = (meta >> 2) & 0b11;
@@ -83,7 +98,8 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(IBlockState state)
+    {
 
         int rotation = state.getValue(FACING).getHorizontalIndex();
         int altarPart = state.getValue(ALTAR_PART).getIndex();
@@ -92,7 +108,8 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
         return super.getItemDropped(state, rand, fortune);
     }
 }
