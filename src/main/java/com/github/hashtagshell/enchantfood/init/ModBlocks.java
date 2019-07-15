@@ -21,6 +21,7 @@ public class ModBlocks {
     public static BlockTileGeneric<TileEssenceFocuser> essenceFocuser;
     public static BlockTileGeneric<TileItemHolder> itemTable;
     public static BlockTileGeneric<TileFoodAltar> foodAltar;
+    public static BlockTileGeneric<TileEssencePump> basic_pump;
     public static BlockMultiblockFoodAltar multiblockFoodAltar;
     public static BlockPipeGeneric advanced_pipe;
     public static BlockPipeGeneric basic_pipe;
@@ -33,8 +34,12 @@ public class ModBlocks {
         itemTable = registerTile(new BlockItemHolder(Ref.Blocks.ITEM_HOLDER));
         foodAltar = registerTile(new BlockFoodAltar(Ref.Blocks.FOOD_ALTAR));
         multiblockFoodAltar = registerTile(new BlockMultiblockFoodAltar(Ref.Blocks.MULTIBLOCK_FOOD_ALTAR));
-        basic_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_BASIC, Material.WOOD, 1));
-        advanced_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON, 2));
+        //Pipes
+        basic_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_BASIC, Material.WOOD, 1, 1.5D));
+        advanced_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON, 2, 2.0D));
+        //Pumps
+        basic_pump = registerTile(new BlockEssencePumpGeneric(Ref.Blocks.PUMP_ESSENCE_BASIC, Material.WOOD, 1));
+        //Essence Sources
         infiniteEssenceHole = registerTile(new BlockInfiniteEssence(Ref.Blocks.INFINITE_ESSENCE_HOLE));
     }
 }

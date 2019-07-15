@@ -2,6 +2,7 @@ package com.github.hashtagshell.enchantfood.block;
 
 import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
 import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
+import com.github.hashtagshell.enchantfood.essence.IEssencePump;
 import com.github.hashtagshell.enchantfood.essence.pipe.IPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -151,32 +152,44 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe {
                 BlockPos eastOffset = new BlockPos(1, 0, 0);
                 te = world.getTileEntity(mypos.add(eastOffset));
                 pipe = world.getBlockState(mypos.add(eastOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             case WEST:
                 BlockPos westOffset = new BlockPos(-1, 0, 0);
                 te = world.getTileEntity(mypos.add(westOffset));
                 pipe = world.getBlockState(mypos.add(westOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             case SOUTH:
                 BlockPos southOffset = new BlockPos(0, 0, -1);
                 te = world.getTileEntity(mypos.add(southOffset));
                 pipe = world.getBlockState(mypos.add(southOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             case NORTH:
                 BlockPos northOffset = new BlockPos(0, 0, 1);
                 te = world.getTileEntity(mypos.add(northOffset));
                 pipe = world.getBlockState(mypos.add(northOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             case UP:
                 BlockPos upOffset = new BlockPos(0, 1, 0);
                 te = world.getTileEntity(mypos.add(upOffset));
                 pipe = world.getBlockState(mypos.add(upOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             case DOWN:
                 BlockPos downOffset = new BlockPos(0, -1, 0);
                 te = world.getTileEntity(mypos.add(downOffset));
                 pipe = world.getBlockState(mypos.add(downOffset)).getBlock();
-                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier()) || te instanceof IEssenceConsumer;
+                return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssenceConsumer;
             default:
                 return false;
         }

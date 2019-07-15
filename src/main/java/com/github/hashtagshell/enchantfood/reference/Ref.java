@@ -26,7 +26,7 @@ public class Ref
         public static final String PIPE_ADVANCED = "pipe_advanced";
         public static final String PIPE_BASIC = "pipe_basic";
         //Essence Pumps
-        public static final String PUMP_ESSENCE_BASIC = "pump_essence_basic";
+        public static final String PUMP_ESSENCE_BASIC = "essencepump_basic";
         //Essence Sources
         public static final String INFINITE_ESSENCE_HOLE = "infinite_essence_hole";
     }

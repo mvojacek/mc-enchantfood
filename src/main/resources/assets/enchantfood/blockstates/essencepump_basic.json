@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "enchantfood:essencefocuser"
+    "model": "enchantfood:essencepump_basic"
   },
   "variants": {
     "facing": {
@@ -15,6 +15,11 @@
       "west": {
         "y": 270
       }
-    }
+    },
+    "inventory": [
+      {
+        "model": "enchantfood:essencepump_basic"
+      }
+    ]
   }
 }
