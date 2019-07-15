@@ -2,7 +2,6 @@ package com.github.hashtagshell.enchantfood.block;
 
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
 import com.github.hashtagshell.enchantfood.block.tile.TileEssenceFocuser;
-import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
@@ -10,37 +9,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
+public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> implements IRotatable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public BlockEssenceFocuser(String name) {
         super(name, Material.WOOD);
         setSoundType(SoundType.WOOD);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
-
-
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            if (!player.isSneaking()) {
-                TileEssenceFocuser tileEssenceFocuser = (TileEssenceFocuser) world.getTileEntity(pos);
-                if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == ModItems.beefStick) {
-                    world.setBlockState(pos, state.withProperty(FACING, tileEssenceFocuser.getRotation()));
-                }
-            } else {
-                //Something when sneaking
-            }
-        }
-        return true;
-
     }
 
     @Override
@@ -51,11 +33,7 @@ public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
     @Override
     public IBlockState getStateFromMeta(int meta) {
 
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
-
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
-            enumfacing = EnumFacing.NORTH;
-        }
+        EnumFacing enumfacing = EnumFacing.HORIZONTALS[meta];
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
@@ -63,13 +41,18 @@ public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
     @Override
     public int getMetaFromState(IBlockState state) {
 
-        EnumFacing facing = state.getValue(FACING);
-
-        int meta = state.getValue(FACING).getIndex();
+        int meta = state.getValue(FACING).getHorizontalIndex();
 
         return meta;
     }
 
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+
+        EnumFacing placerFacing = placer.getHorizontalFacing();
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, placerFacing.getOpposite()));
+    }
 
     @Override
     public Class<TileEssenceFocuser> tileClass() {
@@ -91,5 +74,20 @@ public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEssenceFocuser();
+    }
+
+    @Override
+    public FacingType getFacingType() {
+        return FacingType.HORIZONTAL;
+    }
+
+    @Override
+    public EnumFacing getRotation(World w, BlockPos pos) {
+        return w.getBlockState(pos).getValue(FACING);
+    }
+
+    @Override
+    public void setFacing(World w, BlockPos pos, EnumFacing facing) {
+        w.setBlockState(pos, this.getDefaultState().withProperty(FACING, facing));
     }
 }

@@ -54,6 +54,7 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockDestroyedByPlayer(worldIn, pos, state);
         TileMultiblockFoodAltar tmfa = (TileMultiblockFoodAltar) worldIn.getTileEntity(pos);
         if (tmfa != null) {
             if (tmfa.altarPos != null) {
@@ -61,6 +62,7 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
                 altar.destroyMultiblock();
             }
         }
+
     }
 
     @Override

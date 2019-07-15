@@ -1,8 +1,6 @@
 package com.github.hashtagshell.enchantfood.client.render;
 
-import com.github.hashtagshell.enchantfood.block.tile.TileFoodAltar;
 import com.github.hashtagshell.enchantfood.block.tile.TileItemHolder;
-import com.github.hashtagshell.enchantfood.client.render.block.RenderFoodAltar;
 import com.github.hashtagshell.enchantfood.client.render.block.RenderItemHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 public class BlockRenderRegister {
     public static void preinit() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileItemHolder.class, new RenderItemHolder());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFoodAltar.class, new RenderFoodAltar());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileFoodAltar.class, new RenderFoodAltar());
     }
 
     public static class RenderHelper {

@@ -20,15 +20,6 @@ public class TileEssenceFocuser extends TileGeneric implements ITickable, IEssen
     public void update() {
     }
 
-    public EnumFacing getRotation() {
-        if (rotation.getHorizontalIndex() == 3) {
-            rotation = EnumFacing.HORIZONTALS[0];
-        } else {
-            rotation = EnumFacing.HORIZONTALS[rotation.getHorizontalIndex() + 1];
-        }
-        return rotation;
-    }
-
     @Override
     public int getMaxEssencePerTick() {
         return 0;

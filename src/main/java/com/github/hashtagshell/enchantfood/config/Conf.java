@@ -1,8 +1,7 @@
 package com.github.hashtagshell.enchantfood.config;
 
-import net.minecraft.util.ResourceLocation;
-
 import com.github.hashtagshell.enchantfood.utility.Log;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -80,6 +79,13 @@ public class Conf
         public static Shiny shiny = DefStupid.shiny;
     }
 
+    public static class MachineValues {
+        public static final String category = "machineValues";
+
+        public static float foodEnchanter_InfusionEssencePerTickBase = DefMachineValues.foodEnchanter_EssencePerTickBase;
+        public static float foodEnchanter_InfusionSpeedMultiplier = DefMachineValues.foodEnchanter_InfusionSpeedMultiplier;
+    }
+
     static class Defaults
     {
         public static class DefGeneral
@@ -102,6 +108,11 @@ public class Conf
             public static final float   modifierSaturating = 0.333F;
             public static final float   modifierDigestible = 0.1F;
 
+        }
+
+        public static class DefMachineValues {
+            public static final float foodEnchanter_EssencePerTickBase = 1.0F;
+            public static final float foodEnchanter_InfusionSpeedMultiplier = 1;
         }
 
         public static class DefFoodPotions
@@ -150,13 +161,25 @@ public class Conf
     private static String[] defaultStringArray, validStringArray;
     private static Enum<?> defaultEnum;
 
-    static void loadConfiguration()
-    {
+    static void loadConfiguration() {
         loadConfigurationGeneral();
         loadConfigurationEnchants();
         loadConfigurationFoodPotions();
         loadConfigurationVisual();
         loadConfigurationStupid();
+        loadConfigurationMachines();
+    }
+
+    private static void loadConfigurationMachines() {
+        category = MachineValues.category;
+
+        name = "foodEnchanterFuelPerTickBase";
+        defaultFloat = DefMachineValues.foodEnchanter_EssencePerTickBase;
+        MachineValues.foodEnchanter_InfusionEssencePerTickBase = getFloat();
+
+        name = "foodEnchanterSpeedMultiplier";
+        defaultFloat = DefMachineValues.foodEnchanter_InfusionSpeedMultiplier;
+        MachineValues.foodEnchanter_InfusionSpeedMultiplier = getFloat();
     }
 
     private static void loadConfigurationGeneral()

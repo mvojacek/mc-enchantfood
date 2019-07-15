@@ -1,12 +1,13 @@
 package com.github.hashtagshell.enchantfood.block.tile;
 
 import com.github.hashtagshell.enchantfood.block.lib.tile.TileGeneric;
+import com.github.hashtagshell.enchantfood.config.Conf;
 import com.github.hashtagshell.enchantfood.ench.EnchantmentFood;
 import com.github.hashtagshell.enchantfood.init.ModEnchantments;
-import com.github.hashtagshell.enchantfood.init.ModItems;
+import com.github.hashtagshell.enchantfood.init.ModRecipes;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
+import com.github.hashtagshell.enchantfood.recipes.RecipeFoodInfusion;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +33,10 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     public static final String PROGRESS_NBT = "progress";
     public static final String FUEL_NBT = "storedFuel";
     public static final String WORKING_NBT = "isWorking";
+    public static final String INFUSION_FUEL_REMAINING_NBT = "infusionRemaining";
+    public static final String INFUSION_FUEL_TOTAL_NBT = "infusionTotal";
+    public static final String INFUSION_OUTPUT_NBT = "infusionOutput";
+    public static final String INFUSION_MATERIAL_COST_NBT = "infusionInputCount";
 
     public boolean working = false;
     public int fuel = 0;
@@ -39,11 +44,21 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     public int progress = 0;
     public final int progressMax = 200;
 
-    private int lastSendFuel = 0;
+    private int fuelInfusionRemaining = 0;
+    private int fuelInfusionTotal = 0;
+    private ItemStack nowInfusingOutput = ItemStack.EMPTY;
+    private int nowInfusingMaterialCost = 0;
+
+    private final int ESSENCE_PER_TICK_BASE = 2;
+
     private Random random = new Random();
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        fuelInfusionRemaining = compound.getInteger(INFUSION_FUEL_REMAINING_NBT);
+        fuelInfusionTotal = compound.getInteger(INFUSION_FUEL_TOTAL_NBT);
+        nowInfusingMaterialCost = compound.getInteger(INFUSION_MATERIAL_COST_NBT);
+        nowInfusingOutput.deserializeNBT(compound.getCompoundTag(INFUSION_OUTPUT_NBT));
         fuel = compound.getInteger(FUEL_NBT);
         progress = compound.getInteger(PROGRESS_NBT);
         inventory.deserializeNBT(compound.getCompoundTag(INVENTORY_NBT));
@@ -53,6 +68,10 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setInteger(INFUSION_FUEL_REMAINING_NBT, fuelInfusionRemaining);
+        compound.setInteger(INFUSION_FUEL_TOTAL_NBT, fuelInfusionTotal);
+        compound.setInteger(INFUSION_MATERIAL_COST_NBT, nowInfusingMaterialCost);
+        compound.setTag(INFUSION_OUTPUT_NBT, nowInfusingOutput.serializeNBT());
         compound.setTag(INVENTORY_NBT, inventory.serializeNBT());
         compound.setInteger(PROGRESS_NBT, progress);
         compound.setInteger(FUEL_NBT, fuel);
@@ -110,20 +129,16 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
         ItemStack craftingItem = inventory.getStackInSlot(0);
 
-        if (craftingItem.getItem() == Items.EMERALD && fuel > 600 && craftingItem.getCount() > 0) {
-            working = true;
-            progress++;
-            fuel--;
-            spawnWorkingParticles();
-
-            if (progress >= progressMax) {
-                ItemStack output = new ItemStack(ModItems.essenceShard);
-                output.setCount(1);
-                inventory.extractItem(0, 1, false);
-                inventory.insertItem(2, output, false);
-                progress = 0;
+        if (!working && craftingItem != ItemStack.EMPTY) {
+            for (RecipeFoodInfusion recipe : ModRecipes.foodInfusions) {
+                if (recipe.input == craftingItem.getItem() && recipe.inputCount <= craftingItem.getCount()) {
+                    nowInfusingOutput = new ItemStack(recipe.output, recipe.outputCount);
+                    nowInfusingMaterialCost = recipe.inputCount;
+                    fuelInfusionRemaining = recipe.essenceCost;
+                    fuelInfusionTotal = recipe.essenceCost;
+                    working = true;
+                }
             }
-
         }
 
         if (craftingItem != ItemStack.EMPTY && craftingItem.getCount() > 0 && craftingItem.getItem() instanceof ItemFood) {
@@ -173,10 +188,36 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
             progress = 0;
             working = false;
         }
+
+        if (working && fuel > 0 && nowInfusingOutput != ItemStack.EMPTY) {
+            double step = (double) progressMax / (double) fuelInfusionTotal;
+
+            int fuelTakeThisFrame = (int) (ESSENCE_PER_TICK_BASE * Conf.MachineValues.foodEnchanter_InfusionEssencePerTickBase);
+
+            fuel -= fuelTakeThisFrame;
+            fuelInfusionRemaining -= fuelTakeThisFrame;
+
+            progress = (int) Math.ceil((fuelInfusionTotal - fuelInfusionRemaining) * step);
+            spawnWorkingParticles();
+            if (progress >= progressMax || fuelInfusionRemaining <= 0) {
+                inventory.extractItem(0, nowInfusingMaterialCost, false);
+                inventory.insertItem(2, nowInfusingOutput, false);
+                progress = 0;
+                fuelInfusionRemaining = 0;
+                fuelInfusionTotal = 0;
+                working = false;
+                nowInfusingOutput = ItemStack.EMPTY;
+                NetworkWrapper.dispatchTEToNearbyPlayers(this);
+            }
+        }
     }
 
     @Override
     public void writePacketNBT(NBTTagCompound cmp) {
+        cmp.setInteger(INFUSION_FUEL_REMAINING_NBT, fuelInfusionRemaining);
+        cmp.setInteger(INFUSION_FUEL_TOTAL_NBT, fuelInfusionTotal);
+        cmp.setInteger(INFUSION_MATERIAL_COST_NBT, nowInfusingMaterialCost);
+        cmp.setTag(INFUSION_OUTPUT_NBT, nowInfusingOutput.serializeNBT());
         cmp.setTag(INVENTORY_NBT, inventory.serializeNBT());
         cmp.setInteger(PROGRESS_NBT, progress);
         cmp.setInteger(FUEL_NBT, fuel);
@@ -185,6 +226,10 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
     @Override
     public void readPacketNBT(NBTTagCompound cmp) {
+        fuelInfusionRemaining = cmp.getInteger(INFUSION_FUEL_REMAINING_NBT);
+        fuelInfusionTotal = cmp.getInteger(INFUSION_FUEL_TOTAL_NBT);
+        nowInfusingMaterialCost = cmp.getInteger(INFUSION_MATERIAL_COST_NBT);
+        nowInfusingOutput.deserializeNBT(cmp.getCompoundTag(INFUSION_OUTPUT_NBT));
         fuel = cmp.getInteger(FUEL_NBT);
         progress = cmp.getInteger(PROGRESS_NBT);
         inventory.deserializeNBT(cmp.getCompoundTag(INVENTORY_NBT));

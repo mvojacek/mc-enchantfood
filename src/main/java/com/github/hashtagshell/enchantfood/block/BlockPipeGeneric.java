@@ -153,42 +153,42 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe {
                 te = world.getTileEntity(mypos.add(eastOffset));
                 pipe = world.getBlockState(mypos.add(eastOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.EAST)
                         || te instanceof IEssenceConsumer;
             case WEST:
                 BlockPos westOffset = new BlockPos(-1, 0, 0);
                 te = world.getTileEntity(mypos.add(westOffset));
                 pipe = world.getBlockState(mypos.add(westOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.WEST)
                         || te instanceof IEssenceConsumer;
             case SOUTH:
                 BlockPos southOffset = new BlockPos(0, 0, -1);
                 te = world.getTileEntity(mypos.add(southOffset));
                 pipe = world.getBlockState(mypos.add(southOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.SOUTH)
                         || te instanceof IEssenceConsumer;
             case NORTH:
                 BlockPos northOffset = new BlockPos(0, 0, 1);
                 te = world.getTileEntity(mypos.add(northOffset));
                 pipe = world.getBlockState(mypos.add(northOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.NORTH)
                         || te instanceof IEssenceConsumer;
             case UP:
                 BlockPos upOffset = new BlockPos(0, 1, 0);
                 te = world.getTileEntity(mypos.add(upOffset));
                 pipe = world.getBlockState(mypos.add(upOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.UP)
                         || te instanceof IEssenceConsumer;
             case DOWN:
                 BlockPos downOffset = new BlockPos(0, -1, 0);
                 te = world.getTileEntity(mypos.add(downOffset));
                 pipe = world.getBlockState(mypos.add(downOffset)).getBlock();
                 return pipe instanceof IPipe && (((IPipe) pipe).getTier() == this.getTier())
-                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier()
+                        || te instanceof IEssencePump && ((IEssencePump) te).getTier() == this.getTier() && ((IEssencePump) te).canConnectFromSide(EnumFacing.DOWN)
                         || te instanceof IEssenceConsumer;
             default:
                 return false;
