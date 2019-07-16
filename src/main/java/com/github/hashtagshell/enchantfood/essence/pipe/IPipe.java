@@ -1,11 +1,10 @@
 package com.github.hashtagshell.enchantfood.essence.pipe;
 
-public interface IPipe {
+import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
+import com.github.hashtagshell.enchantfood.essence.IEssenceProvider;
+
+public interface IPipe extends IEssenceConsumer, IEssenceProvider {
     default boolean isBlocked() {
         return false;
-    }
-
-    default int getTier() {
-        return 1;
     }
 }

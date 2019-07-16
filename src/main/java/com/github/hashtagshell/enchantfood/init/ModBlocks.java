@@ -38,7 +38,7 @@ public class ModBlocks {
         basic_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_BASIC, Material.WOOD, 1, 1.5D));
         advanced_pipe = register(new BlockPipeGeneric(Ref.Blocks.PIPE_ADVANCED, Material.IRON, 2, 2.0D));
         //Pumps
-        basic_pump = registerTile(new BlockEssencePumpGeneric(Ref.Blocks.PUMP_ESSENCE_BASIC, Material.WOOD, 1));
+        basic_pump = registerTile(new BlockEssencePumpGeneric(Ref.Blocks.PUMP_ESSENCE_BASIC, Material.WOOD, 1, 16));
         //Essence Sources
         infiniteEssenceHole = registerTile(new BlockInfiniteEssence(Ref.Blocks.INFINITE_ESSENCE_HOLE));
     }

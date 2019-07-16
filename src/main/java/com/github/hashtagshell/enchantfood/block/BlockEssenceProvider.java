@@ -36,11 +36,6 @@ public class BlockEssenceProvider extends BlockTileGeneric<TileEssenceProvider> 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         TileEssenceProvider tileEssenceProvider = (TileEssenceProvider) world.getTileEntity(pos);
-        if (world.getStrongPower(pos, EnumFacing.NORTH) > 0) {
-            tileEssenceProvider.enabled = false;
-        } else {
-            tileEssenceProvider.enabled = false;
-        }
         super.onNeighborChange(world, pos, neighbor);
     }
 

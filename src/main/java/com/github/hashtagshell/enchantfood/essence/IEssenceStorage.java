@@ -4,7 +4,9 @@ public interface IEssenceStorage {
     int getMaxEssence();
     int getCurrentEssence();
 
-    boolean canInsertEssence(int amount);
+    void setEssence(int amount);
 
-    boolean isFull();
+    default boolean isFull() {
+        return getCurrentEssence() >= getMaxEssence();
+    }
 }

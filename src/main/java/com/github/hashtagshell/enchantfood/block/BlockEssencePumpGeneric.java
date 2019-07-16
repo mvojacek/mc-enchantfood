@@ -21,10 +21,12 @@ public class BlockEssencePumpGeneric extends BlockTileGeneric<TileEssencePump> i
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     private int tier;
+    private int throughtput;
 
-    public BlockEssencePumpGeneric(String name, Material mat, int tier) {
+    public BlockEssencePumpGeneric(String name, Material mat, int tier, int throughtput) {
         super(name, mat);
         this.tier = tier;
+        this.throughtput = throughtput;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class BlockEssencePumpGeneric extends BlockTileGeneric<TileEssencePump> i
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEssencePump(tier);
+        return new TileEssencePump(tier, throughtput);
     }
 
     @SuppressWarnings("deprecation") //Just Mojangs message that they will remove it, it still exists in 1.12

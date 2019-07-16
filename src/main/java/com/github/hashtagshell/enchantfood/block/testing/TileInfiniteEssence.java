@@ -7,25 +7,6 @@ public class TileInfiniteEssence extends TileGeneric implements IEssenceProvider
     public static final int INFINITE_POWER = Integer.MAX_VALUE;
 
     @Override
-    public int getMaxOuputEssence() {
-        return INFINITE_POWER;
-    }
-
-    @Override
-    public boolean canTakeEssence(int amount) {
-        return true;
-    }
-
-    @Override
-    public void takeEssence(int value) {
-    }
-
-    @Override
-    public boolean isGenerating() {
-        return true;
-    }
-
-    @Override
     public int getMaxEssence() {
         return INFINITE_POWER;
     }
@@ -36,12 +17,11 @@ public class TileInfiniteEssence extends TileGeneric implements IEssenceProvider
     }
 
     @Override
-    public boolean canInsertEssence(int amount) {
-        return false;
+    public void setEssence(int amount) {
     }
 
     @Override
-    public boolean isFull() {
-        return true;
+    public int getMaxOutputEssence() {
+        return INFINITE_POWER;
     }
 }

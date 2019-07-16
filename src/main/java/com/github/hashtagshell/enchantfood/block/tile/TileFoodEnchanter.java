@@ -131,9 +131,9 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
 
         if (!working && craftingItem != ItemStack.EMPTY) {
             for (RecipeFoodInfusion recipe : ModRecipes.foodInfusions) {
-                if (recipe.input == craftingItem.getItem() && recipe.inputCount <= craftingItem.getCount()) {
-                    nowInfusingOutput = new ItemStack(recipe.output, recipe.outputCount);
-                    nowInfusingMaterialCost = recipe.inputCount;
+                if (recipe.input.getItem() == craftingItem.getItem() && recipe.input.getCount() <= craftingItem.getCount()) {
+                    nowInfusingOutput = recipe.output;
+                    nowInfusingMaterialCost = recipe.input.getCount();
                     fuelInfusionRemaining = recipe.essenceCost;
                     fuelInfusionTotal = recipe.essenceCost;
                     working = true;

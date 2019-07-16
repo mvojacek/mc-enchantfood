@@ -1,5 +1,9 @@
 package com.github.hashtagshell.enchantfood.block;
 
+import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
+import com.github.hashtagshell.enchantfood.block.tile.TileEssencePump;
+import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
+import com.github.hashtagshell.enchantfood.essence.ITierable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -15,14 +19,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.github.hashtagshell.enchantfood.block.lib.BlockGeneric;
-import com.github.hashtagshell.enchantfood.essence.IEssenceConsumer;
-import com.github.hashtagshell.enchantfood.essence.IEssencePump;
-import com.github.hashtagshell.enchantfood.essence.pipe.IPipe;
-
 import javax.annotation.Nullable;
 
-public class BlockPipeGeneric extends BlockGeneric implements IPipe
+public class BlockPipeGeneric extends BlockGeneric implements ITierable
 {
     public static final PropertyBool CONNECT_NORTH = PropertyBool.create("pipe_north");
     public static final PropertyBool CONNECT_SOUTH = PropertyBool.create("pipe_south");
@@ -80,9 +79,10 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe
         return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
     }
 
+
+    @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         checkConnections(worldIn, pos);
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
@@ -91,7 +91,7 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe
     {
         if (worldIn.isRemote)
         {
-            worldIn.setBlockState(pos, this.getActualState(this.getDefaultState(), worldIn, pos));
+            worldIn.setBlockState(pos, this.getExtendedState(this.getDefaultState(), worldIn, pos));
         }
     }
 
@@ -128,9 +128,9 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState();
     }
 
@@ -170,8 +170,8 @@ public class BlockPipeGeneric extends BlockGeneric implements IPipe
         IBlockState otherState = world.getBlockState(otherPos);
         Block otherBlock = otherState.getBlock();
 
-        return otherBlock instanceof IPipe && (((IPipe) otherBlock).getTier() == this.getTier())
-               || otherTE instanceof IEssencePump && ((IEssencePump) otherTE).getTier() == this.getTier() && ((IEssencePump) otherTE).canConnectFromSide(direction.getOpposite())
+        return otherBlock instanceof BlockPipeGeneric && ((BlockPipeGeneric) otherBlock).getTier() == this.getTier()
+                || otherTE instanceof TileEssencePump && ((TileEssencePump) otherTE).getTier() == this.getTier()
                || otherTE instanceof IEssenceConsumer;
     }
 }

@@ -30,6 +30,7 @@ public class BlockEssenceFocuser extends BlockTileGeneric<TileEssenceFocuser> im
         return new BlockStateContainer(this, FACING);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
 

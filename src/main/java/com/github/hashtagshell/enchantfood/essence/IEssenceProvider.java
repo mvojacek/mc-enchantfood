@@ -1,11 +1,12 @@
 package com.github.hashtagshell.enchantfood.essence;
 
 public interface IEssenceProvider extends IEssenceStorage {
-    int getMaxOuputEssence();
+    int getMaxOutputEssence();
 
-    boolean canTakeEssence(int amount);
+    default int takeEssence(int value) {
+        int output = Math.min(value, Math.min(getMaxOutputEssence(), getMaxEssence()));
+        setEssence(getCurrentEssence() - output);
 
-    void takeEssence(int value);
-
-    boolean isGenerating();
+        return output;
+    }
 }

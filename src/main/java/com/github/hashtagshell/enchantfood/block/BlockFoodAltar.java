@@ -74,7 +74,7 @@ public class BlockFoodAltar extends BlockTileGeneric<TileFoodAltar> {
             TileFoodAltar tileFoodAltar = (TileFoodAltar) world.getTileEntity(pos);
             if (!player.isSneaking()) {
                 if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == ModItems.beefStick) {
-                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("Food Altar Contains: " + tileFoodAltar.inventory.getStackInSlot(0).getItem().getUnlocalizedName()));
+                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("Current progress : " + (tileFoodAltar.fullRecipeCost - tileFoodAltar.remainingProgress) + " / " + tileFoodAltar.fullRecipeCost + " for " + tileFoodAltar.result.getDisplayName()));
                     tileFoodAltar.wrenchClick();
                     return true;
                 }
