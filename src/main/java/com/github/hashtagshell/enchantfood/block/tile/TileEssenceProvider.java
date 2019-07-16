@@ -11,8 +11,8 @@ import java.util.Random;
 public class TileEssenceProvider extends TileGeneric implements ITickable, IEssenceStorage {
     private Random random = new Random();
 
-    private final int maxEssence = 32;
-    private int currentEssence = 0;
+    private final int maxEssence     = 128;
+    private       int currentEssence = 0;
 
     @Override
     public void update() {

@@ -8,7 +8,8 @@ import com.github.hashtagshell.enchantfood.init.ModBlocks;
 import com.github.hashtagshell.enchantfood.init.ModRecipes;
 import com.github.hashtagshell.enchantfood.network.NetworkWrapper;
 import com.github.hashtagshell.enchantfood.recipes.RecipeEssenceInfusion;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockStoneSlab;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,26 +30,26 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
 
     public ItemStackHandler inventory = new ItemStackHandler(1);
 
-    public static final String INVENTORY_NBT = "inventory";
-    public static final String REM_PROGRESS_NBT = "remainingProgress";
-    public static final String WORKING_NBT = "isWorking";
-    public static final String MULTIBLOCK_NBT = "isMultiblock";
-    public static final String RESULT_NBT = "resultOfCurrentOperation";
-    public static final String INFUSES_REMAINING_NBT = "infusesRemaining";
+    public static final String INVENTORY_NBT           = "inventory";
+    public static final String REM_PROGRESS_NBT        = "remainingProgress";
+    public static final String WORKING_NBT             = "isWorking";
+    public static final String MULTIBLOCK_NBT          = "isMultiblock";
+    public static final String RESULT_NBT              = "resultOfCurrentOperation";
+    public static final String INFUSES_REMAINING_NBT   = "infusesRemaining";
     public static final String CURRENT_RECIPE_COST_NBT = "totalCost";
 
 
-    public ItemStack result = ItemStack.EMPTY;
-    private ArrayList<ItemStack> infusesRemaining = new ArrayList<ItemStack>();
-    public boolean working = false;
-    public int remainingProgress = 0;
-    public int fullRecipeCost = 0;
-    private int currentFuel = 0;
-    private final int maxFuel = 1024;
+    public        ItemStack            result            = ItemStack.EMPTY;
+    private       ArrayList<ItemStack> infusesRemaining  = new ArrayList<ItemStack>();
+    public        boolean              working           = false;
+    public        int                  remainingProgress = 0;
+    public        int                  fullRecipeCost    = 0;
+    private       int                  currentFuel       = 0;
+    private final int                  maxFuel           = 1024;
 
     public boolean isValidMultiblock = false;
 
-    private final int MAX_ESSENCE_PER_TICK = 16;
+    private final int MAX_ESSENCE_PER_TICK              = 128;
     private final int SUCCESS_MULTIBLOCK_PARTICLE_COUNT = 64;
 
     private Random random = new Random();
@@ -217,7 +218,7 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
                 double x = Math.sin(2 * Math.PI / SUCCESS_MULTIBLOCK_PARTICLE_COUNT * i) * r + 0.5 + getPos().getX();
                 double y = getPos().getY() + 0.5;
                 double z = Math.cos(2 * Math.PI / SUCCESS_MULTIBLOCK_PARTICLE_COUNT * i) * r + 0.5 + getPos().getZ();
-                world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, x, y, z, 0, 0.3F, 0);
+                getWorld().spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, x, y, z, 0, 0.3D, 0);
             }
         }
 
@@ -239,22 +240,22 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
 
     private boolean checkMultiblock() {
         if (isValidMultiblock) {
-            return checkBlockSet(MB_GOLD_BLOCKS, ModBlocks.multiblockFoodAltar) &&
-                    checkBlockSet(MB_STONE_SLABS, ModBlocks.multiblockFoodAltar) &&
-                    checkBlockSet(MB_MAGMA_BLOCKS, ModBlocks.multiblockFoodAltar);
+            return checkBlockSet(MB_GOLD_BLOCKS, ModBlocks.multiblockFoodAltar.getDefaultState(), false) &&
+                    checkBlockSet(MB_STONE_SLABS, ModBlocks.multiblockFoodAltar.getDefaultState(), false) &&
+                    checkBlockSet(MB_MAGMA_BLOCKS, ModBlocks.multiblockFoodAltar.getDefaultState(), false);
         }
-        return checkBlockSet(MB_ESSENCE_FOCUSERS, ModBlocks.essenceFocuser) &&
-                checkBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK) &&
-                checkBlockSet(MB_ITEM_TABLES, ModBlocks.itemTable) &&
-                checkBlockSet(MB_STONE_SLABS, Blocks.STONE_SLAB) &&
-                checkBlockSet(MB_MAGMA_BLOCKS, Blocks.MAGMA) &&
-                checkBlock(MB_ESSENCE_PROVIDER, ModBlocks.essenceProvider);
+        return checkBlockSet(MB_ESSENCE_FOCUSERS, ModBlocks.essenceFocuser.getDefaultState(), false) &&
+                checkBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK.getDefaultState(), false) &&
+                checkBlockSet(MB_ITEM_TABLES, ModBlocks.itemTable.getDefaultState(), false) &&
+                checkBlockSet(MB_STONE_SLABS, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.NETHERBRICK), true) &&
+                checkBlockSet(MB_MAGMA_BLOCKS, Blocks.MAGMA.getDefaultState(), false) &&
+                checkBlock(MB_ESSENCE_PROVIDER, ModBlocks.essenceProvider.getDefaultState(), false);
     }
 
     private void placeOldBlocks() {
-        placeOldBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK);
-        placeOldBlockSet(MB_STONE_SLABS, Blocks.STONE_SLAB);
-        placeOldBlockSet(MB_MAGMA_BLOCKS, Blocks.MAGMA);
+        placeOldBlockSet(MB_GOLD_BLOCKS, Blocks.GOLD_BLOCK.getDefaultState());
+        placeOldBlockSet(MB_STONE_SLABS, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.NETHERBRICK));
+        placeOldBlockSet(MB_MAGMA_BLOCKS, Blocks.MAGMA.getDefaultState());
     }
 
     public void destroyMultiblock() {
@@ -263,36 +264,42 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
         NetworkWrapper.dispatchTEToNearbyPlayers(this);
     }
 
-    private void placeOldBlockSet(BlockPos[] offsets, Block block) {
+    private void placeOldBlockSet(BlockPos[] offsets, IBlockState block) {
         for (BlockPos offset : offsets) {
             if (!world.isAirBlock(getPos().add(offset))) {
-                world.setBlockState(getPos().add(offset), block.getDefaultState());
+                world.setBlockState(getPos().add(offset), block);
             }
         }
     }
 
-    private boolean checkBlockSet(BlockPos[] pos, Block block) {
+    private boolean checkBlockSet(BlockPos[] pos, IBlockState block, boolean exactBlockState) {
         for (BlockPos poz : pos) {
-            if (!checkBlock(poz, block)) {
+            if (!checkBlock(poz, block, exactBlockState)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkBlock(BlockPos pos, Block block) {
-        return world.getBlockState(getPos().add(pos.getX(), pos.getY(), pos.getZ())).getBlock() == block;
+    private boolean checkBlock(BlockPos pos, IBlockState block, boolean exactBlockState) {
+        if (exactBlockState) {
+            return world.getBlockState(getPos().add(pos.getX(), pos.getY(), pos.getZ())) == block;
+
+        }
+        return world.getBlockState(getPos().add(pos.getX(), pos.getY(), pos.getZ())).getBlock() == block.getBlock();
+
     }
 
     private void activateMultiblock() {
-        replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB, AltarMultiblockType.CORNER);
-        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA, AltarMultiblockType.MAGMA);
-        replaceMultiblocks(MB_GOLD_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK, AltarMultiblockType.GOLD);
+        replaceMultiblocks(MB_STONE_SLABS, MB_STONE_SLABS_ROTATIONS, Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.NETHERBRICK), AltarMultiblockType.CORNER);
+        replaceMultiblocks(MB_MAGMA_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.MAGMA.getDefaultState(), AltarMultiblockType.MAGMA);
+        replaceMultiblocks(MB_GOLD_BLOCKS, MB_MAGMA_BLOCKS_ROTATIONS, Blocks.GOLD_BLOCK.getDefaultState(), AltarMultiblockType.GOLD);
         NetworkWrapper.dispatchTEToNearbyPlayers(this);
     }
 
-    private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, Block baseBlock,
-                                    AltarMultiblockType multiBlockType) {
+    private void replaceMultiblocks(BlockPos[] offsets, EnumFacing[] rotations, IBlockState baseBlock,
+                                    AltarMultiblockType multiBlockType)
+    {
         for (int i = 0; i < offsets.length; i++) {
             world.setBlockState(getPos().add(offsets[i]), ModBlocks.multiblockFoodAltar.getDefaultState()
                     .withProperty(BlockMultiblockFoodAltar.FACING, rotations[i])
@@ -305,13 +312,13 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
     }
 
     private void spawnWorkingParticles() {
-        double radius = 0.6;
+        double radius      = 0.6;
         double totalHeight = 1.2;
-        double density = 4;
-        double step = Math.PI * (totalHeight / density);
-        double x = getPos().getX() + 0.5;
-        double y = getPos().getY() + 0.5;
-        double z = getPos().getZ() + 0.5;
+        double density     = 4;
+        double step        = Math.PI * (totalHeight / density);
+        double x           = getPos().getX() + 0.5;
+        double y           = getPos().getY() + 0.5;
+        double z           = getPos().getZ() + 0.5;
 
         for (int i = 0; i < density; i++) {
             world.spawnParticle(

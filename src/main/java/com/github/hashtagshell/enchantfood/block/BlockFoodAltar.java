@@ -6,7 +6,6 @@ import com.github.hashtagshell.enchantfood.init.ModItems;
 import com.github.hashtagshell.enchantfood.reference.Ref;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -74,7 +72,6 @@ public class BlockFoodAltar extends BlockTileGeneric<TileFoodAltar> {
             TileFoodAltar tileFoodAltar = (TileFoodAltar) world.getTileEntity(pos);
             if (!player.isSneaking()) {
                 if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == ModItems.beefStick) {
-                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("Current progress : " + (tileFoodAltar.fullRecipeCost - tileFoodAltar.remainingProgress) + " / " + tileFoodAltar.fullRecipeCost + " for " + tileFoodAltar.result.getDisplayName()));
                     tileFoodAltar.wrenchClick();
                     return true;
                 }
