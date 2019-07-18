@@ -58,7 +58,7 @@ public class TileEssencePump extends TileGeneric implements ITickable, ITierable
             currentEssence = Math.min(((IEssenceProvider) teOnInput).getMaxOutputEssence(), essenceThroughput);
         }
 
-        if (teOnOutput != null && teOnOutput instanceof IEssenceConsumer && !((IEssenceConsumer) teOnOutput).isFull()) {
+        if (teOnOutput != null && teOnOutput instanceof IEssenceConsumer && !((IEssenceConsumer) teOnOutput).isFull() && currentEssence > 0) {
             int essenceAmount = Math.min(essenceThroughput, Math.min(((IEssenceConsumer) teOnOutput).getMaxEssencePerTick(), (((IEssenceConsumer) teOnOutput).getMaxEssence() - ((IEssenceConsumer) teOnOutput).getCurrentEssence())));
             ((IEssenceConsumer) teOnOutput).setEssence(((IEssenceConsumer) teOnOutput).getCurrentEssence() + essenceAmount);
             this.currentEssence -= essenceAmount;

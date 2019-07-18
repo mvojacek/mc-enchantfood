@@ -239,7 +239,6 @@ public class TileFoodEnchanter extends TileGeneric implements ITickable {
     public void spawnWorkingParticles() {
         World thisWorld = getWorld();
         BlockPos pos = getPos();
-        //TODO
         double radius = 0.5;
         double radian = random.nextDouble() * 2.0;
         double zPos = pos.getZ() + 0.5 + radius * Math.sin(radian * Math.PI);

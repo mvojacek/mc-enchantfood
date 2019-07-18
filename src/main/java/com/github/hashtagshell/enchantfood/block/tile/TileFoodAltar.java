@@ -168,7 +168,7 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
         if (isValidMultiblock) {
             if (working) {
                 boolean didSomething = false;
-                if (currentFuel > 0) {
+                if (!world.isRemote && currentFuel > 0) {
                     int fuelTake = Math.min(MAX_ESSENCE_PER_TICK, Math.min(currentFuel, remainingProgress));
                     currentFuel -= fuelTake;
                     remainingProgress -= fuelTake;
@@ -177,11 +177,11 @@ public class TileFoodAltar extends TileGeneric implements ITickable, IEssenceCon
 
                 //if checkTables contains infuse material
 
-                if (remainingProgress <= 0) {
+                if (!world.isRemote && remainingProgress <= 0) {
                     fullRecipeCost = 0;
                     remainingProgress = 0;
                     working = false;
-                    inventory.setStackInSlot(0, result);
+                    inventory.setStackInSlot(0, result.copy());
                     result = ItemStack.EMPTY;
                     NetworkWrapper.dispatchTEToNearbyPlayers(this);
                 }

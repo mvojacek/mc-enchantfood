@@ -39,6 +39,10 @@ public class Ref
         public static final String BLANK = "blank";
         public static final String ESSENCE_SHARD = "essenceshard";
         public static final String MAGICAL_BEEF_STICK = "magicalbeefonstick";
+        public static final String ESSENCE_STICK = "essencestick";
+        public static final String OVERLOADED_ESSENCE_SHARD = "overloadedessenceshard";
+        public static final String BASIC_PRESSURE_CHAMBER = "basic_pressure_chamber";
+        public static final String METEOR_STAFF = "meteorstaff";
     }
 
     public static class ToolTips {

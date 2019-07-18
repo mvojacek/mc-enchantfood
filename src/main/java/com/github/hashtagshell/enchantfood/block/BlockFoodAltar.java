@@ -76,14 +76,14 @@ public class BlockFoodAltar extends BlockTileGeneric<TileFoodAltar> {
                     return true;
                 }
 
-                if (player.inventory.getStackInSlot(player.inventory.currentItem).getItem() == Items.AIR && tileFoodAltar.inventory.getStackInSlot(0) != ItemStack.EMPTY) {
+                if (player.inventory.getStackInSlot(player.inventory.currentItem).isEmpty() && !tileFoodAltar.inventory.getStackInSlot(0).isEmpty()) {
                     player.inventory.addItemStackToInventory(tileFoodAltar.inventory.getStackInSlot(0));
                     tileFoodAltar.inventory.setStackInSlot(0, ItemStack.EMPTY);
                     dispatchTEToNearbyPlayers(tileFoodAltar);
                     return true;
                 }
 
-                if (player.inventory.getStackInSlot(player.inventory.currentItem) != ItemStack.EMPTY && tileFoodAltar.inventory.getStackInSlot(0).getItem() == Items.AIR) {
+                if (player.inventory.getStackInSlot(player.inventory.currentItem) != ItemStack.EMPTY && tileFoodAltar.inventory.getStackInSlot(0).isEmpty()) {
                     ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem).copy();
                     item.setCount(1);
                     player.inventory.decrStackSize(player.inventory.currentItem, 1);

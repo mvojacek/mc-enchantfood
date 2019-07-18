@@ -78,7 +78,7 @@ public class TileEssenceFocuser extends TileGeneric implements ITickable, IEssen
         }
 
         if (connected) {
-            if (!myProvider.isFull() && currentEssence > 0) {
+            if (!myProvider.isFull() && this.currentEssence > 0) {
                 myProvider.setEssence(myProvider.getCurrentEssence() + currentEssence);
                 currentEssence = 0;
                 spawnTransferParticles();

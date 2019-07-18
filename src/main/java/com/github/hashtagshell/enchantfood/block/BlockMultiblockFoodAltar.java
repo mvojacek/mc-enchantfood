@@ -10,7 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.github.hashtagshell.enchantfood.block.lib.tile.BlockTileGeneric;
@@ -75,6 +77,21 @@ public class BlockMultiblockFoodAltar extends BlockTileGeneric<TileMultiblockFoo
         }
 
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return super.getBoundingBox(state, source, pos);
+    }
+
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        if(blockState.getValue(ALTAR_PART) == AltarMultiblockType.CORNER)
+        {
+            return new AxisAlignedBB(0.0,0.0,0.0,1.0,0.5,1.0);
+        }
+        return new AxisAlignedBB(0.0,0.0,0.0,1.0,1.0,1.0);
     }
 
     @Override
